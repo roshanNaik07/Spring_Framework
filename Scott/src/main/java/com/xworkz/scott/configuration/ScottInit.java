@@ -15,7 +15,7 @@ public class ScottInit extends AbstractAnnotationConfigDispatcherServletInitiali
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class[]{TransportConfiguration.class,ArtConfiguration.class};
+        return new Class[]{TransportConfiguration.class,ArtConfiguration.class,SmartPhoneConfiguration.class, FashionConfiguration.class};
     }
 
     @Override

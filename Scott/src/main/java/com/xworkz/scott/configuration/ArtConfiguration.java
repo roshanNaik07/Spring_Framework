@@ -69,6 +69,7 @@ public class ArtConfiguration {
     @Bean
     public long[] artistNos(){
         System.out.println("artistNos instance created by ApplicationContext");
+        System.out.println("---------------------------------------------");
         return new long[]{516464655565l,654564665l,4545544415616l};
     }
 }
