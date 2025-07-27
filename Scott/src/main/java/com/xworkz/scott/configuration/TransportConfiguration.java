@@ -70,6 +70,7 @@ public class TransportConfiguration {
     public Long vehicleInCity(){
 
         System.out.println("VehicleInCity instance by ApplicationContext");
+        System.out.println();
         System.out.println("---------------------------------------------");
         return 1616516516L;
 
