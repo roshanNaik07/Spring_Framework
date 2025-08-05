@@ -32,13 +32,122 @@ public class DmartRepositoryImpl implements DmartRepository {
             entityTransaction.commit();
 
         } catch (Exception e) {
-            if (entityTransaction.isActive()){
+            if (entityTransaction.isActive()) {
                 entityTransaction.rollback();
             }
         } finally {
             entityManagerFactory.close();
         }
         return null;
+    }
+
+    @Override
+    public DmartEntity getEntityById(int id) {
+        System.out.println("Running getProductById() in DmartRepositoryImpl");
+
+        EntityManagerFactory entityManagerFactory = null;
+        EntityManager entityManager = null;
+        EntityTransaction entityTransaction = null;
+        DmartEntity dmartEntity = null;
+        try {
+            entityManagerFactory = Persistence.createEntityManagerFactory("shopping");
+            entityManager = entityManagerFactory.createEntityManager();
+            entityTransaction = entityManager.getTransaction();
+
+            entityTransaction.begin();
+
+            if (id != 0) {
+                dmartEntity = entityManager.find(DmartEntity.class, id);
+            }
+
+            entityTransaction.commit();
+
+        } catch (Exception e) {
+
+            if (entityTransaction.isActive()) {
+                entityTransaction.rollback();
+            }
+
+        } finally {
+            entityManager.close();
+        }
+
+        return dmartEntity;
+    }
+
+    @Override
+    public boolean updateProductById(int id, String product) {
+
+        System.out.println("Running updateProductById in DmartRepositoryImpl");
+
+        EntityManagerFactory entityManagerFactory = null;
+        EntityManager entityManager = null;
+        EntityTransaction entityTransaction = null;
+        DmartEntity entity = null;
+        try {
+
+            entityManagerFactory = Persistence.createEntityManagerFactory("shopping");
+            entityManager = entityManagerFactory.createEntityManager();
+            entityTransaction = entityManager.getTransaction();
+
+            entityTransaction.begin();
+
+            entity = entityManager.find(DmartEntity.class, id);
+            if (entity != null) {
+                entity.setProduct(product);
+                System.out.println("Product updated to : " + entity.getProduct());
+            }
+            entityTransaction.commit();
+            return true;
+
+        } catch (Exception e) {
+
+            if (entityTransaction.isActive()) {
+                entityTransaction.rollback();
+            }
+
+        } finally {
+
+            entityManager.close();
+
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean deleteEntityById(int id) {
+
+        System.out.println("Running deleteEntityById in DmartRepositoryImpl");
+
+        EntityManagerFactory entityManagerFactory = null;
+        EntityManager entityManager = null;
+        EntityTransaction entityTransaction = null;
+        DmartEntity entity = null;
+        try {
+            entityManagerFactory = Persistence.createEntityManagerFactory("shopping");
+            entityManager = entityManagerFactory.createEntityManager();
+            entityTransaction = entityManager.getTransaction();
+
+            entityTransaction.begin();
+
+            entity = entityManager.find(DmartEntity.class,id);
+            if (entity!= null){
+                entityManager.remove(entity);
+            }
+            entityTransaction.commit();
+            return true;
+        } catch (Exception e) {
+
+            if(entityTransaction.isActive()){
+                entityTransaction.rollback();
+            }
+
+        } finally {
+            entityManager.close();
+        }
+
+        return false;
     }
 
 }

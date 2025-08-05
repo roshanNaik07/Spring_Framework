@@ -10,11 +10,22 @@ public class DmartRunner {
 
         System.out.println("Running main method");
 
-        DmartEntity dmartEntity = new DmartEntity(2,"BTM","Book","stationary");
+//        DmartEntity dmartEntity = new DmartEntity(3,"Attiguppe","Mug","material");
 
         DmartService dmartService = new DmartServiceImpl();
-        dmartService.save(dmartEntity);
 
+//        dmartService.save(dmartEntity);
+
+
+        //getProductById
+        DmartEntity dmartEntity = dmartService.getEntityById(3);
+        System.out.println(dmartEntity);
+
+        boolean result = dmartService.updateProductById(3 , "Spoon");
+        System.out.println(result);
+
+        boolean result2 = dmartService.deleteEntityById(2);
+        System.out.println(result2);
     }
 
 }
