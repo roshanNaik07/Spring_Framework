@@ -15,6 +15,11 @@
 
 <form action="butter" method="post">
 
+    Butter brand : <input type="text" name="brand"/>
+    <br>
+    Butter Price : <input type="number" name="price">
+    <br>
+
     <input class="btn btn-primary" type="submit" value="Add Butter" />
 
 </form>

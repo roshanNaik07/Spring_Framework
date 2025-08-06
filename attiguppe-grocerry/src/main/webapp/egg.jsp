@@ -15,6 +15,11 @@
 
 <form action="egg" method="post">
 
+    Egg size : <input type="text" name="size"/>
+    <br>
+    Egg Price : <input type="number" name="price">
+    <br>
+
     <input class="btn btn-primary" type="submit" value="Add Egg" />
 
 </form>

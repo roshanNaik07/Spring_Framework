@@ -15,6 +15,10 @@
 
     <form action="mashroom" method="post">
 
+        Mashroom Type : <input type="text" name="type"/>
+        <br>
+        Mashroom Price : <input type="number" name="price">
+        <br>
         <input class="btn btn-primary" type="submit" value="Add Mashroom" />
 
     </form>

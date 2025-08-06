@@ -15,7 +15,11 @@
 
 <form action="biryani" method="post">
 
-    <input class="btn btn-primary" type="submit" value="Add Biryani" />
+    Biryani Type : <input type="text" name="biryaniType"/>
+    <br>
+    Biryani Price : <input type="number" name="price">
+    <br>
+    <input class="btn btn-primary" type="submit" value="Add Biryani"/>
 
 </form>
 

@@ -15,6 +15,10 @@
 
 <form action="soap" method="post">
 
+    Soap brand : <input type="text" name="brand"/>
+    <br>
+    Soap Price : <input type="number" name="price">
+    <br>
     <input class="btn btn-primary" type="submit" value="Add Soap" />
 
 </form>

@@ -15,6 +15,10 @@
 
 <form action="shoe" method="post">
 
+    Shoe brand : <input type="text" name="brand"/>
+    <br>
+    Shoe Price : <input type="number" name="price">
+    <br>
     <input class="btn btn-primary" type="submit" value="Add shoe" />
 
 </form>

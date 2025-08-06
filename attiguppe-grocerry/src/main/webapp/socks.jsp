@@ -15,6 +15,10 @@
 
 <form action="socks" method="post">
 
+    Socks brand : <input type="text" name="brand"/>
+    <br>
+    Socks Price : <input type="number" name="price">
+    <br>
     <input class="btn btn-primary" type="submit" value="Add Socks" />
 
 </form>

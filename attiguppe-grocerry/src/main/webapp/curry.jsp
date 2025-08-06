@@ -15,6 +15,11 @@
 
 <form action="curry" method="post">
 
+    Curry type : <input type="text" name="type"/>
+    <br>
+    Curry Price : <input type="number" name="price">
+    <br>
+
     <input class="btn btn-primary" type="submit" value="Add Curry"/>
 
 </form>

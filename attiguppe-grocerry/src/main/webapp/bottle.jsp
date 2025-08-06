@@ -15,6 +15,11 @@
 
 <form action="bottle" method="post">
 
+    Bottle color : <input type="text" name="color"/>
+    <br>
+    Bottle Price : <input type="number" name="price">
+    <br>
+
     <input class="btn btn-primary" type="submit" value="Add Bottle" />
 
 </form>

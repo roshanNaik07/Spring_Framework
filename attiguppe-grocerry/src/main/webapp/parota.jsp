@@ -15,6 +15,10 @@
 
 <form action="parota" method="post">
 
+    Parota Type : <input type="text" name="type"/>
+    <br>
+    Parota Price : <input type="number" name="price">
+    <br>
     <input class="btn btn-primary" type="submit" value="Add Parota" />
 
 </form>

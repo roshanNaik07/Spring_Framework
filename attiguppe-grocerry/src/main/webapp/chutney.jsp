@@ -15,6 +15,11 @@
 
 <form action="chutney" method="post">
 
+    Chutney item : <input type="text" name="item"/>
+    <br>
+    Chutney Price : <input type="number" name="price">
+    <br>
+
     <input class="btn btn-primary" type="submit" value="Add Chutney"/>
 
 </form>

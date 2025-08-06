@@ -15,6 +15,11 @@
 
 <form action="chappal" method="post">
 
+    Chappal brand : <input type="text" name="brand"/>
+    <br>
+    Chappal Price : <input type="number" name="price">
+    <br>
+
     <input class="btn btn-primary" type="submit" value="Add Chappal" />
 
 </form>

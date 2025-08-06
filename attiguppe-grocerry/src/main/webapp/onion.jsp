@@ -15,6 +15,10 @@
 
 <form action="onion" method="post">
 
+    Onlion size : <input type="text" name="size"/>
+    <br>
+    Onion Price : <input type="number" name="price">
+    <br>
     <input class="btn btn-primary" type="submit" value="Add Onion" />
 
 </form>

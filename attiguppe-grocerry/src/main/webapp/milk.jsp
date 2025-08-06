@@ -15,6 +15,10 @@
 
 <form action="milk" method="post">
 
+    Milk brand : <input type="text" name="brand"/>
+    <br>
+    Milk Price : <input type="number" name="price">
+    <br>
     <input class="btn btn-primary" type="submit" value="Add milk" />
 
 </form>
