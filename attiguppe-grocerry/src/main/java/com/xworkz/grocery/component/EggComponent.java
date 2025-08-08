@@ -1,5 +1,6 @@
 package com.xworkz.grocery.component;
 
+import com.xworkz.grocery.dto.EggDTO;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,9 +14,9 @@ public class EggComponent {
     }
 
     @RequestMapping("/egg")
-    public String addEgg(@RequestParam ("size") String size,@RequestParam("price") int price){
-        System.out.println("egg size is :"+size);
-        System.out.println("egg price is :"+price);
+    public String addEgg(EggDTO eggDTO){
+        System.out.println("egg size is :"+eggDTO.getSize());
+        System.out.println("egg price is :"+eggDTO.getPrice());
         System.out.println("Egg added to the cart");
         return "egg.jsp";
     }

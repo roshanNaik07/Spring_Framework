@@ -1,10 +1,12 @@
 package com.xworkz.grocery.component;
 
+import com.xworkz.grocery.dto.BiryaniDTO;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@Component
+@Controller
 @RequestMapping("/")
 public class BiryaniComponent {
 
@@ -13,9 +15,9 @@ public class BiryaniComponent {
     }
 
     @RequestMapping("/biryani")
-    public String addBiryani(@RequestParam ("biryaniType") String type , @RequestParam ("price") int price){
-        System.out.println("Type is : "+type);
-        System.out.println("Price is : "+price);
+    public String addBiryani(BiryaniDTO biryaniDTO){
+        System.out.println("Type is : "+biryaniDTO.getBiryaniType());
+        System.out.println("Price is : "+biryaniDTO.getPrice());
         System.out.println("Biryani added to the cart");
         return "biryani.jsp";
     }

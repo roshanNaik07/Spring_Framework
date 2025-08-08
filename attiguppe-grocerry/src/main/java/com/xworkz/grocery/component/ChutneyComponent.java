@@ -1,5 +1,6 @@
 package com.xworkz.grocery.component;
 
+import com.xworkz.grocery.dto.ChutneyDTO;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,10 +14,10 @@ public class ChutneyComponent {
     }
 
     @RequestMapping("/chutney")
-    public String addChutney(@RequestParam ("item") String item,@RequestParam ("price") int price){
+    public String addChutney(ChutneyDTO chutneyDTO){
 
-        System.out.println("Chutney main item :"+item);
-        System.out.println("Chutney Price :"+price);
+        System.out.println("Chutney main item :"+chutneyDTO.getItem());
+        System.out.println("Chutney Price :"+chutneyDTO.getPrice());
 
         System.out.println("Chutney added to the cart");
         return "chutney.jsp";

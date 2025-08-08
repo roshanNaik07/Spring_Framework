@@ -1,5 +1,6 @@
 package com.xworkz.grocery.component;
 
+import com.xworkz.grocery.dto.ParotaDTO;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,9 +14,9 @@ public class ParotaComponent {
     }
 
     @RequestMapping("/parota")
-    public String adaParota(@RequestParam ("type") String type,@RequestParam("price") int price){
-        System.out.println("Parota type is : "+type);
-        System.out.println("Parota price is : "+price);
+    public String adaParota(ParotaDTO parotaDTO){
+        System.out.println("Parota type is : "+parotaDTO.getType());
+        System.out.println("Parota price is : "+parotaDTO.getPrice());
         System.out.println("Parota added to the cart");
         return "parota.jsp";
     }

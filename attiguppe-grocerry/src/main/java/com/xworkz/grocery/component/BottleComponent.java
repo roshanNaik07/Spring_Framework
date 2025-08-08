@@ -1,5 +1,6 @@
 package com.xworkz.grocery.component;
 
+import com.xworkz.grocery.dto.BottleDTO;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,9 +14,9 @@ public class BottleComponent {
     }
 
     @RequestMapping("/bottle")
-    public String addBottle(@RequestParam ("color") String color, @RequestParam("price") int price){
-        System.out.println("Bottle color : "+color);
-        System.out.println("Bottle price : "+price);
+    public String addBottle(BottleDTO bottleDTO){
+        System.out.println("Bottle color : "+bottleDTO.getColor());
+        System.out.println("Bottle price : "+bottleDTO.getPrice());
         System.out.println("Added bottle to the cart");
         return "bottle.jsp";
     }

@@ -1,5 +1,6 @@
 package com.xworkz.grocery.component;
 
+import com.xworkz.grocery.dto.MashroomDTO;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,9 +14,9 @@ public class MashroomComponent {
     }
 
     @RequestMapping("/mashroom")
-    public String addMashroom(@RequestParam("type") String type , @RequestParam("price") int price){
-        System.out.println("Mashroom type is :"+type);
-        System.out.println("Mashroom price is : "+price);
+    public String addMashroom(MashroomDTO mashroomDTO){
+        System.out.println("Mashroom type is :"+mashroomDTO.getType());
+        System.out.println("Mashroom price is : "+mashroomDTO.getPrice());
         System.out.println("Added mashroom to the cart");
         return "mashroom.jsp";
     }

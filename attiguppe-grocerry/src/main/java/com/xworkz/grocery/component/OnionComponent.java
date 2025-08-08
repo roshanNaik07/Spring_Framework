@@ -1,5 +1,6 @@
 package com.xworkz.grocery.component;
 
+import com.xworkz.grocery.dto.OnionDTO;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,9 +14,9 @@ public class OnionComponent {
     }
 
     @RequestMapping("/onion")
-    public String addOnion(@RequestParam("size") String size,@RequestParam("price") int price){
-        System.out.println("Onion size is :"+size);
-        System.out.println("Onion price is :"+price);
+    public String addOnion(OnionDTO onionDTO){
+        System.out.println("Onion size is :"+onionDTO.getSize());
+        System.out.println("Onion price is :"+onionDTO.getPrice());
         System.out.println("Onion added to the cart");
         return "onion.jsp";
     }
