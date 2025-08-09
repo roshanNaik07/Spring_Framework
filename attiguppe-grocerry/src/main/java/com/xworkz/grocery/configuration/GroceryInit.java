@@ -1,6 +1,10 @@
 package com.xworkz.grocery.configuration;
 
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+
 
 public class GroceryInit extends AbstractAnnotationConfigDispatcherServletInitializer {
 
@@ -20,6 +24,7 @@ public class GroceryInit extends AbstractAnnotationConfigDispatcherServletInitia
 
     @Override
     protected String[] getServletMappings() {
-        return new String[]{"/mashroom", "/soap", "/butter", "/bottle", "/shoe", "/chappal", "/socks", "/chutney", "/onion", "/milk", "/curry", "/biryani", "/parota", "/egg"};
+        return new String[]{"/"};
     }
+
 }

@@ -2,10 +2,11 @@ package com.xworkz.grocery.component;
 
 import com.xworkz.grocery.dto.BottleDTO;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@Component
+@Controller
 @RequestMapping("/")
 public class BottleComponent {
 
