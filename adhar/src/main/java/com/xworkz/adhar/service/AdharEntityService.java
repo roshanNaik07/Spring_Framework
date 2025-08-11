@@ -9,4 +9,15 @@ public interface AdharEntityService {
     boolean addAll(List<AdharEntity> entityList);
 
     AdharEntity findByName(String name);
+
+    AdharEntity findBYNameAndAge(String name , int age);
+
+    List<AdharEntity> getByAgeAbove(int age);
+
+    List<AdharEntity> getAgeBetween(int age1 , int age2);
+
+
+ String getNameByEmail(String email);
+
+ AdharEntity getPhoneNumberAndNameByEmail(String email);
 }

@@ -10,4 +10,14 @@ public interface AdharRepository {
 
     AdharEntity findByName(String name);
 
+    AdharEntity findByNameAndAge(String name, int age);
+
+    List<AdharEntity> getByAgeAbove(int age);
+
+    List<AdharEntity> getAgeBetween(int age1 , int age2);
+
+    String getNameByEmail(String email);
+
+    AdharEntity getPhoneAndNameByEmail(String email);
+
 }
