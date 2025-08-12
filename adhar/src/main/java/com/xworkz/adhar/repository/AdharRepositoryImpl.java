@@ -3,6 +3,8 @@ package com.xworkz.adhar.repository;
 import com.xworkz.adhar.entity.AdharEntity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -58,11 +60,9 @@ public class AdharRepositoryImpl implements AdharRepository {
 
             entityTransaction.begin();
 
-            TypedQuery<AdharEntity> query = entityManager.createNamedQuery("findByName",AdharEntity.class);
-
+            Query query = entityManager.createNamedQuery("findByName",AdharEntity.class);
             query.setParameter("name",name);
-
-            adharEntity =query.getSingleResult();
+            adharEntity = (AdharEntity) query.getSingleResult();
 
             entityTransaction.commit();
 
@@ -94,10 +94,10 @@ public class AdharRepositoryImpl implements AdharRepository {
 
             entityTransaction.begin();
 
-            TypedQuery<AdharEntity> query = entityManager.createNamedQuery("getByNameAndAge", AdharEntity.class);
+            Query query = entityManager.createNamedQuery("getByNameAndAge",AdharEntity.class);
             query.setParameter("name",name);
             query.setParameter("age",age);
-            adharEntity = query.getSingleResult();
+            adharEntity = (AdharEntity) query.getSingleResult();
 
             entityTransaction.commit();
 
@@ -247,6 +247,111 @@ public class AdharRepositoryImpl implements AdharRepository {
       }
 
         return adharEntity;
+    }
+
+    @Override
+    public AdharEntity getEntityByAgeAndPhoneNo(int age, long phoneNo) {
+
+        EntityManager entityManager = null;
+        EntityTransaction entityTransaction = null;
+        AdharEntity entity = null ;
+        try{
+
+            entityManager = entityManagerFactory.createEntityManager();
+            entityTransaction = entityManager.getTransaction();
+            entityTransaction.begin();
+
+            Query query = entityManager.createNamedQuery("getEntityByAgeAndPhoneNo",AdharEntity.class);
+            query.setParameter("age",age);
+            query.setParameter("PhoneNo",phoneNo);
+            entity = (AdharEntity) query.getSingleResult();
+
+        }catch (Exception e){
+
+            if (entityTransaction.isActive()) {
+                entityTransaction.rollback();
+            }
+            e.printStackTrace();
+        }finally {
+            entityManager.close();
+        }
+
+        return entity;
+    }
+
+    @Override
+    public List<AdharEntity> getListOfEntityByAge(int age) {
+
+        EntityManager entityManager = null;
+        EntityTransaction entityTransaction = null;
+        List<AdharEntity> entity = null ;
+        try {
+
+            entityManager = entityManagerFactory.createEntityManager();
+            entityTransaction = entityManager.getTransaction();
+            entityTransaction.begin();
+
+            Query query = entityManager.createNamedQuery("getListOfEntityByAge", AdharEntity.class);
+            query.setParameter("age",age);
+            entity = query.getResultList();
+
+            entityTransaction.commit();
+
+        }catch (Exception e){
+            if (entityTransaction.isActive()){
+                entityTransaction.rollback();
+            }
+            e.printStackTrace();
+        }finally {
+            entityManager.close();
+        }
+
+        return entity;
+    }
+
+    @Override
+    public List<AdharEntity> getNameAndPhByAge(int age) {
+
+        EntityManager entityManager = null;
+        EntityTransaction entityTransaction = null;
+        List<AdharEntity> entityList = new ArrayList<>();
+
+        try {
+
+            entityManager = entityManagerFactory.createEntityManager();
+            entityTransaction = entityManager.getTransaction();
+            entityTransaction.begin();
+
+            Query query = entityManager.createNamedQuery("getNameAndPhByAge");
+            query.setParameter("age",age);
+
+            List<Object[]> objects =query.getResultList();
+
+            for (Object[] obj : objects){
+                AdharEntity entity = new AdharEntity();
+
+                String name = (String) obj[0];
+                entity.setName(name);
+
+                Long phoneNo = (Long) obj[1];
+                entity.setPh(phoneNo);
+
+                entityList.add(entity);
+            }
+
+            entityTransaction.commit();
+        }catch (Exception e){
+
+            if (entityTransaction.isActive()){
+                entityTransaction.rollback();
+            }
+            e.printStackTrace();
+
+        }finally {
+            entityManager.close();
+        }
+
+        return entityList;
     }
 }
 

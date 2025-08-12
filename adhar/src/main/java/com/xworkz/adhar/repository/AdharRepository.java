@@ -20,4 +20,9 @@ public interface AdharRepository {
 
     AdharEntity getPhoneAndNameByEmail(String email);
 
+    AdharEntity getEntityByAgeAndPhoneNo(int age , long phoneNo);
+
+    List<AdharEntity> getListOfEntityByAge(int age);
+
+    List<AdharEntity> getNameAndPhByAge(int age);
 }

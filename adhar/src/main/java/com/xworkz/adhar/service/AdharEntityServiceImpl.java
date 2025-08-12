@@ -70,4 +70,22 @@ public class AdharEntityServiceImpl implements AdharEntityService{
     public AdharEntity getPhoneNumberAndNameByEmail(String email) {
         return new AdharRepositoryImpl().getPhoneAndNameByEmail(email);
     }
+
+    @Override
+    public AdharEntity getEntityByAgeAndPhoneNo(int age, long phoneNo) {
+        return adharRepository.getEntityByAgeAndPhoneNo(age,phoneNo);
+    }
+
+    @Override
+    public List<AdharEntity> getListOfEntityByAge(int age) {
+        System.out.println("Running getListOfEntityByAge");
+        return adharRepository.getListOfEntityByAge(age);
+    }
+
+    @Override
+    public List<AdharEntity> getNameAndPhByAge(int age) {
+        return adharRepository.getNameAndPhByAge(age);
+    }
+
+
 }

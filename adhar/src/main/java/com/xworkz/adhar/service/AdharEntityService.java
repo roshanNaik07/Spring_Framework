@@ -16,8 +16,13 @@ public interface AdharEntityService {
 
     List<AdharEntity> getAgeBetween(int age1 , int age2);
 
+    String getNameByEmail(String email);
 
- String getNameByEmail(String email);
+    AdharEntity getPhoneNumberAndNameByEmail(String email);
 
- AdharEntity getPhoneNumberAndNameByEmail(String email);
+    AdharEntity getEntityByAgeAndPhoneNo(int age , long phoneNo);
+
+    List<AdharEntity> getListOfEntityByAge (int age );
+
+    List<AdharEntity> getNameAndPhByAge(int age);
 }
