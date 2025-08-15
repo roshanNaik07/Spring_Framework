@@ -17,7 +17,7 @@ public class DominosEntity {
     private String email;
 
     @Column(name = "phoneNo")
-    private long phoneNo;
+    private String phoneNo;
 
     @Column(name = "price")
     private int price;
