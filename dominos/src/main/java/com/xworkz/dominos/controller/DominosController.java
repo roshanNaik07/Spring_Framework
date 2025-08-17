@@ -9,8 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.View;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -66,27 +66,93 @@ public class DominosController {
     }
 
     @RequestMapping("/getByID")
-    public ModelAndView getById(@Valid DominosDto dominosDto , BindingResult bindingResult ,ModelAndView modelAndView){
+    public ModelAndView getById(@RequestParam int id ,ModelAndView modelAndView){
 
         System.out.println("Running getById method in DominosController");
 
-        if (bindingResult.hasErrors()){
-            List<ObjectError> error = bindingResult.getAllErrors();
-            for (ObjectError ref : error){
-                if (ref.getDefaultMessage().equals("id cannot be negative or zero")){
-                    System.out.println("Data is invalid");
-                    modelAndView.addObject("error",ref.getDefaultMessage());
-                    modelAndView.setViewName("SearchId");
-                    return modelAndView;
-                }
-            }
+        if (id == 0){
+            System.out.println("Data is invalid");
+            modelAndView.addObject("error","Id cannot be 0 or negative");
+            modelAndView.setViewName("SearchId");
+            return modelAndView;
         }
 
-        DominosDto dto = dominoService.getById(dominosDto.getId());
+        DominosDto dto = dominoService.getById(id);
 
         modelAndView.addObject("result",dto);
 
         modelAndView.setViewName("SearchId");
+        return modelAndView;
+    }
+
+    @RequestMapping("/update")
+    public ModelAndView updateById(@Valid DominosDto dto , BindingResult bindingResult ,ModelAndView modelAndView,@RequestParam int id){
+        System.out.println("Running updateById in DominosController");
+
+        if (id == 0){
+            modelAndView.addObject("error","Id cannot be zero");
+            modelAndView.setViewName("Update");
+            return modelAndView;
+        }
+
+        if (bindingResult.hasErrors()){
+                List<ObjectError> objectErrors = bindingResult.getAllErrors();
+                for (ObjectError objectError : objectErrors){
+                    modelAndView.addObject("value",dto);
+                    modelAndView.addObject("error",objectError.getDefaultMessage());
+                    modelAndView.setViewName("Update");
+                    return modelAndView;
+            }
+        }
+
+        boolean result = dominoService.updateById(id,dto);
+        if (result!=false){
+            modelAndView.addObject("updated","successfully updated");
+        }else {
+            modelAndView.addObject("error","Id does not exist");
+        }
+        modelAndView.setViewName("Update");
+        return modelAndView;
+    }
+
+    @RequestMapping("/deleteId")
+    public ModelAndView deleteId(@RequestParam int id,ModelAndView modelAndView){
+        System.out.println("Running deleteId in DominosController");
+        if (id == 0){
+            modelAndView.addObject("error","Id cannot be zero");
+            modelAndView.setViewName("Delete");
+            return modelAndView;
+        }
+
+        boolean result = dominoService.deleteById(id);
+        System.out.println(result);
+        if (result!=false){
+            modelAndView.addObject("deleted","Entity deleted successfully");
+        }else {
+            modelAndView.addObject("error","Id does not exist");
+        }
+
+        modelAndView.setViewName("Delete");
+        return modelAndView;
+    }
+
+    @RequestMapping("/checkDomain")
+    public ModelAndView checkDomain(@RequestParam String domain ,ModelAndView modelAndView){
+
+        System.out.println("Running checkDomain in DominosController");
+
+        if(domain == null){
+            modelAndView.addObject("error","please enter the domain to search");
+            modelAndView.setViewName("DomainCheck");
+            return modelAndView;
+        }
+
+        List<DominosEntity> list = dominoService.getDomainList(domain);
+        if (list.isEmpty()){
+            System.out.println("List is empty");
+        }
+        modelAndView.addObject("data",list);
+        modelAndView.setViewName("DomainCheck");
         return modelAndView;
     }
 }

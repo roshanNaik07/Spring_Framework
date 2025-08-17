@@ -12,4 +12,10 @@ public interface DominosRepository {
     List<DominosEntity> fetchDetails();
 
     DominosEntity getById(int id);
+
+    boolean updateById(int id , DominosEntity dominosEntity);
+
+    boolean deleteById(int id );
+
+    List<DominosEntity> getDomainList(String domain);
 }

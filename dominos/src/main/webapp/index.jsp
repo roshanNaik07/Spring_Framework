@@ -16,6 +16,15 @@
             <a class="btn btn-primary" href="fetchDetails" role="button">Fetch Details</a>
             <a class="btn btn-primary" href="SearchId.jsp" role="button">Search Id</a>
         </div>
+        <div class="py-2">
+            <a class="btn btn-primary" href="Update.jsp" role="button">Update</a>
+            <a class="btn btn-primary" href="Delete.jsp" role="button">Delete</a>
+        </div>
+        <div class="py-2">
+            <a class="btn btn-primary" href="DomainCheck.jsp" role="button">check Domain</a>
+            <a class="btn btn-primary" href="DomainCheck.jsp" role="button">Price Above </a>
+
+        </div>
     </div>
 </div>
 </body>

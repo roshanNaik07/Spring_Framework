@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Repository
@@ -99,5 +100,100 @@ public class DominosRepositoryImpl implements DominosRepository{
         }
 
         return null;
+    }
+
+    @Override
+    public boolean updateById(int id, DominosEntity dominosEntity) {
+
+        System.out.println("Running updateById in Domino'sRepositoryImpl");
+        EntityManager entityManager = null;
+        EntityTransaction entityTransaction = null;
+        DominosEntity entity ;
+        try {
+            entityManager = entityManagerFactory.createEntityManager();
+            entityTransaction = entityManager.getTransaction();
+            entityTransaction.begin();
+
+            entity = entityManager.find(DominosEntity.class,id);
+            entity.setName(dominosEntity.getName());
+            entity.setEmail(dominosEntity.getEmail());
+            entity.setPhoneNo(dominosEntity.getPhoneNo());
+            entity.setPrice(dominosEntity.getPrice());
+            entityManager.merge(entity);
+            entityTransaction.commit();
+            return true;
+
+        }catch (Exception e){
+            if (entityTransaction.isActive()){
+                entityTransaction.rollback();
+            }e.printStackTrace();
+
+        }finally {
+            entityManager.close();
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean deleteById(int id) {
+        System.out.println("Running deleteById in Domino'sRepositoryImpl");
+        EntityManager entityManager = null;
+        EntityTransaction entityTransaction = null;
+        DominosEntity entity ;
+        try {
+            entityManager = entityManagerFactory.createEntityManager();
+            entityTransaction = entityManager.getTransaction();
+            entityTransaction.begin();
+
+            Query query = entityManager.createNamedQuery("deleteById");
+            query.setParameter("id",id);
+            query.executeUpdate();
+
+            entityTransaction.commit();
+            System.out.println("deleted successfully");
+            return true;
+
+        }catch (Exception e){
+            if (entityTransaction.isActive()){
+                entityTransaction.rollback();
+            }e.printStackTrace();
+
+        }finally {
+            entityManager.close();
+        }
+
+        return false;
+    }
+
+    @Override
+    public List<DominosEntity> getDomainList(String domain) {
+
+        System.out.println("Running getDomainList in Domino'sRepositoryImpl");
+        EntityManager entityManager = null;
+        EntityTransaction entityTransaction = null;
+        List<DominosEntity> list = new ArrayList<>();
+        try {
+            entityManager = entityManagerFactory.createEntityManager();
+            entityTransaction = entityManager.getTransaction();
+            entityTransaction.begin();
+
+            Query query = entityManager.createNamedQuery("domainType");
+            query.setParameter("domain",domain);
+            list = query.getResultList();
+            entityTransaction.commit();
+
+            return list;
+
+        }catch (Exception e){
+            if (entityTransaction.isActive()){
+                entityTransaction.rollback();
+            }e.printStackTrace();
+
+        }finally {
+            entityManager.close();
+        }
+
+        return Collections.emptyList();
     }
 }

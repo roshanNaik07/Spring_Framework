@@ -47,4 +47,29 @@ public class DominosServiceImpl implements DominoService{
         }
         return null;
     }
+
+    @Override
+    public boolean updateById(int id ,DominosDto dto) {
+        System.out.println("Running updateId in DominosServiceImpl");
+        DominosEntity dominosEntity = new DominosEntity();
+        dominosEntity.setName(dto.getName());
+        dominosEntity.setEmail(dto.getEmail());
+        dominosEntity.setPhoneNo(dto.getPhoneNo());
+        dominosEntity.setPrice(dto.getPrice());
+
+        return dominosRepository.updateById(id,dominosEntity);
+    }
+
+    @Override
+    public boolean deleteById(int id) {
+        System.out.println("Running deleteById in DominosServiceImpl");
+        return dominosRepository.deleteById(id);
+    }
+
+    @Override
+    public List<DominosEntity> getDomainList(String domain) {
+
+        return dominosRepository.getDomainList(domain);
+    }
+
 }

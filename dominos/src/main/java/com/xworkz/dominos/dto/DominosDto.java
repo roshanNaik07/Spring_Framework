@@ -14,10 +14,6 @@
     public class DominosDto {
 
         @NotNull
-        @Min(value = 1, message = "id cannot be negative or zero")
-        private int id;
-
-        @NotNull
         @Size(min = 3, max = 20, message = "Name should be between 3-20 characters")
         private String name;
 

@@ -13,4 +13,9 @@ public interface DominoService {
 
     DominosDto getById(int id);
 
+    boolean updateById(int id,DominosDto dto);
+
+    boolean deleteById(int id);
+
+    List<DominosEntity> getDomainList(String domain);
 }
