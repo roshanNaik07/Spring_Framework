@@ -1,9 +1,20 @@
 package com.xworkz.dominos.entity;
 
+import lombok.*;
+
 import javax.persistence.*;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
 
 @Entity
 @Table(name = "customer_info")
+@NamedQuery(name = "getAllDetails",query = "select entity from DominosEntity entity")
+@NamedQuery(name = "getEntityById",query = "select entity from DominosEntity entity where entity.id = :id")
 public class DominosEntity {
 
     @Id

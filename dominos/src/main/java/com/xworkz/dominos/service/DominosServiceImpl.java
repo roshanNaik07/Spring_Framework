@@ -1,11 +1,50 @@
 package com.xworkz.dominos.service;
 
 import com.xworkz.dominos.dto.DominosDto;
+import com.xworkz.dominos.entity.DominosEntity;
+import com.xworkz.dominos.repository.DominosRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.List;
+
+@Service
 public class DominosServiceImpl implements DominoService{
+
+    @Autowired
+    DominosRepository dominosRepository;
 
     @Override
     public boolean saveData(DominosDto dominosDto) {
-        return false;
+        System.out.println("Running saveData in DominosServiceImpl ");
+        DominosEntity entity = new DominosEntity();
+        entity.setName(dominosDto.getName());
+        entity.setEmail(dominosDto.getEmail());
+        entity.setPhoneNo(dominosDto.getPhoneNo());
+        entity.setPrice(dominosDto.getPrice());
+        return dominosRepository.saveData(entity);
+    }
+
+    @Override
+    public List<DominosEntity> fetchDetails() {
+        System.out.println("Running fetchDetails in DominosServiceImpl ");
+        return dominosRepository.fetchDetails();
+    }
+
+    @Override
+    public DominosDto getById(int id) {
+        System.out.println("Running getById in DominosServiceImpl");
+
+        DominosEntity entity = dominosRepository.getById(id);
+        if(entity != null){
+            DominosDto dto = new DominosDto();
+            dto.setName(entity.getName());
+            dto.setEmail(entity.getEmail());
+            dto.setPhoneNo(entity.getPhoneNo());
+            dto.setPrice(entity.getPrice());
+            return dto;
+        }
+        return null;
     }
 }
