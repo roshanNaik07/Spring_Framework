@@ -18,4 +18,6 @@ public interface DominoService {
     boolean deleteById(int id);
 
     List<DominosEntity> getDomainList(String domain);
+
+    List<String> getNameAbovePrice(int price);
 }

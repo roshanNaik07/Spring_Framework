@@ -17,7 +17,7 @@ import javax.persistence.*;
 @NamedQuery(name = "getEntityById",query = "select entity from DominosEntity entity where entity.id = :id")
 @NamedQuery(name = "deleteById",query = "delete from DominosEntity entity where entity.id = :id")
 @NamedQuery(name = "domainType",query = "select entity from DominosEntity entity where entity.email like concat('%', :domain)")
-
+@NamedQuery(name = "findNameAbovePrice", query = "select entity.name from DominosEntity entity where entity.price > :price")
 public class DominosEntity {
 
     @Id

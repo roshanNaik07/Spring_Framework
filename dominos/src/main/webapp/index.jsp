@@ -22,7 +22,7 @@
         </div>
         <div class="py-2">
             <a class="btn btn-primary" href="DomainCheck.jsp" role="button">check Domain</a>
-            <a class="btn btn-primary" href="DomainCheck.jsp" role="button">Price Above </a>
+            <a class="btn btn-primary" href="PriceDetails.jsp" role="button">Price Above </a>
 
         </div>
     </div>

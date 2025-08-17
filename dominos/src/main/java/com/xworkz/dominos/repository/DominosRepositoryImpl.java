@@ -196,4 +196,35 @@ public class DominosRepositoryImpl implements DominosRepository{
 
         return Collections.emptyList();
     }
+
+    @Override
+    public List<String> getNamesAbovePrice(int price) {
+
+        System.out.println("Running getNamesAbovePrice in Domino'sRepositoryImpl");
+        EntityManager entityManager = null;
+        EntityTransaction entityTransaction = null;
+        List<String> list ;
+        try {
+            entityManager = entityManagerFactory.createEntityManager();
+            entityTransaction = entityManager.getTransaction();
+            entityTransaction.begin();
+
+            Query query = entityManager.createNamedQuery("findNameAbovePrice");
+            query.setParameter("price",price);
+            list = query.getResultList();
+            entityTransaction.commit();
+
+            return list;
+
+        }catch (Exception e){
+            if (entityTransaction.isActive()){
+                entityTransaction.rollback();
+            }e.printStackTrace();
+
+        }finally {
+            entityManager.close();
+        }
+
+        return Collections.emptyList();
+    }
 }

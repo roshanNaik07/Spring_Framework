@@ -155,4 +155,26 @@ public class DominosController {
         modelAndView.setViewName("DomainCheck");
         return modelAndView;
     }
+
+    @RequestMapping("/getNames")
+    public ModelAndView getNameAbovePrice(@RequestParam int price,ModelAndView modelAndView){
+        System.out.println("Running getNameAbovePhoneNo in DominosController");
+
+        if (price <=100 || price >=300){
+            System.out.println("Invalid price check");
+            modelAndView.addObject("error","Enter price between 100 - 300");
+            modelAndView.setViewName("PriceDetails");
+            return modelAndView;
+        }
+
+        List<String> names = dominoService.getNameAbovePrice(price);
+        if (names.isEmpty()){
+            modelAndView.addObject("error","No details found for this price");
+            modelAndView.setViewName("PriceDetails");
+            return modelAndView;
+        }
+        modelAndView.addObject("data",names);
+        modelAndView.setViewName("PriceDetails");
+        return modelAndView;
+    }
 }

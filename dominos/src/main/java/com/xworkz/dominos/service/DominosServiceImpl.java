@@ -72,4 +72,10 @@ public class DominosServiceImpl implements DominoService{
         return dominosRepository.getDomainList(domain);
     }
 
+    @Override
+    public List<String> getNameAbovePrice(int price) {
+
+        return dominosRepository.getNamesAbovePrice(price);
+    }
+
 }
