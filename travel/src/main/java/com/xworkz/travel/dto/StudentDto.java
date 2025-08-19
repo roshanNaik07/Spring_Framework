@@ -38,4 +38,5 @@ public class StudentDto {
 
     @Pattern(regexp = "\\d{10}",message = "Phone No should be 10 digits")
     private String phoneNo;
+
 }

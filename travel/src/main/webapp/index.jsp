@@ -13,9 +13,12 @@
         <h1>Home page</h1>
         <div class="py-5">
             <a class="btn btn-primary" href="Student.jsp" role="button">Student Form</a>
-            <a class="btn btn-primary" href="SearchId.jsp" role="button">Search Id</a>
+            <a class="btn btn-primary" href="Training.jsp" role="button">Training Form</a>
         </div>
-
+        <div class="py-5">
+            <a class="btn btn-primary" href="Bgmi.jsp" role="button">BGMI</a>
+            <a class="btn btn-primary" href="Training.jsp" role="button">Training Form</a>
+        </div>
     </div>
 </div>
 </body>

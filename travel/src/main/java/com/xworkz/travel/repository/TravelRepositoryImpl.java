@@ -1,6 +1,8 @@
 package com.xworkz.travel.repository;
 
+import com.xworkz.travel.entity.BgmiEntity;
 import com.xworkz.travel.entity.StudentEntity;
+import com.xworkz.travel.entity.TrainingEntity;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -41,6 +43,42 @@ public class TravelRepositoryImpl implements TravelRepository{
     @Override
     public boolean saveStudentData(StudentEntity studentEntity) {
         return saveData(studentEntity);
+    }
+
+    @Override
+    public boolean saveTrainingData(TrainingEntity trainingEntity) {
+        return saveData(trainingEntity);
+
+    }
+
+    @Override
+    public boolean saveBgmiData(BgmiEntity bgmiEntity) {
+
+        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("travel");
+        EntityManager entityManager = null;
+        EntityTransaction entityTransaction = null;
+
+        try{
+
+            entityManager = entityManagerFactory.createEntityManager();
+            entityTransaction = entityManager.getTransaction();
+            entityTransaction.begin();
+
+            entityManager.persist(bgmiEntity);
+
+            entityTransaction.commit();
+            System.out.println("data saved");
+
+            return true;
+        }catch (Exception e){
+            if (entityTransaction.isActive()){
+                entityTransaction.rollback();
+            }e.printStackTrace();
+        }finally {
+            entityManager.close();
+        }
+
+        return false;
     }
 
 }
