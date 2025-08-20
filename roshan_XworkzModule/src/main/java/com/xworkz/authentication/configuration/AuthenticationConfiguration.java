@@ -23,4 +23,7 @@ public class AuthenticationConfiguration implements WebMvcConfigurer {
     public void configureViewResolvers(ViewResolverRegistry registry) {
         registry.jsp("/",".jsp");
     }
+
+
+
 }

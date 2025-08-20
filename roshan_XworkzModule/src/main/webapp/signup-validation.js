@@ -56,7 +56,7 @@ function validatePassword(){
     let passwordInput = document.getElementById("password").value;
     let passwordError = document.getElementById("passwordError");
 
-    let regex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d\w]{5,}$/
+    let regex = /^(?=.*[A-Za-z])(?=.*\d).{5,}$/;
 
     if(!regex.test(passwordInput)){
         passwordError.textContent = "Password must be at least 5 chars, contain letters & numbers , may have special char";
@@ -76,5 +76,28 @@ function validateConfirmPassword(){
     }
     else{
         confirmPasswordError.textContent = "";
+    }
+}
+
+function validateAddress(){
+
+    let addressInput = document.getElementById("address").value;
+    let addressError = document.getElementById("addressError");
+
+    if(addressInput.length < 4 || addressInput.length > 50 ){
+        addressError.textContent = "Address should be above 4 char and should not exceed 30 char";
+    }else{
+        addressError.textContent = "";
+    }
+}
+
+function validateGender() {
+    let genderInput = document.getElementById("gender").value;
+    let genderError = document.getElementById("genderError");
+
+    if (genderInput === "") {
+        genderError.textContent = "Please select the gender";
+    } else {
+        genderError.textContent = "";
     }
 }
