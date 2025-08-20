@@ -74,4 +74,30 @@ public class AuthenticationController {
         modelAndView.setViewName("index");
         return modelAndView;
     }
+
+    @RequestMapping("/forgotPassword")
+    private ModelAndView forgetPassword(@Valid AuthenticationDto authenticationDto, BindingResult bindingResult, ModelAndView modelAndView) {
+
+        if (bindingResult.hasErrors()) {
+            List<ObjectError> objectErrors = bindingResult.getAllErrors();
+            for (ObjectError error : objectErrors) {
+                if (error.getDefaultMessage().equals("Password must be at least 5 characters and contain both letters and numbers") || error.getDefaultMessage().equals("Confirm Password cannot be empty")) {
+                    modelAndView.addObject("error", "Enter Strong Password");
+                    modelAndView.setViewName("ForgotPassword");
+                    return modelAndView;
+                }
+            }
+        }
+
+        boolean result = authenticationService.forgotPassword(authenticationDto.getEmail(), authenticationDto.getPassword(), authenticationDto.getConfirmPassword());
+        if (!result){
+            modelAndView.addObject("error", "No such email registered");
+            modelAndView.setViewName("ForgotPassword");
+            return modelAndView;
+        }
+
+        modelAndView.addObject("updatedPassword", "Password updated successfully");
+        modelAndView.setViewName("index");
+        return modelAndView;
+    }
 }

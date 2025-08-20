@@ -32,7 +32,6 @@ public class AuthenticationDto {
 
     @NotNull(message = "Password cannot be empty")
     @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d).{5,}$" , message = "Password must be at least 5 characters and contain both letters and numbers")
-
     private String password;
 
     @NotNull(message = "Confirm Password cannot be empty")

@@ -25,6 +25,7 @@
 </nav>
 
     <h3 style="color:green">${logInSuccess}</h3>
+    <h3 style="color:green">${updatedPassword}</h3>
 
 </body>
 </html>

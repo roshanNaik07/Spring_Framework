@@ -13,6 +13,7 @@ import javax.persistence.*;
 @Table(name = "authentication_details")
 
 @NamedQuery(name = "getByUsernameAndPassword", query = "select entity from AuthenticationEntity entity where entity.name =:username")
+@NamedQuery(name = "getEntityByEmail" ,query = "select entity from AuthenticationEntity entity where entity.email =: email")
 public class AuthenticationEntity {
 
     @Id

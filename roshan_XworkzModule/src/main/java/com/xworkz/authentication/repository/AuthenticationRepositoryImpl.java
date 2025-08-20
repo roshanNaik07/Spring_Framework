@@ -66,6 +66,7 @@ public class AuthenticationRepositoryImpl implements AuthenticationRepository {
             query.setParameter("username", username);
             entity = (AuthenticationEntity) query.getSingleResult();
             System.out.println("Details fetched");
+            entityTransaction.commit();
             return entity;
 
         } catch (Exception e) {
@@ -80,6 +81,47 @@ public class AuthenticationRepositoryImpl implements AuthenticationRepository {
         }
 
         return null;
+    }
+
+    @Override
+    public Boolean forgotPassword(String email, String password, String confirmPassword) {
+
+        EntityManager entityManager = null;
+        EntityTransaction entityTransaction = null;
+        AuthenticationEntity entity = new AuthenticationEntity();
+        try {
+
+            entityManager = entityManagerFactory.createEntityManager();
+            entityTransaction = entityManager.getTransaction();
+
+            entityTransaction.begin();
+            Query query = entityManager.createNamedQuery("getEntityByEmail");
+            query.setParameter("email", email);
+
+            try {
+                entity = (AuthenticationEntity) query.getSingleResult();
+            }catch (Exception e){
+                return false;
+            }
+
+            System.out.println("Entity found");
+            entity.setPassword(password);
+            entity.setConfirmPassword(confirmPassword);
+            entityTransaction.commit();
+            return true;
+
+        } catch (Exception e) {
+
+            if (entityTransaction.isActive()) {
+                entityTransaction.rollback();
+            }
+            e.printStackTrace();
+
+        } finally {
+            entityManager.close();
+        }
+
+        return false;
     }
 
 }

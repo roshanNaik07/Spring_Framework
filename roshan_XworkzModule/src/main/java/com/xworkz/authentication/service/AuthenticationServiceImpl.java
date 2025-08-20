@@ -45,15 +45,21 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public boolean signIn(String username, String password) {
 
         AuthenticationEntity authenticationEntity = authenticationRepository.signIn(username);
-        if (authenticationEntity == null){
+        if (authenticationEntity == null) {
             return false;
         }
 
-        if (username.equals(authenticationEntity.getName()) && bCryptPasswordEncoder.matches(password,authenticationEntity.getPassword())) {
+        if (username.equals(authenticationEntity.getName()) && bCryptPasswordEncoder.matches(password, authenticationEntity.getPassword())) {
             System.out.println("Username and Password Matched");
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean forgotPassword(String email, String password, String confirmPassword) {
+        System.out.println("Running forgotPassword in AuthenticationServiceImpl");
+        return authenticationRepository.forgotPassword(email, bCryptPasswordEncoder.encode(password), confirmPassword);
     }
 
     private void sendEmail(String email) {

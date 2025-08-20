@@ -7,4 +7,6 @@ public interface AuthenticationRepository {
     boolean saveSignUpDetails(AuthenticationEntity authenticationEntity);
 
     AuthenticationEntity signIn(String username);
+
+    Boolean forgotPassword(String email ,String password,String confirmPassword);
 }
