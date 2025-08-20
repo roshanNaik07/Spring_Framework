@@ -6,4 +6,5 @@ public interface AuthenticationService {
 
     boolean saveSignUpDetails(AuthenticationDto authenticationDto);
 
+    boolean signIn(String username , String password);
 }

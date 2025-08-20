@@ -6,4 +6,5 @@ public interface AuthenticationRepository {
 
     boolean saveSignUpDetails(AuthenticationEntity authenticationEntity);
 
+    AuthenticationEntity signIn(String username);
 }

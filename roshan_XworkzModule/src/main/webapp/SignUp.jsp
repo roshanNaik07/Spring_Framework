@@ -11,8 +11,8 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
 <script src="signup-validation.js"></script>
-<nav class="navbar bg-body-tertiary">
 
+<nav class="navbar bg-body-tertiary">
     <div class="container">
         <a class="navbar-brand" href="/">
             <img src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="Bootstrap" width="30" height="24">
@@ -32,12 +32,12 @@
 <form class="container my-5" action="signUp" method="post">
     <span style="color:red">${error}</span>
     <span style="color:green">${success}</span>
+
     <div class="row">
         <div class="col-md-6 mb-3">
             <label class="form-label">Name</label>
             <input type="text" class="form-control" name="name" id="name" oninput="validateName()" value="${value.name}">
             <div id="nameError" class="form-text text-danger"></div>
-
         </div>
 
         <div class="col-md-6 mb-3">

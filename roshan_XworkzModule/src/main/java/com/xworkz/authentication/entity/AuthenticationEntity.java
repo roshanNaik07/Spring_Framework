@@ -11,6 +11,8 @@ import javax.persistence.*;
 @ToString
 @Entity
 @Table(name = "authentication_details")
+
+@NamedQuery(name = "getByUsernameAndPassword", query = "select entity from AuthenticationEntity entity where entity.name =:username")
 public class AuthenticationEntity {
 
     @Id
