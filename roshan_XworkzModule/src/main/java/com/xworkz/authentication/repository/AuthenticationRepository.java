@@ -9,4 +9,6 @@ public interface AuthenticationRepository {
     AuthenticationEntity signIn(String username);
 
     Boolean forgotPassword(String email ,String password,String confirmPassword);
+
+    AuthenticationEntity updateUserData(AuthenticationEntity authenticationEntity);
 }

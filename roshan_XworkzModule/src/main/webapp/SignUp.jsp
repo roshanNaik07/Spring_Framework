@@ -42,7 +42,7 @@
 
         <div class="col-md-6 mb-3">
             <label class="form-label">Phone Number</label>
-            <input type="number" class="form-control" name="phoneNo" id="phoneNumber" oninput="validatePhoneNo()" value="${value.phoneNo}" >
+            <input type="number" class="form-control" name="phoneNo" id="phoneNumber" oninput="validatePhoneNo()" value="${value.phoneNo}">
             <div id="phoneError" class="form-text text-danger"></div>
         </div>
     </div>
@@ -76,7 +76,7 @@
     <div class="row">
         <div class="col-md-6 mb-3">
             <label class="form-label">Address</label>
-            <input type="text" class="form-control" name="address" id="address" oninput="validateAddress()" value="${value.address}">
+            <input type="text" class="form-control" name="address" id="address" oninput="validateAddress()" value="${value.address}" >
             <div id="addressError" class="form-text text-danger"></div>
         </div>
         <div class="col-md-6 mb-3">

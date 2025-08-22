@@ -4,10 +4,7 @@ import com.xworkz.authentication.entity.AuthenticationEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Query;
+import javax.persistence.*;
 
 @Repository
 public class AuthenticationRepositoryImpl implements AuthenticationRepository {
@@ -64,7 +61,12 @@ public class AuthenticationRepositoryImpl implements AuthenticationRepository {
             entityTransaction.begin();
             Query query = entityManager.createNamedQuery("getByUsernameAndPassword");
             query.setParameter("username", username);
-            entity = (AuthenticationEntity) query.getSingleResult();
+            try {
+                entity = (AuthenticationEntity) query.getSingleResult();
+            }catch (NoResultException nrp){
+                System.out.println("Entity is null for the Query");
+                return null;
+            }
             System.out.println("Details fetched");
             entityTransaction.commit();
             return entity;
@@ -122,6 +124,48 @@ public class AuthenticationRepositoryImpl implements AuthenticationRepository {
         }
 
         return false;
+    }
+
+    @Override
+    public AuthenticationEntity updateUserData(AuthenticationEntity authenticationEntity) {
+        System.out.println("Running updateUserData in AuthenticationRepositoryImpl");
+        System.out.println(authenticationEntity);
+
+        EntityManager entityManager = null;
+        EntityTransaction entityTransaction = null;
+        AuthenticationEntity authenticationEntity1 = new AuthenticationEntity();
+        try {
+
+            entityManager = entityManagerFactory.createEntityManager();
+            entityTransaction = entityManager.getTransaction();
+
+            entityTransaction.begin();
+            Query query = entityManager.createNamedQuery("getEntityByName");
+            query.setParameter("name", authenticationEntity.getName());
+            authenticationEntity1 = (AuthenticationEntity) query.getSingleResult();
+            System.out.println("Details fetched");
+
+            authenticationEntity1.setPhoneNo(authenticationEntity.getPhoneNo());
+            authenticationEntity1.setEmail(authenticationEntity.getEmail());
+            authenticationEntity1.setAge(authenticationEntity.getAge());
+            authenticationEntity1.setAddress(authenticationEntity.getAddress());
+
+            entityManager.merge(authenticationEntity1);
+            entityTransaction.commit();
+            return authenticationEntity1;
+
+        } catch (Exception e) {
+
+            if (entityTransaction.isActive()) {
+                entityTransaction.rollback();
+            }
+            e.printStackTrace();
+
+        } finally {
+            entityManager.close();
+        }
+
+        return null;
     }
 
 }

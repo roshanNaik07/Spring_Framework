@@ -14,10 +14,11 @@ function validateName(){
 
 function validatePhoneNo(){
 
-    let phoneNoInput = document.getElementById("phoneNumber").value;
+    let phoneNoInput = document.getElementById("phoneNumber");
     let phoneError = document.getElementById("phoneError");
 
-    if(phoneNoInput.length != 10){
+    if(phoneNoInput.length > 10){
+        phoneNoInput.value = phoneNoInput.value.slice(0,10);
         phoneError.textContent = "Phone number should be 10 digits ";
     }else{
         phoneError.textContent = "";
@@ -32,7 +33,7 @@ function validateEmail(){
 
     let regex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
     if(!regex.test(emailInput)){
-        emailError.textContent = "Email should end with gmail.com";
+        emailError.textContent = "Email should end with @gmail.com";
     }else{
         emailError.textContent = "";
     }
@@ -44,8 +45,8 @@ function validateAge(){
     let ageInput = document.getElementById("age").value;
     let ageError = document.getElementById("ageError");
 
-    if(ageInput <= 18){
-        ageError.textContent = "Age should be above 18";
+    if(ageInput <= 18 || ageInput >=100){
+        ageError.textContent = "Age should be between 18 - 100";
     }else{
         ageError.textContent = "";
     }

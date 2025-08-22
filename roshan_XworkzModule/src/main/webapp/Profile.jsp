@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>index.jsp</title>
+    <title>Profile.jsp</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
     <%@ page isELIgnored="false" %>
 </head>
@@ -17,14 +17,31 @@
         </a>
     </div>
     <div>
-        <form class="container-fluid justify-content-start">
-            <a href="SignIn.jsp" class="btn btn-outline-success me-2">Sign In</a>
-            <a href="SignUp.jsp" class="btn btn-outline-success me-2">Sign Up</a>
+        <form class="container-fluid justify-content-start d-flex">
+
+            <div class="dropdown me-2 ">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Menu
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="openUpdatePage">Update Profile</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="Profile.jsp">Help</a></li>
+                </ul>
+            </div>
+
+            <a href="SignIn.jsp" class="btn btn-outline-success me-2">Log out</a>
+
         </form>
     </div>
 </nav>
 
-    <h3 style="color:green">${updatedPassword}</h3>
+<div class="d-flex justify-content-center my-5">
+    <h1>Profile Page</h1>
+</div>
+
+<h3 style="color:green">${logInSuccess}</h3>
+<h3 style="color:green">${success}</h3>
 
 </body>
 </html>

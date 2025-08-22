@@ -1,7 +1,9 @@
 package com.xworkz.authentication.controller;
 
 import com.xworkz.authentication.dto.AuthenticationDto;
+import com.xworkz.authentication.dto.UpdateDto;
 import com.xworkz.authentication.service.AuthenticationService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -10,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.mail.Session;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -54,7 +58,7 @@ public class AuthenticationController {
     }
 
     @RequestMapping("/signIn")
-    public ModelAndView signIn(@RequestParam String userName, @RequestParam String password, ModelAndView modelAndView) {
+    public ModelAndView signIn(@RequestParam String userName, @RequestParam String password, ModelAndView modelAndView , HttpSession session) {
 
         if (userName.isEmpty() || password.isEmpty()) {
             modelAndView.addObject("error", "username and password cannot be empty");
@@ -62,21 +66,23 @@ public class AuthenticationController {
             return modelAndView;
         }
 
-        boolean result = authenticationService.signIn(userName, password);
-        if (!result) {
+        AuthenticationDto authenticationDto = authenticationService.signIn(userName, password);
+        if (authenticationDto == null) {
             System.out.println("Not matched");
             modelAndView.addObject("error", "Cannot find user");
             modelAndView.setViewName("SignIn");
             return modelAndView;
         }
-        System.out.println("matched");
-        modelAndView.addObject("logInSuccess", "Successfully Logged In");
-        modelAndView.setViewName("index");
+        UpdateDto updateDto = new UpdateDto();
+        BeanUtils.copyProperties(authenticationDto,updateDto);
+        session.setAttribute("userSignData",updateDto);
+        modelAndView.addObject("logInSuccess", "Hi " + userName + ",Successfully Logged In... Welcome to xworkz");
+        modelAndView.setViewName("Profile");
         return modelAndView;
     }
 
     @RequestMapping("/forgotPassword")
-    private ModelAndView forgetPassword(@Valid AuthenticationDto authenticationDto, BindingResult bindingResult, ModelAndView modelAndView) {
+    public ModelAndView forgetPassword(@Valid AuthenticationDto authenticationDto, BindingResult bindingResult, ModelAndView modelAndView) {
 
         if (bindingResult.hasErrors()) {
             List<ObjectError> objectErrors = bindingResult.getAllErrors();
@@ -90,14 +96,47 @@ public class AuthenticationController {
         }
 
         boolean result = authenticationService.forgotPassword(authenticationDto.getEmail(), authenticationDto.getPassword(), authenticationDto.getConfirmPassword());
-        if (!result){
+        if (!result) {
             modelAndView.addObject("error", "No such email registered");
             modelAndView.setViewName("ForgotPassword");
             return modelAndView;
         }
 
         modelAndView.addObject("updatedPassword", "Password updated successfully");
-        modelAndView.setViewName("index");
+        modelAndView.setViewName("SignIn");
+        return modelAndView;
+    }
+
+    @RequestMapping("/openUpdatePage")
+    public ModelAndView openUpdateProfile(ModelAndView modelAndView , HttpSession session) {
+
+        System.out.println("Running openUpdateProfile in AuthenticationController");
+
+        UpdateDto updateDto = (UpdateDto) session.getAttribute("userSignData");
+
+        modelAndView.addObject("userData",updateDto);
+        modelAndView.setViewName("UpdateProfile");
+        return modelAndView;
+    }
+
+    @RequestMapping("/updateUserData")
+    public ModelAndView updateSignInDetails(@Valid  UpdateDto updateDto ,BindingResult bindingResult , ModelAndView modelAndView){
+        System.out.println("Running updateSignInDetails"+updateDto);
+
+        if (bindingResult.hasErrors()){
+            List<ObjectError> objectErrors = bindingResult.getAllErrors();
+            for (ObjectError error : objectErrors){
+                modelAndView.addObject("error",error.getDefaultMessage());
+                modelAndView.addObject("userData",updateDto);
+                modelAndView.setViewName("UpdateProfile");
+                return modelAndView;
+            }
+        }
+
+        UpdateDto updateDto1 = authenticationService.updateUserData(updateDto);
+        System.out.println(updateDto1);
+        modelAndView.addObject("userData",updateDto1);
+        modelAndView.setViewName("UpdateProfile");
         return modelAndView;
     }
 }

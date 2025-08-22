@@ -33,6 +33,8 @@
 <div class="container-fluid d-flex justify-content-center align-items-center ">
     <div>
         <span style="color:red">${error}</span>
+        <span style="color:green">${success}</span>
+        <span style="color:green">${updatedPassword}</span>
         <form action="signIn" method="post">
 
             <div class="mb-3">
@@ -45,7 +47,7 @@
             </div>
 
             <div class="d-flex justify-content-center">
-                <button type="submit" class="btn btn-primary ">Submit</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
             </div>
 
             <div class="text-center mt-2">

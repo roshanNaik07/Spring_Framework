@@ -1,8 +1,10 @@
 package com.xworkz.authentication.service;
 
 import com.xworkz.authentication.dto.AuthenticationDto;
+import com.xworkz.authentication.dto.UpdateDto;
 import com.xworkz.authentication.entity.AuthenticationEntity;
 import com.xworkz.authentication.repository.AuthenticationRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -42,24 +44,44 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public boolean signIn(String username, String password) {
+    public AuthenticationDto signIn(String username, String password) {
 
         AuthenticationEntity authenticationEntity = authenticationRepository.signIn(username);
         if (authenticationEntity == null) {
-            return false;
+            return null;
         }
+
+        AuthenticationDto authenticationDto = new AuthenticationDto();
+        authenticationDto.setName(authenticationEntity.getName());
+        authenticationDto.setPhoneNo(authenticationEntity.getPhoneNo());
+        authenticationDto.setEmail(authenticationEntity.getEmail());
+        authenticationDto.setAge(authenticationEntity.getAge());
+        authenticationDto.setGender(authenticationEntity.getGender());
+        authenticationDto.setAddress(authenticationEntity.getAddress());
 
         if (username.equals(authenticationEntity.getName()) && bCryptPasswordEncoder.matches(password, authenticationEntity.getPassword())) {
             System.out.println("Username and Password Matched");
-            return true;
+            return authenticationDto;
         }
-        return false;
+        return null;
     }
 
     @Override
     public boolean forgotPassword(String email, String password, String confirmPassword) {
         System.out.println("Running forgotPassword in AuthenticationServiceImpl");
         return authenticationRepository.forgotPassword(email, bCryptPasswordEncoder.encode(password), confirmPassword);
+    }
+
+    @Override
+    public UpdateDto updateUserData(UpdateDto updateDto) {
+        System.out.println("Running updateUserData in AuthenticationServiceImpl");
+        System.out.println(updateDto);
+        AuthenticationEntity authenticationEntity = new AuthenticationEntity();
+        BeanUtils.copyProperties(updateDto,authenticationEntity);
+        AuthenticationEntity authenticationEntity1 =authenticationRepository.updateUserData(authenticationEntity);
+        UpdateDto updateDto1 =new UpdateDto();
+        BeanUtils.copyProperties(authenticationEntity1,updateDto1);
+        return updateDto1;
     }
 
     private void sendEmail(String email) {

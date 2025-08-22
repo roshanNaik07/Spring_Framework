@@ -14,6 +14,7 @@ import javax.persistence.*;
 
 @NamedQuery(name = "getByUsernameAndPassword", query = "select entity from AuthenticationEntity entity where entity.name =:username")
 @NamedQuery(name = "getEntityByEmail" ,query = "select entity from AuthenticationEntity entity where entity.email =: email")
+@NamedQuery(name = "getEntityByName" ,query = "select entity from AuthenticationEntity entity where entity.name =: name")
 public class AuthenticationEntity {
 
     @Id
