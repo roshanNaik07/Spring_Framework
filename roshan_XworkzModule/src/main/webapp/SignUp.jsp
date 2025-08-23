@@ -10,7 +10,6 @@
 <body>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
-<script src="signup-validation.js"></script>
 
 <nav class="navbar bg-body-tertiary">
     <div class="container">
@@ -42,7 +41,8 @@
 
         <div class="col-md-6 mb-3">
             <label class="form-label">Phone Number</label>
-            <input type="number" class="form-control" name="phoneNo" id="phoneNumber" oninput="validatePhoneNo()" value="${value.phoneNo}">
+            <input type="text" class="form-control" name="phoneNo" id="phoneNumber"
+                   oninput="validatePhoneNo()" value="${value.phoneNo}" maxlength="10">
             <div id="phoneError" class="form-text text-danger"></div>
         </div>
     </div>
@@ -93,6 +93,8 @@
         <button type="submit" class="btn btn-primary ">Submit</button>
     </div>
 </form>
+
+<script src="signup-validation.js"></script>
 
 </body>
 </html>

@@ -12,18 +12,34 @@ function validateName(){
 
 }
 
-function validatePhoneNo(){
-
-    let phoneNoInput = document.getElementById("phoneNumber");
+function validatePhoneNo() {
+    let phoneInput = document.getElementById("phoneNumber");
     let phoneError = document.getElementById("phoneError");
 
-    if(phoneNoInput.length > 10){
-        phoneNoInput.value = phoneNoInput.value.slice(0,10);
-        phoneError.textContent = "Phone number should be 10 digits ";
-    }else{
-        phoneError.textContent = "";
+    // remove non-digit characters (if pasted)
+    let phone = phoneInput.value.replace(/\D/g, '');
+
+    // restrict to 10 digits
+    if (phone.length > 10) {
+        phone = phone.slice(0, 10);
     }
 
+    // update input value
+    phoneInput.value = phone;
+
+    // validation checks
+    if (phone.length === 0) {
+        phoneError.textContent = "";
+    }
+    else if (!/^[789]/.test(phone)) {
+        phoneError.textContent = "Phone number must start with 7, 8, or 9";
+    }
+    else if (phone.length < 10) {
+        phoneError.textContent = "Phone number must be 10 digits";
+    }
+    else {
+        phoneError.textContent = "";
+    }
 }
 
 function validateEmail(){
