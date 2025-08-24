@@ -4,30 +4,27 @@ function validateName(){
     let nameInput = document.getElementById("name").value;
     let nameError = document.getElementById("nameError");
 
+     nameInput.value = nameInput.value.replace(/[^A-Za-z\s]/g, '');
+
     if(nameInput.length < 3 || nameInput.length >20){
          nameError.textContent = "Name must be between 3 and 20 characters";
     }else{
         nameError.textContent = "";
     }
-
 }
 
 function validatePhoneNo() {
     let phoneInput = document.getElementById("phoneNumber");
     let phoneError = document.getElementById("phoneError");
 
-    // remove non-digit characters (if pasted)
     let phone = phoneInput.value.replace(/\D/g, '');
 
-    // restrict to 10 digits
     if (phone.length > 10) {
         phone = phone.slice(0, 10);
     }
 
-    // update input value
     phoneInput.value = phone;
 
-    // validation checks
     if (phone.length === 0) {
         phoneError.textContent = "";
     }
