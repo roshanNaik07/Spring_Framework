@@ -1,14 +1,13 @@
 
-function validateName(){
-
+function validateName() {
     let nameInput = document.getElementById("name");
     let nameError = document.getElementById("nameError");
 
-     nameInput.value = nameInput.value.replace(/[^A-Za-z\s]/g, '');
+    nameInput.value = nameInput.value.replace(/[^A-Za-z\s]/g, '');
 
-    if(nameInput.value.length < 3 || nameInput.value.length >20){
-         nameError.textContent = "Name must be between 3 and 20 characters";
-    }else{
+    if (onlyLetters.length < 3 || onlyLetters.length > 20) {
+        nameError.textContent = "Name must be between 3 and 20 characters";
+    } else {
         nameError.textContent = "";
     }
 }
@@ -19,6 +18,10 @@ function validatePhoneNo() {
 
     let phone = phoneInput.value.replace(/\D/g, '');
 
+    if (phone.length > 0 && !/^[789]/.test(phone[0])) {
+            phone = phone.slice(1);
+        }
+
     if (phone.length > 10) {
         phone = phone.slice(0, 10);
     }
@@ -28,9 +31,7 @@ function validatePhoneNo() {
     if (phone.length === 0) {
         phoneError.textContent = "";
     }
-    else if (!/^[789]/.test(phone)) {
-        phoneError.textContent = "Phone number must start with 7, 8, or 9";
-    }
+
     else if (phone.length < 10) {
         phoneError.textContent = "Phone number must be 10 digits";
     }
@@ -46,11 +47,10 @@ function validateEmail(){
 
     let regex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
     if(!regex.test(emailInput)){
-        emailError.textContent = "Email should end with @gmail.com";
+            emailError.textContent = "Email must be a valid Gmail and cannot start with @gmail.com";
     }else{
         emailError.textContent = "";
     }
-
 }
 
 function validateAge(){

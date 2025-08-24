@@ -35,7 +35,7 @@
     <div class="row">
         <div class="col-md-6 mb-3">
             <label class="form-label">Name</label>
-            <input type="text" class="form-control" name="name" id="name" oninput="validateName()" value="${value.name}">
+            <input type="text" class="form-control" name="name" id="name" oninput="validateName()" value="${value.name}" maxlength="20">
             <div id="nameError" class="form-text text-danger"></div>
         </div>
 
@@ -50,12 +50,12 @@
     <div class="row">
         <div class="col-md-6 mb-3">
             <label class="form-label">Email</label>
-            <input type="text" class="form-control" name="email" id="email" oninput="validateEmail()" value="${value.email}">
+            <input type="text" class="form-control" name="email" id="email" oninput="validateEmail()" value="${value.email}" maxlength="30">
             <div id="emailError" class="form-text text-danger"></div>
         </div>
         <div class="col-md-6 mb-3">
             <label class="form-label">Age</label>
-            <input type="number" class="form-control" name="age" id="age" oninput="validateAge()" value="${value.age}">
+            <input type="text" class="form-control" name="age" id="age" oninput="validateAge()" value="${value.age}" maxlength="3">
             <div id="ageError" class="form-text text-danger"></div>
         </div>
     </div>
