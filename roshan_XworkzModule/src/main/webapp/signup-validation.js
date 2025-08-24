@@ -1,12 +1,12 @@
 
 function validateName(){
 
-    let nameInput = document.getElementById("name").value;
+    let nameInput = document.getElementById("name");
     let nameError = document.getElementById("nameError");
 
      nameInput.value = nameInput.value.replace(/[^A-Za-z\s]/g, '');
 
-    if(nameInput.length < 3 || nameInput.length >20){
+    if(nameInput.value.length < 3 || nameInput.value.length >20){
          nameError.textContent = "Name must be between 3 and 20 characters";
     }else{
         nameError.textContent = "";
