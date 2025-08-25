@@ -13,15 +13,15 @@
         integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
         crossorigin="anonymous"></script>
 
-<nav class="navbar bg-body-tertiary">
+<nav class="navbar bg-body-tertiary shadow-sm p-3 mb-5">
     <div class="container">
         <a class="navbar-brand" href="/">
-            <img src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="Bootstrap" width="30" height="24">
+            <img src="images/x-workzLogo.png" alt="Bootstrap" width="160" height="70">
         </a>
     </div>
     <div>
         <form class="container-fluid justify-content-start">
-            <a href="SignUp.jsp" class="btn btn-outline-success me-2">Sign Up</a>
+            <a href="SignUp.jsp" class="btn btn-outline-warning me-2 btn-lg shadow-sm">Sign Up</a>
         </form>
     </div>
 </nav>

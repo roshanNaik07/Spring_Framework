@@ -5,7 +5,7 @@ function validateName() {
 
     nameInput.value = nameInput.value.replace(/[^A-Za-z\s]/g, '');
 
-    if (onlyLetters.length < 3 || onlyLetters.length > 20) {
+    if (nameInput.value.length < 3 || nameInput.value.length > 20) {
         nameError.textContent = "Name must be between 3 and 20 characters";
     } else {
         nameError.textContent = "";
@@ -99,7 +99,7 @@ function validateAddress(){
     let addressError = document.getElementById("addressError");
 
     if(addressInput.length < 4 || addressInput.length > 50 ){
-        addressError.textContent = "Address should be above 4 char and should not exceed 30 char";
+        addressError.textContent = "Address should be above 4 char and should not exceed 50 char";
     }else{
         addressError.textContent = "";
     }
@@ -115,3 +115,31 @@ function validateGender() {
         genderError.textContent = "";
     }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    const togglePassword = document.getElementById("togglePassword");
+    const password = document.getElementById("password");
+
+    if (togglePassword && password) {
+        togglePassword.addEventListener("click", function () {
+            const type = password.type === "password" ? "text" : "password";
+            password.type = type;
+
+            // toggle eye / eye-slash
+            this.classList.toggle("bi-eye");
+            this.classList.toggle("bi-eye-slash");
+        });
+    }
+
+        const toggleConfirmPassword = document.getElementById("toggleConfirmPassword");
+        const confirmPassword = document.getElementById("confirmPassword");
+
+        if (toggleConfirmPassword && confirmPassword) {
+            toggleConfirmPassword.addEventListener("click", function () {
+                const type = confirmPassword.type === "password" ? "text" : "password";
+                confirmPassword.type = type;
+                this.classList.toggle("bi-eye");
+                this.classList.toggle("bi-eye-slash");
+            });
+        }
+});
