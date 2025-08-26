@@ -15,37 +15,38 @@
         integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
         crossorigin="anonymous"></script>
 
-<nav class="navbar bg-body-tertiary">
+<nav class="navbar bg-dark bg-body-tertiary shadow-sm p-3 mb-5" data-bs-theme="dark">
     <div class="container">
         <a class="navbar-brand" href="/">
-            <img src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="Bootstrap" width="30" height="24">
+            <img src="images/x-workzLogo.png" alt="Bootstrap" width="160" height="70">
         </a>
     </div>
     <div>
         <form class="container-fluid justify-content-start">
-            <a href="SignIn.jsp" class="btn btn-outline-success me-2">Sign In</a>
+            <a href="SignIn.jsp" class="btn btn-outline-warning me-2 btn-lg shadow-sm">Sign In</a>
         </form>
     </div>
 </nav>
 
-<div class="container my-5 d-flex justify-content-center">
-    <h2>Sign Up</h2>
-</div>
+<form class="container my-5 border border-warning-subtle shadow-lg p-3 mb-5 py-5 px-4 rounded border-3" action="signUp" method="post">
 
-<form class="container my-5" action="signUp" method="post">
-    <span style="color:red">${error}</span>
-    <span style="color:green">${success}</span>
+    <div class="container d-flex justify-content-center">
+        <h2>Sign Up</h2>
+    </div>
 
-    <div class="row">
+    <div style="color:red">${error}</div>
+    <div style="color:green">${success}</div>
+
+    <div class="row mt-3">
         <div class="col-md-6 mb-3">
-            <label class="form-label">Name</label>
+            <label class="form-label" style="font-family:popins">Name</label>
             <input type="text" class="form-control" name="name" id="name" oninput="validateName()" value="${value.name}"
                    maxlength="20">
             <div id="nameError" class="form-text text-danger"></div>
         </div>
 
         <div class="col-md-6 mb-3">
-            <label class="form-label">Phone Number</label>
+            <label class="form-label" style="font-family:popins">Phone Number</label>
             <input type="text" class="form-control" name="phoneNo" id="phoneNumber"
                    oninput="validatePhoneNo()" value="${value.phoneNo}" maxlength="10" placeholder="Number should start with (7,8,9)">
             <div id="phoneError" class="form-text text-danger"></div>
@@ -54,13 +55,13 @@
 
     <div class="row">
         <div class="col-md-6 mb-3">
-            <label class="form-label">Email</label>
+            <label class="form-label" style="font-family:popins">Email</label>
             <input type="text" class="form-control" name="email" id="email" oninput="validateEmail()"
                    value="${value.email}" maxlength="30">
             <div id="emailError" class="form-text text-danger"></div>
         </div>
         <div class="col-md-6 mb-3">
-            <label class="form-label">Age</label>
+            <label class="form-label" style="font-family:popins">Age</label>
             <input type="text" class="form-control" name="age" id="age" oninput="validateAge()" value="${value.age}"
                    maxlength="2">
             <div id="ageError" class="form-text text-danger"></div>
@@ -69,7 +70,7 @@
 
     <div class="row">
         <div class="col-md-6 mb-3">
-            <label class="form-label">Password</label>
+            <label class="form-label" style="font-family:popins">Password</label>
             <div class="position-relative">
                 <input type="password" class="form-control pe-5"
                        name="password" id="password"
@@ -80,7 +81,7 @@
             <div id="passwordError" class="form-text text-danger"></div>
         </div>
         <div class="col-md-6 mb-3">
-            <label class="form-label">Confirm Password</label>
+            <label class="form-label" style="font-family:popins">Confirm Password</label>
             <div class="position-relative">
                 <input type="password" class="form-control" name="confirmPassword" id="confirmPassword"
                        oninput="validateConfirmPassword()" value="${value.confirmPassword}" maxlength="20">
@@ -93,14 +94,14 @@
 
     <div class="row">
         <div class="col-md-6 mb-3">
-            <label class="form-label">Address</label>
+            <label class="form-label" style="font-family:popins">Address</label>
             <input type="text" class="form-control" name="address" id="address" oninput="validateAddress()"
                    value="${value.address}" maxlength="50">
             <div id="addressError" class="form-text text-danger"></div>
         </div>
         <div class="col-md-6 mb-3">
             <select class="form-select mt-3 " aria-label="Default select example" name="gender" id="gender"
-                    oninput="validateGender()" value="${value.gender}">
+                    oninput="validateGender()" value="${value.gender}" style="font-family:popins">
                 <option selected disabled>Select gender</option>
                 <option value="male">male</option>
                 <option value="female">female</option>
@@ -110,7 +111,7 @@
         </div>
     </div>
     <div class="d-flex justify-content-center">
-        <button type="submit" class="btn btn-primary ">Submit</button>
+        <button type="submit" class="btn btn-warning ">Submit</button>
     </div>
 </form>
 

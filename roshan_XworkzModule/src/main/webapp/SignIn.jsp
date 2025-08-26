@@ -13,7 +13,7 @@
         integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
         crossorigin="anonymous"></script>
 
-<nav class="navbar bg-body-tertiary shadow-sm p-3 mb-5">
+<nav class="navbar bg-body-tertiary shadow-sm p-3 mb-5 " data-bs-theme="dark">
     <div class="container">
         <a class="navbar-brand" href="/">
             <img src="images/x-workzLogo.png" alt="Bootstrap" width="160" height="70">
@@ -26,36 +26,38 @@
     </div>
 </nav>
 
-<div class="container my-5 d-flex justify-content-center">
-    <h2>Sign In</h2>
-</div>
-
 <div class="container-fluid d-flex justify-content-center align-items-center ">
-    <div>
-        <span style="color:red">${error}</span>
-        <span style="color:green">${success}</span>
-        <span style="color:green">${updatedPassword}</span>
-        <form action="signIn" method="post">
 
-            <div class="mb-3">
-                <label class="form-label">User Name</label>
+    <div>
+        <form action="signIn" method="post" class="border border-warning-subtle shadow-lg p-3 mb-5 py-5 px-4 rounded border-3">
+
+            <div class="d-flex justify-content-center">
+                <h2 style="font-family:popins">Sign In</h2>
+            </div>
+
+            <div class="form-text text-danger py-2">${error}</div>
+            <div style="color:green">${success}</div>
+            <div style="color:green">${updatedPassword}</div>
+
+            <div class="my-3">
+                <label class="form-label" style="font-family:popins">User Name</label>
                 <input type="text" class="form-control" name="userName">
             </div>
+
             <div class="mb-3">
-                <label class="form-label">Password</label>
+                <label class="form-label" style="font-family:popins">Password</label>
                 <input type="password" class="form-control" name="password">
             </div>
 
             <div class="d-flex justify-content-center">
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-warning">Submit</button>
             </div>
 
             <div class="text-center mt-2">
-                <a href="ForgotPassword.jsp" class="text-decoration-none">Forgot Password?</a>
+                <a href="ForgotPassword.jsp" class="text-decoration-none" >Forgot Password?</a>
             </div>
 
         </form>
-
     </div>
 </div>
 

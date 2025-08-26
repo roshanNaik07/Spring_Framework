@@ -13,7 +13,7 @@
         integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
         crossorigin="anonymous"></script>
 
-<nav class="navbar bg-body-tertiary shadow-sm p-3 mb-5 bg-body-tertiary">
+<nav class="navbar bg-body-tertiary shadow-sm p-3 mb-5 bg-body-tertiary" data-bs-theme="dark">
     <div class="container">
         <a class="navbar-brand" href="/">
             <img src="images/x-workzLogo.png" alt="Bootstrap" width="160" height="70">
@@ -56,11 +56,6 @@
             rich industry experience and a passion for teaching, ensuring that every learner not only understands
             concepts but can also apply them effectively in real-world scenarios.
 
-            At X-Workz, we believe in creating an environment that blends modern learning facilities with a
-            student-centric approach. From interactive classrooms and hands-on projects to personalized mentoring and
-            mock interview sessions, we provide every resource necessary for holistic development. We understand that
-            every learner has unique strengths and challenges, which is why our training methods are designed to be
-            flexible, practical, and career-oriented.
         </p>
     </div>
 </div>
