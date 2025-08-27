@@ -14,15 +14,15 @@
         crossorigin="anonymous"></script>
 <script src="signup-validation.js"></script>
 
-<nav class="navbar bg-body-tertiary">
+<nav class="navbar bg-body-tertiary shadow-sm p-3 mb-5 " data-bs-theme="dark">
     <div class="container">
-        <a class="navbar-brand" href="/">
-            <img src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="Bootstrap" width="30" height="24">
+        <a class="navbar-brand" href="index.jsp">
+            <img src="images/x-workzLogo.png" alt="Bootstrap" width="160" height="70">
         </a>
     </div>
     <div>
         <form class="container-fluid justify-content-start">
-            <a href="SignUp.jsp" class="btn btn-outline-success me-2">Sign Up</a>
+            <a href="SignUp.jsp" class="btn btn-outline-warning me-2 btn-lg shadow-sm">Sign Up</a>
         </form>
     </div>
 </nav>
@@ -34,21 +34,24 @@
 <div class="container-fluid d-flex justify-content-center align-items-center ">
     <div>
         <span style="color:red">${error}</span>
-        <form action="forgotPassword" method="post">
+        <form action="forgotPassword" method="post"
+              class="border border-warning-subtle shadow-lg p-3 mb-5 py-5 px-4 rounded border-3">
 
             <div class="mb-3">
-                <label class="form-label">email</label>
+                <label class="form-label" style="font-family:popins">email</label>
                 <input type="text" class="form-control" name="email" placeholder="Enter registered email" required/>
             </div>
             <div class="mb-3">
-                <label class="form-label">New Password</label>
-                <input type="password" class="form-control" name="password" id="password" oninput="validatePassword()" required>
+                <label class="form-label" style="font-family:popins">New Password</label>
+                <input type="password" class="form-control" name="password" id="password" oninput="validatePassword()"
+                       required>
                 <div id="passwordError" class="form-text text-danger"></div>
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Confirm Password</label>
-                <input type="password" class="form-control" name="confirmPassword" id="confirmPassword" oninput="validateConfirmPassword()" required>
+                <label class="form-label" style="font-family:popins">Confirm Password</label>
+                <input type="password" class="form-control" name="confirmPassword" id="confirmPassword"
+                       oninput="validateConfirmPassword()" required>
                 <div id="confirmPasswordError" class="form-text text-danger"></div>
             </div>
 
