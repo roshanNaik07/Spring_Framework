@@ -14,38 +14,38 @@
         crossorigin="anonymous"></script>
 <script src="signup-validation.js"></script>
 
-<nav class="navbar bg-body-tertiary">
+<nav class="navbar bg-body-tertiary shadow-sm p-3 mb-5 " data-bs-theme="dark" >
     <div class="container">
-        <a class="navbar-brand" href="/">
-            <img src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="Bootstrap" width="30" height="24">
+        <a class="navbar-brand" href="index.jsp">
+            <img src="images/x-workzLogo.png" alt="Bootstrap" width="160" height="70">
         </a>
     </div>
     <div>
         <form class="container-fluid justify-content-start d-flex">
 
-            <a href="SignIn.jsp" class="btn btn-outline-success me-2">Log out</a>
+            <a href="SignIn.jsp" class="btn btn-outline-warning me-2 btn-lg shadow-sm">Log out</a>
 
         </form>
     </div>
 </nav>
 
-<div class="container my-5 d-flex justify-content-center">
-    <h2>Update Profile</h2>
-</div>
+<form class="container my-5 border border-warning-subtle shadow-lg p-3 mb-5 py-5 px-4 rounded border-3" action="updateUserData" method="post">
+    <div class="container my-5 d-flex justify-content-center">
+        <h2 style="font-family:popins">Update Profile</h2>
+    </div>
 
-<form class="container my-5" action="updateUserData" method="post">
     <span style="color:red">${error}</span>
 
     <div class="row">
         <div class="col-md-6 mb-3">
-            <label class="form-label">Name</label>
+            <label class="form-label" style="font-family:popins">Name</label>
             <input type="text" class="form-control" name="name" id="name" oninput="validateName()"
                    value="${userData.name}" readonly>
             <div id="nameError" class="form-text text-danger"></div>
         </div>
 
         <div class="col-md-6 mb-3">
-            <label class="form-label">Phone Number</label>
+            <label class="form-label" style="font-family:popins">Phone Number</label>
             <input type="number" class="form-control" name="phoneNo" id="phoneNumber" oninput="validatePhoneNo()"
                    value="${userData.phoneNo}">
             <div id="phoneError" class="form-text text-danger"></div>
@@ -54,13 +54,13 @@
 
     <div class="row">
         <div class="col-md-6 mb-3">
-            <label class="form-label">Email</label>
+            <label class="form-label" style="font-family:popins">Email</label>
             <input type="text" class="form-control" name="email" id="email" oninput="validateEmail()"
                    value="${userData.email}" >
             <div id="emailError" class="form-text text-danger"></div>
         </div>
         <div class="col-md-6 mb-3">
-            <label class="form-label">Age</label>
+            <label class="form-label" style="font-family:popins">Age</label>
             <input type="number" class="form-control" name="age" id="age" oninput="validateAge()"
                    value="${userData.age}">
             <div id="ageError" class="form-text text-danger"></div>
@@ -69,13 +69,13 @@
 
     <div class="row">
         <div class="col-md-6 mb-3">
-            <label class="form-label">Address</label>
+            <label class="form-label" style="font-family:popins">Address</label>
             <input type="text" class="form-control" name="address" id="address" oninput="validateAddress()"
                    value="${userData.address}">
             <div id="addressError" class="form-text text-danger"></div>
         </div>
         <div class="col-md-6 mb-3">
-            <select class="form-select mt-3 " aria-label="Default select example" disabled>
+            <select class="form-select mt-3 " aria-label="Default select example" disabled style="font-family:popins">
                 <option value="${userData.gender}">${userData.gender}</option>
             </select>
             <input type="hidden" name="gender" value="${userData.gender}">
