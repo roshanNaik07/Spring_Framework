@@ -13,7 +13,7 @@
         <a class="btn btn-primary my-5" href="Dominos.jsp" > Domino's </a>
         <br>
         <div>
-            <a class="btn btn-primary" href="fetchDetails" role="button">Fetch Details</a>
+            <a class="btn btn-primary" href="FetchDetails.jsp" role="button">Fetch Details</a>
             <a class="btn btn-primary" href="SearchId.jsp" role="button">Search Id</a>
         </div>
         <div class="py-2">
@@ -23,7 +23,9 @@
         <div class="py-2">
             <a class="btn btn-primary" href="DomainCheck.jsp" role="button">check Domain</a>
             <a class="btn btn-primary" href="PriceDetails.jsp" role="button">Price Above </a>
-
+        </div>
+        <div class="py-2">
+            <a class="btn btn-primary" href="Count.jsp" role="button">Count</a>
         </div>
     </div>
 </div>

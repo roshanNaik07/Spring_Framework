@@ -1,5 +1,7 @@
     package com.xworkz.dominos.dto;
 
+    //import lombok.*;
+
     import lombok.*;
 
     import javax.validation.constraints.*;
@@ -29,5 +31,7 @@
         @Min(value = 100, message = "min price is 100")
         @Max(value = 300, message = "Max price is 300")
         private int price;
+
+
 
     }

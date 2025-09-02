@@ -20,4 +20,6 @@ public interface DominosRepository {
     List<DominosEntity> getDomainList(String domain);
 
     List<String> getNamesAbovePrice(int price);
+
+    Long getEmailCount(String email);
 }

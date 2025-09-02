@@ -57,9 +57,9 @@ public class DominosController {
 
         System.out.println("Running fetchDetails in DominosController");
 
-        List<DominosEntity> list = dominoService.fetchDetails();
+       // List<DominosEntity> list = dominoService.fetchDetails();
 
-        modelAndView.addObject("data",list);
+       // modelAndView.addObject("data",list);
         modelAndView.setViewName("FetchDetails");
 
         return modelAndView;
@@ -151,7 +151,7 @@ public class DominosController {
         if (list.isEmpty()){
             System.out.println("List is empty");
         }
-        modelAndView.addObject("data",list);
+        //modelAndView.addObject("data",list);
         modelAndView.setViewName("DomainCheck");
         return modelAndView;
     }
@@ -175,6 +175,15 @@ public class DominosController {
         }
         modelAndView.addObject("data",names);
         modelAndView.setViewName("PriceDetails");
+        return modelAndView;
+    }
+
+    @RequestMapping("/getCount")
+    public ModelAndView count(@RequestParam String email, ModelAndView modelAndView){
+        System.out.println("Running count in Domino'sController");
+
+        dominoService.getEmailCount(email);
+
         return modelAndView;
     }
 }

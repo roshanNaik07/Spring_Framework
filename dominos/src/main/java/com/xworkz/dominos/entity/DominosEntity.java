@@ -1,15 +1,11 @@
 package com.xworkz.dominos.entity;
 
-import lombok.*;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
 
 @Entity
 @Table(name = "customer_info")
@@ -18,6 +14,11 @@ import javax.persistence.*;
 @NamedQuery(name = "deleteById",query = "delete from DominosEntity entity where entity.id = :id")
 @NamedQuery(name = "domainType",query = "select entity from DominosEntity entity where entity.email like concat('%', :domain)")
 @NamedQuery(name = "findNameAbovePrice", query = "select entity.name from DominosEntity entity where entity.price > :price")
+@NamedQuery(name = "getEmailCount" , query = "select count(entity) from DominosEntity entity where entity.email =: email")
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class DominosEntity {
 
     @Id

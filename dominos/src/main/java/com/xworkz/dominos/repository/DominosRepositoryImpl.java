@@ -1,6 +1,7 @@
 package com.xworkz.dominos.repository;
 
 import com.xworkz.dominos.entity.DominosEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
@@ -11,7 +12,8 @@ import java.util.List;
 @Repository
 public class DominosRepositoryImpl implements DominosRepository{
 
-    EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("domino's");
+    @Autowired
+    EntityManagerFactory entityManagerFactory ;
 
     @Override
     public boolean saveData(DominosEntity entity) {
@@ -52,10 +54,9 @@ public class DominosRepositoryImpl implements DominosRepository{
             entityTransaction.begin();
 
             Query query = entityManager.createNamedQuery("getAllDetails");
-            entityTransaction.commit();
-
-            return list = query.getResultList();
-
+             list = query.getResultList();
+             entityTransaction.commit();
+             return list;
         }catch (Exception e){
 
             if (entityTransaction.isActive()){
@@ -226,5 +227,37 @@ public class DominosRepositoryImpl implements DominosRepository{
         }
 
         return Collections.emptyList();
+    }
+
+    @Override
+    public Long getEmailCount(String email) {
+
+        System.out.println("Running getEmailCount in Domino'sRepositoryImpl");
+        EntityManager entityManager = null;
+        EntityTransaction entityTransaction = null;
+        Long count = 0L;
+        try {
+            entityManager = entityManagerFactory.createEntityManager();
+            entityTransaction = entityManager.getTransaction();
+            entityTransaction.begin();
+
+            Query query = entityManager.createNamedQuery("getEmailCount");
+            query.setParameter("email",email);
+            Object object =  query.getSingleResult();
+            count = (Long) object;
+            System.out.println("Count is " +count);
+            System.out.println(object.toString());
+            entityTransaction.commit();
+
+        }catch (Exception e){
+            if (entityTransaction.isActive()){
+                entityTransaction.rollback();
+            }e.printStackTrace();
+
+        }finally {
+            entityManager.close();
+        }
+
+        return count;
     }
 }

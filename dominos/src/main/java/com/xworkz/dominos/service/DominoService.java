@@ -20,4 +20,6 @@ public interface DominoService {
     List<DominosEntity> getDomainList(String domain);
 
     List<String> getNameAbovePrice(int price);
+
+    int getEmailCount(String email);
 }
