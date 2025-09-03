@@ -21,5 +21,5 @@ public interface DominoService {
 
     List<String> getNameAbovePrice(int price);
 
-    int getEmailCount(String email);
+    long getEmailCount(String email);
 }

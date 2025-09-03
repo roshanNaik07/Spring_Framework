@@ -127,12 +127,12 @@ public class DominosServiceImpl implements DominoService{
     }
 
     @Override
-    public int getEmailCount(String email) {
+    public long getEmailCount(String email) {
 
         long count = dominosRepository.getEmailCount(email);
         System.out.println(count);
 
-        return 0;
+        return count;
     }
 
 }

@@ -20,11 +20,12 @@
 
             <div class="mb-3">
                 <label  class="form-label">Enter Name</label>
-                <input type="text" class="form-control" name="name" value="${value.name}">
+                <input type="text" class="form-control" name="name"value="${value.name}">
             </div>
             <div class="mb-3">
                 <label  class="form-label">email</label>
-                <input type="text" class="form-control" name="email" value="${value.email}">
+                <input type="text" class="form-control" name="email"  id = "email" onchange="userEmail()"  value="${value.email}">
+                <span  id = "displayEmail" style="color :red">  </span>
             </div>
             <div class="mb-3">
                 <label  class="form-label">Phone Number</label>
@@ -38,8 +39,26 @@
 
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
+
     </div>
 </div>
+<script>
+    function userEmail(){
+    console.log("hello");
+    let name =document.getElementById("email");
+    let nameValue =name.value;
+    const xhttp = new XMLHttpRequest();
+    xhttp.open("GET","http://localhost:8080/dominos/userEmail/"+nameValue);
+    xhttp.send();
 
+    xhttp.onload=function(){
+    document.getElementById("displayEmail").innerHtml=this.responseTest;
+
+    }
+   }
+
+
+
+</script>
 </body>
 </html>
