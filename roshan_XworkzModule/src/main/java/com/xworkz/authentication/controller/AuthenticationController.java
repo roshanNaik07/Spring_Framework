@@ -8,13 +8,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.mail.Session;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @Controller
@@ -28,10 +35,19 @@ public class AuthenticationController {
         System.out.println("AuthenticationController created by spring");
     }
 
-    @RequestMapping("/signUp")
-    public ModelAndView saveSignUpDetails(@Valid AuthenticationDto authenticationDto, BindingResult bindingResult, ModelAndView modelAndView) {
+    @PostMapping("/signUp")
+    public ModelAndView saveSignUpDetails(@RequestParam("image") MultipartFile multipartFile , @Valid AuthenticationDto authenticationDto, BindingResult bindingResult, ModelAndView modelAndView) throws IOException {
+ byte[] bytes=multipartFile .getBytes();
+       Path path= Paths.get("D:\\roshanimage\\"+authenticationDto.getName()+System.currentTimeMillis()+".jpg");
 
-        if (!authenticationDto.getPassword().equals(authenticationDto.getConfirmPassword())) {
+        Files.write(path,bytes);
+        String imageName=path.getFileName().toString();
+
+        System.out.println("image name "+imageName);
+
+
+
+       /* if (!authenticationDto.getPassword().equals(authenticationDto.getConfirmPassword())) {
             modelAndView.addObject("error", "password and confirm password doesn't match");
             modelAndView.addObject("value", authenticationDto);
             modelAndView.setViewName("SignUp");
@@ -48,10 +64,10 @@ public class AuthenticationController {
                 modelAndView.setViewName("SignUp");
                 return modelAndView;
             }
-        }
+        }*/
 
-        Boolean result = authenticationService.saveSignUpDetails(authenticationDto);
-        System.out.println(result);
+       // Boolean result = authenticationService.saveSignUpDetails(authenticationDto);
+       // System.out.println(result);
         modelAndView.addObject("success", "Registered Successfully");
         modelAndView.setViewName("SignIn");
         return modelAndView;
@@ -60,24 +76,25 @@ public class AuthenticationController {
     @RequestMapping("/signIn")
     public ModelAndView signIn(@RequestParam String userName, @RequestParam String password, ModelAndView modelAndView , HttpSession session) {
 
+        AuthenticationDto authenticationDto = authenticationService.signIn(userName, password);
+
         if (userName.isEmpty() || password.isEmpty()) {
             modelAndView.addObject("error", "username and password cannot be empty");
             modelAndView.setViewName("SignIn");
-            return modelAndView;
-        }
-
-        AuthenticationDto authenticationDto = authenticationService.signIn(userName, password);
-        if (authenticationDto == null) {
+        } else if (authenticationDto == null) {
             System.out.println("Not matched");
-            modelAndView.addObject("error", "Cannot find user");
+            modelAndView.addObject("error", "Invalid Credentials");
             modelAndView.setViewName("SignIn");
-            return modelAndView;
+        } else if (authenticationDto.getName().equals("Locked")) {
+            modelAndView.addObject("error","Ur account is locked");
+            modelAndView.setViewName("SignIn");
+        } else {
+            UpdateDto updateDto = new UpdateDto();
+            BeanUtils.copyProperties(authenticationDto,updateDto);
+            session.setAttribute("userSignData",updateDto);
+            modelAndView.addObject("logInSuccess", "Hi " + userName + ",Successfully Logged In... Welcome to xworkz");
+            modelAndView.setViewName("Profile");
         }
-        UpdateDto updateDto = new UpdateDto();
-        BeanUtils.copyProperties(authenticationDto,updateDto);
-        session.setAttribute("userSignData",updateDto);
-        modelAndView.addObject("logInSuccess", "Hi " + userName + ",Successfully Logged In... Welcome to xworkz");
-        modelAndView.setViewName("Profile");
         return modelAndView;
     }
 

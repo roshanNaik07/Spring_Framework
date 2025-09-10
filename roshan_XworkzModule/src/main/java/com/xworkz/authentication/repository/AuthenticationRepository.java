@@ -11,4 +11,6 @@ public interface AuthenticationRepository {
     Boolean forgotPassword(String email ,String password,String confirmPassword);
 
     AuthenticationEntity updateUserData(AuthenticationEntity authenticationEntity);
+
+    Boolean updateLoginAttempts(AuthenticationEntity authenticationEntity);
 }

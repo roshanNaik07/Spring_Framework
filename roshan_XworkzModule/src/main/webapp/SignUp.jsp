@@ -28,7 +28,7 @@
     </div>
 </nav>
 
-<form class="container my-5 border border-warning-subtle shadow-lg p-3 mb-5 py-5 px-4 rounded border-3" action="signUp" method="post">
+<form class="container my-5 border border-warning-subtle shadow-lg p-3 mb-5 py-5 px-4 rounded border-3" action="signUp" method="post"  enctype="multipart/form-data">
 
     <div class="container d-flex justify-content-center">
         <h2>Sign Up</h2>
@@ -110,6 +110,7 @@
             <span id="genderError" style="color: red; font-size: 14px;"></span>
         </div>
     </div>
+    <input type="file" name ="image">
     <div class="d-flex justify-content-center">
         <button type="submit" class="btn btn-warning ">Submit</button>
     </div>

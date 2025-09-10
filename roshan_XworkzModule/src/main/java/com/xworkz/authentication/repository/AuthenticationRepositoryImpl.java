@@ -63,7 +63,7 @@ public class AuthenticationRepositoryImpl implements AuthenticationRepository {
             query.setParameter("username", username);
             try {
                 entity = (AuthenticationEntity) query.getSingleResult();
-            }catch (NoResultException nrp){
+            } catch (NoResultException nrp) {
                 System.out.println("Entity is null for the Query");
                 return null;
             }
@@ -102,7 +102,7 @@ public class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
             try {
                 entity = (AuthenticationEntity) query.getSingleResult();
-            }catch (Exception e){
+            } catch (Exception e) {
                 return false;
             }
 
@@ -166,6 +166,41 @@ public class AuthenticationRepositoryImpl implements AuthenticationRepository {
         }
 
         return null;
+    }
+
+    @Override
+    public Boolean updateLoginAttempts(AuthenticationEntity authenticationEntity) {
+
+        System.out.println("Running updateLoginAttempts in AuthenticationRepositoryImpl");
+
+        EntityManager entityManager = null;
+        EntityTransaction entityTransaction = null;
+
+        try {
+
+            entityManager = entityManagerFactory.createEntityManager();
+            entityTransaction = entityManager.getTransaction();
+
+            entityTransaction.begin();
+
+            entityManager.merge(authenticationEntity);
+            System.out.println("Updated");
+            entityTransaction.commit();
+
+            return true;
+
+        } catch (Exception e) {
+
+            if (entityTransaction.isActive()) {
+                entityTransaction.rollback();
+            }
+            e.printStackTrace();
+
+        } finally {
+            entityManager.close();
+        }
+
+        return false;
     }
 
 }

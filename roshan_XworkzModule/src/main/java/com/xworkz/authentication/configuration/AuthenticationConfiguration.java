@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
@@ -18,7 +19,7 @@ import javax.sql.DataSource;
 @EnableWebMvc
 public class AuthenticationConfiguration implements WebMvcConfigurer {
 
-    public AuthenticationConfiguration(){
+    public AuthenticationConfiguration() {
         System.out.println("AuthenticationConfiguration created by Application context");
     }
 
@@ -27,11 +28,11 @@ public class AuthenticationConfiguration implements WebMvcConfigurer {
     }
 
     public void configureViewResolvers(ViewResolverRegistry registry) {
-        registry.jsp("/",".jsp");
+        registry.jsp("/", ".jsp");
     }
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean localContainerEntityManagerFactoryBean(){
+    public LocalContainerEntityManagerFactoryBean localContainerEntityManagerFactoryBean() {
 
         LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
         factoryBean.setDataSource(dataSource());
@@ -41,7 +42,7 @@ public class AuthenticationConfiguration implements WebMvcConfigurer {
         return factoryBean;
     }
 
-    public DataSource dataSource(){
+    public DataSource dataSource() {
 
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
@@ -51,4 +52,15 @@ public class AuthenticationConfiguration implements WebMvcConfigurer {
 
         return dataSource;
     }
+
+    @Bean(name = "multipartResolver")
+    public CommonsMultipartResolver commonsMultipartResolver() {
+
+        CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver();
+        commonsMultipartResolver.setMaxUploadSize(1048576);
+        commonsMultipartResolver.setMaxInMemorySize(1048576);
+        return commonsMultipartResolver;
+
+    }
+
 }
