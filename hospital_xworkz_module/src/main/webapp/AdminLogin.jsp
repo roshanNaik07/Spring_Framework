@@ -49,11 +49,11 @@
 
         console.log("hitting checkEmail()");
 
-        let email = document.getElementById("checkEmail").value;
+        let email = document.getElementById("emailId").value;
         let emailError = document.getElementById("emailError");
 
         const xhttp = new XMLHttpRequest();
-        xhttp.open("GET","http://localhost:8080/hospital_xworkz_module/checkEmail/"+email);
+        xhttp.open("GET","http://localhost:8080/hospital_xworkz_module/checkEmail/" + email);
         xhttp.send();
 
         xhttp.onload=function(){
@@ -92,7 +92,7 @@
                 </c:if>
 
                 <c:if test="${empty email}">
-                    <input type="text" name="email" placeholder="Enter email" id="checkEmail" required class="form-control" onchange="checkEmail()">
+                    <input type="text" name="email" placeholder="Enter email" id="emailId" required class="form-control" onchange="checkEmail()">
                     <div class="form-text text-danger py-2" id="emailError"></div>
                 </c:if>
 
