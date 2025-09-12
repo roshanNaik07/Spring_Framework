@@ -36,4 +36,6 @@ public class UpdateDto {
     @NotNull(message = "Please select a gender")
     private String gender;
 
+    private String imageName;
+
 }

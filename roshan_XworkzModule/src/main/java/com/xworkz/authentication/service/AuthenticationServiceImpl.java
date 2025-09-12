@@ -38,6 +38,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         authenticationEntity.setConfirmPassword(authenticationDto.getConfirmPassword());
         authenticationEntity.setAddress(authenticationDto.getAddress());
         authenticationEntity.setGender(authenticationDto.getGender());
+        authenticationEntity.setImageName(authenticationDto.getImageName());
 
         return authenticationRepository.saveSignUpDetails(authenticationEntity);
 
@@ -58,6 +59,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         authenticationDto.setAge(authenticationEntity.getAge());
         authenticationDto.setGender(authenticationEntity.getGender());
         authenticationDto.setAddress(authenticationEntity.getAddress());
+        authenticationDto.setImageName(authenticationEntity.getImageName());
 
         if (username.equals(authenticationEntity.getName()) && bCryptPasswordEncoder.matches(password, authenticationEntity.getPassword())) {
             System.out.println("Username and Password Matched");
@@ -79,9 +81,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         AuthenticationEntity authenticationEntity = new AuthenticationEntity();
         BeanUtils.copyProperties(updateDto,authenticationEntity);
         AuthenticationEntity authenticationEntity1 =authenticationRepository.updateUserData(authenticationEntity);
-        UpdateDto updateDto1 =new UpdateDto();
-        BeanUtils.copyProperties(authenticationEntity1,updateDto1);
-        return updateDto1;
+        BeanUtils.copyProperties(authenticationEntity1,updateDto);
+        return updateDto;
     }
 
     private void sendEmail(String email) {

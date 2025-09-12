@@ -12,7 +12,7 @@
 
 <nav class="navbar bg-body-tertiary shadow-sm p-3 mb-5 " data-bs-theme="dark" >
     <div class="container">
-        <a class="navbar-brand" href="/">
+        <a class="navbar-brand" href="index.jsp">
             <img src="images/x-workzLogo.png" alt="Bootstrap" width="160" height="70">
         </a>
     </div>
@@ -30,14 +30,14 @@
                 </ul>
             </div>
 
-            <a href="SignIn.jsp" class="btn btn-outline-warning me-2 btn-lg shadow-sm">Log out</a>
+            <a href="index.jsp" class="btn btn-outline-warning me-2 btn-lg shadow-sm">Log out</a>
 
         </form>
     </div>
 </nav>
 
 <div class="d-flex justify-content-center my-5">
-    <h1 style="font-family:popins">Profile Page</h1>
+    <h1 style="font-family:popins">Profile</h1>
 </div>
 
 <div class="d-flex justify-content-center">

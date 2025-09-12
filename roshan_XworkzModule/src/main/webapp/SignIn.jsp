@@ -46,7 +46,11 @@
 
             <div class="mb-3">
                 <label class="form-label" style="font-family:popins">Password</label>
-                <input type="password" class="form-control" name="password">
+                <div class="position-relative">
+                    <input type="password" class="form-control" name="password" id="password" />
+                    <i class="bi bi-eye position-absolute top-50 end-0 translate-middle-y me-3"
+                       id="togglePassword" style="cursor: pointer;"> </i>
+                </div>
             </div>
 
             <div class="d-flex justify-content-center">
@@ -60,6 +64,8 @@
         </form>
     </div>
 </div>
+
+<script src="signup-validation.js" defer></script>
 
 </body>
 </html>

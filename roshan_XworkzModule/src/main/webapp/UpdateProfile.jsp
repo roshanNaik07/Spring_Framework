@@ -23,13 +23,16 @@
     <div>
         <form class="container-fluid justify-content-start d-flex">
 
-            <a href="SignIn.jsp" class="btn btn-outline-warning me-2 btn-lg shadow-sm">Log out</a>
+            <a href="index.jsp" class="btn btn-outline-warning me-2 btn-lg shadow-sm">Log out</a>
 
         </form>
     </div>
 </nav>
 
-<form class="container my-5 border border-warning-subtle shadow-lg p-3 mb-5 py-5 px-4 rounded border-3" action="updateUserData" method="post">
+<form class="container my-5 border border-warning-subtle shadow-lg p-3 mb-5 py-5 px-4 rounded border-3" action="updateUserData" method="post" enctype="multipart/form-data">
+    
+    <img src="download?fileName=${userData.imageName}" width="100" height="100" >
+    
     <div class="container my-5 d-flex justify-content-center">
         <h2 style="font-family:popins">Update Profile</h2>
     </div>
@@ -80,6 +83,7 @@
             </select>
             <input type="hidden" name="gender" value="${userData.gender}">
         </div>
+        <input type="file" name ="image">
     </div>
     <div class="d-flex justify-content-center">
         <button type="submit" class="btn btn-primary ">Submit</button>

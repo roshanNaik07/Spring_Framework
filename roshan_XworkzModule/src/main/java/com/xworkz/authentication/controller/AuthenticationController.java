@@ -3,11 +3,13 @@ package com.xworkz.authentication.controller;
 import com.xworkz.authentication.dto.AuthenticationDto;
 import com.xworkz.authentication.dto.UpdateDto;
 import com.xworkz.authentication.service.AuthenticationService;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,10 +17,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.mail.Session;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -36,18 +39,9 @@ public class AuthenticationController {
     }
 
     @PostMapping("/signUp")
-    public ModelAndView saveSignUpDetails(@RequestParam("image") MultipartFile multipartFile , @Valid AuthenticationDto authenticationDto, BindingResult bindingResult, ModelAndView modelAndView) throws IOException {
- byte[] bytes=multipartFile .getBytes();
-       Path path= Paths.get("D:\\roshanimage\\"+authenticationDto.getName()+System.currentTimeMillis()+".jpg");
+    public ModelAndView saveSignUpDetails(@RequestParam("image") MultipartFile multipartFile, @Valid AuthenticationDto authenticationDto, BindingResult bindingResult, ModelAndView modelAndView) throws IOException {
 
-        Files.write(path,bytes);
-        String imageName=path.getFileName().toString();
-
-        System.out.println("image name "+imageName);
-
-
-
-       /* if (!authenticationDto.getPassword().equals(authenticationDto.getConfirmPassword())) {
+        if (!authenticationDto.getPassword().equals(authenticationDto.getConfirmPassword())) {
             modelAndView.addObject("error", "password and confirm password doesn't match");
             modelAndView.addObject("value", authenticationDto);
             modelAndView.setViewName("SignUp");
@@ -64,17 +58,25 @@ public class AuthenticationController {
                 modelAndView.setViewName("SignUp");
                 return modelAndView;
             }
-        }*/
+        }
 
-       // Boolean result = authenticationService.saveSignUpDetails(authenticationDto);
-       // System.out.println(result);
+        byte[] bytes = multipartFile.getBytes();
+        Path path = Paths.get("D:\\roshanimage\\" + authenticationDto.getName() + System.currentTimeMillis() + ".jpg");
+
+        Files.write(path, bytes);
+        String imageName = path.getFileName().toString();
+        System.out.println("image name " + imageName);
+        authenticationDto.setImageName(imageName);
+
+        Boolean result = authenticationService.saveSignUpDetails(authenticationDto);
+        System.out.println(result);
         modelAndView.addObject("success", "Registered Successfully");
         modelAndView.setViewName("SignIn");
         return modelAndView;
     }
 
     @RequestMapping("/signIn")
-    public ModelAndView signIn(@RequestParam String userName, @RequestParam String password, ModelAndView modelAndView , HttpSession session) {
+    public ModelAndView signIn(@RequestParam String userName, @RequestParam String password, ModelAndView modelAndView, HttpSession session) {
 
         AuthenticationDto authenticationDto = authenticationService.signIn(userName, password);
 
@@ -86,13 +88,15 @@ public class AuthenticationController {
             modelAndView.addObject("error", "Invalid Credentials");
             modelAndView.setViewName("SignIn");
         } else if (authenticationDto.getName().equals("Locked")) {
-            modelAndView.addObject("error","Ur account is locked");
+            modelAndView.addObject("error", "Ur account is locked");
             modelAndView.setViewName("SignIn");
         } else {
+            session.removeAttribute("userSignData");
             UpdateDto updateDto = new UpdateDto();
-            BeanUtils.copyProperties(authenticationDto,updateDto);
-            session.setAttribute("userSignData",updateDto);
-            modelAndView.addObject("logInSuccess", "Hi " + userName + ",Successfully Logged In... Welcome to xworkz");
+            BeanUtils.copyProperties(authenticationDto, updateDto);
+            System.out.println("Image name is : "+updateDto.getImageName());
+            session.setAttribute("userSignData", updateDto);
+            modelAndView.addObject("logInSuccess", "Hi " + userName);
             modelAndView.setViewName("Profile");
         }
         return modelAndView;
@@ -125,35 +129,56 @@ public class AuthenticationController {
     }
 
     @RequestMapping("/openUpdatePage")
-    public ModelAndView openUpdateProfile(ModelAndView modelAndView , HttpSession session) {
+    public ModelAndView openUpdateProfile(ModelAndView modelAndView, HttpSession session) {
 
         System.out.println("Running openUpdateProfile in AuthenticationController");
 
         UpdateDto updateDto = (UpdateDto) session.getAttribute("userSignData");
+        System.out.println(" showing image name is : "+updateDto.getImageName());
 
-        modelAndView.addObject("userData",updateDto);
+        modelAndView.addObject("userData", updateDto);
         modelAndView.setViewName("UpdateProfile");
         return modelAndView;
     }
 
-    @RequestMapping("/updateUserData")
-    public ModelAndView updateSignInDetails(@Valid  UpdateDto updateDto ,BindingResult bindingResult , ModelAndView modelAndView){
-        System.out.println("Running updateSignInDetails"+updateDto);
-
-        if (bindingResult.hasErrors()){
+    @PostMapping("/updateUserData")
+    public ModelAndView updateUserDetails(@RequestParam("image") MultipartFile multipartFile ,@Valid UpdateDto updateDto, BindingResult bindingResult, ModelAndView modelAndView,HttpSession session) throws IOException {
+        System.out.println("Running updateUserDetails" + updateDto);
+        if (bindingResult.hasErrors()) {
             List<ObjectError> objectErrors = bindingResult.getAllErrors();
-            for (ObjectError error : objectErrors){
-                modelAndView.addObject("error",error.getDefaultMessage());
-                modelAndView.addObject("userData",updateDto);
+            for (ObjectError error : objectErrors) {
+                modelAndView.addObject("error", error.getDefaultMessage());
+                modelAndView.addObject("userData", updateDto);
                 modelAndView.setViewName("UpdateProfile");
                 return modelAndView;
             }
         }
 
         UpdateDto updateDto1 = authenticationService.updateUserData(updateDto);
-        System.out.println(updateDto1);
-        modelAndView.addObject("userData",updateDto1);
-        modelAndView.setViewName("UpdateProfile");
+        System.out.println(updateDto1.getImageName());
+
+        byte[] bytes = multipartFile.getBytes();
+        Path path = Paths.get("D:\\roshanimage\\"  + updateDto1.getName() + System.currentTimeMillis() + ".jpg");
+        Files.write(path,bytes);
+        String updatedImageName = path.getFileName().toString();
+        System.out.println(updatedImageName);
+        updateDto.setImageName(updatedImageName);
+
+        session.setAttribute("userSignData",updateDto1);
+        modelAndView.addObject("logInSuccess", "hi "+updateDto1.getName()+" ,Profile Updated");
+        modelAndView.setViewName("Profile");
         return modelAndView;
     }
+
+    @GetMapping("/download")
+    public void getImage(HttpServletResponse response , @RequestParam String fileName) throws IOException {
+        response.setContentType("image/jpg");
+        File file = new File("D:\\roshanimage\\"+fileName);
+        InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
+        ServletOutputStream servletOutputStream = response.getOutputStream();
+        IOUtils.copy(inputStream,servletOutputStream);
+
+        response.flushBuffer();
+    }
+
 }

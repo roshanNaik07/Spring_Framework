@@ -44,4 +44,6 @@ public class AuthenticationDto {
     @NotNull(message = "Please select a gender")
     private String gender;
 
+    private String imageName;
+
 }

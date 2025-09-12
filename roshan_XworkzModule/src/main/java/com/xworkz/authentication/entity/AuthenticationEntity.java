@@ -49,4 +49,6 @@ public class AuthenticationEntity {
     @Column(name = "Login_Attempts")
     private int loginAttempt;
 
+    @Column(name = "image_name")
+    private String imageName;
 }
