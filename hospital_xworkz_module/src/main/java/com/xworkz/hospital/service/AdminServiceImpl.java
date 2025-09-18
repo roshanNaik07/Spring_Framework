@@ -1,6 +1,11 @@
 package com.xworkz.hospital.service;
 
+import com.xworkz.hospital.dto.DoctorRegistrationDTO;
+import com.xworkz.hospital.dto.SlotTimeDTO;
+import com.xworkz.hospital.entity.DoctorRegisterEntity;
+import com.xworkz.hospital.entity.SlotTimeEntity;
 import com.xworkz.hospital.repository.AdminRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,15 +32,14 @@ public class AdminServiceImpl implements AdminService {
         System.out.println("Running sendOTP in adminServiceImpl");
 
         String adminEmail = adminRepository.sendOTP(email);
-        if (adminEmail==null){
+        if (adminEmail == null) {
             return false;
-        }
-        else if (adminEmail.equals(email)) {
+        } else if (adminEmail.equals(email)) {
             System.out.println("Email found");
             Random random = new Random();
             int number = 100000 + random.nextInt(900000);
             otp = String.valueOf(number);
-            email(email,"Login OTP","otp is : ",otp);
+            otpEmail(email, "Login OTP", "otp is : ", otp);
             return true;
         }
         return false;
@@ -44,7 +48,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public boolean verifyOTP(String enteredOTP) {
 
-        if (enteredOTP.equals(otp)){
+        if (enteredOTP.equals(otp)) {
             return true;
         }
         return false;
@@ -55,7 +59,30 @@ public class AdminServiceImpl implements AdminService {
         return adminRepository.checkEmail(email);
     }
 
-    private void email(String email, String sub, String body, String otp) {
+    @Override
+    public boolean registerDoctor(DoctorRegistrationDTO doctorRegistrationDTO) {
+
+        DoctorRegisterEntity doctorRegisterEntity = new DoctorRegisterEntity();
+        BeanUtils.copyProperties(doctorRegistrationDTO, doctorRegisterEntity);
+        doctorRegisterEntity.setName(doctorRegistrationDTO.getName());
+        doctorRegistrationMail(doctorRegisterEntity.getEmail(), doctorRegisterEntity.getName());
+        return adminRepository.registerDoctor(doctorRegisterEntity);
+    }
+
+    @Override
+    public boolean saveSlotTime(SlotTimeDTO slotTimeDTO) {
+        System.out.println("In service"+slotTimeDTO);
+        SlotTimeEntity slotTimeEntity = new SlotTimeEntity();
+        BeanUtils.copyProperties(slotTimeDTO,slotTimeEntity);
+        return adminRepository.saveSlotTime(slotTimeEntity);
+    }
+
+    @Override
+    public boolean getDoctorBySpecialization(String specialization) {
+        return false;
+    }
+
+    private void otpEmail(String email, String sub, String body, String otp) {
         final String username = "roshannaik202055@gmail.com";
         final String password = "gnol ugqf btgk zmir";
 
@@ -81,11 +108,55 @@ public class AdminServiceImpl implements AdminService {
                     InternetAddress.parse(email)
             );
             message.setSubject(sub);
-            message.setText(body+" "+otp);
+            message.setText(body + " " + otp);
 
             Transport.send(message);
 
             System.out.println("Done");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void doctorRegistrationMail(String email, String doctorName) {
+        final String username = "roshannaik202055@gmail.com";
+        final String password = "gnol ugqf btgk zmir";
+
+        Properties prop = new Properties();
+        prop.put("mail.smtp.host", "smtp.gmail.com");
+        prop.put("mail.smtp.port", "587");
+        prop.put("mail.smtp.auth", "true");
+        prop.put("mail.smtp.starttls.enable", "true"); //TLS
+
+        Session session = Session.getInstance(prop,
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(username, password);
+                    }
+                });
+
+        try {
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("username"));
+            message.setRecipients(
+                    Message.RecipientType.TO,
+                    InternetAddress.parse(email)
+            );
+            message.setSubject("Dear Dr. " + doctorName);
+            message.setText("We are pleased to inform you that your details have been successfully registered on the MedCare Hospital Website.\n" +
+                    "You are now part of our trusted network of specialists, and patients can connect with you for consultations.\n" +
+                    "\n" +
+                    "\n" +
+                    "Thank you for joining MedCare!\n" +
+                    "\n" +
+                    "Best Regards,\n" +
+                    "MedCare Team");
+
+            Transport.send(message);
+
+            System.out.println("Registration mail sent");
 
         } catch (Exception e) {
             e.printStackTrace();
