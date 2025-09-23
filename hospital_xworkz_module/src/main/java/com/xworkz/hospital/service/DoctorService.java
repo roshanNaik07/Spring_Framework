@@ -8,5 +8,7 @@ public interface DoctorService {
 
     List<DoctorRegistrationDTO> getAllDoctors();
 
+    boolean updateDoctorDetails(DoctorRegistrationDTO doctorRegistrationDTO);
 
+    boolean deleteDoctorByEmail(String email);
 }

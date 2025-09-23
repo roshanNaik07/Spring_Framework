@@ -47,7 +47,7 @@ public class DoctorController {
     }
 
     @PostMapping("/openUpdateDoctorPage")
-    public ModelAndView open(@Valid DoctorRegistrationDTO doctorRegistrationDTO, BindingResult bindingResult, ModelAndView modelAndView) {
+    public ModelAndView openUpdateDoctorPage(@Valid DoctorRegistrationDTO doctorRegistrationDTO, BindingResult bindingResult, ModelAndView modelAndView) {
         List<String> specializations = adminService.getAllSpecializations();
         modelAndView.addObject("values", doctorRegistrationDTO);
         modelAndView.addObject("specializations", specializations);
@@ -55,8 +55,8 @@ public class DoctorController {
         return modelAndView;
     }
 
-    @PostMapping("/registerDoctor")
-    private ModelAndView registerDoctor(@RequestParam("image") MultipartFile multipartFile, @Valid DoctorRegistrationDTO doctorRegistrationDTO,BindingResult bindingResult, ModelAndView modelAndView) throws IOException {
+    @PostMapping("/updateDoctorDetails")
+    public ModelAndView updateDoctorDetails(@RequestParam("image") MultipartFile multipartFile, @Valid DoctorRegistrationDTO doctorRegistrationDTO, BindingResult bindingResult, ModelAndView modelAndView) throws IOException {
 
         byte[] bytes = multipartFile.getBytes();
         Path path = Paths.get("D:\\Hospital\\" + doctorRegistrationDTO.getName() + System.currentTimeMillis() + ".jpg");
@@ -80,20 +80,45 @@ public class DoctorController {
             modelAndView.addObject("values", doctorRegistrationDTO);
             modelAndView.setViewName("UpdateDoctor");
         } else {
-
+            boolean saved = doctorService.updateDoctorDetails(doctorRegistrationDTO);
+            if (saved) {
+                modelAndView.addObject("success", "Doctor details updated successfully");
+                modelAndView.setViewName("Admin");
+            } else {
+                modelAndView.addObject("error", "Failed to update doctor details");
+                modelAndView.addObject("specializations", specializations);
+                modelAndView.addObject("values", doctorRegistrationDTO);
+                modelAndView.setViewName("UpdateDoctor");
+            }
         }
-            return modelAndView;
-        }
+        return modelAndView;
+    }
 
-        @GetMapping("/download")
-        public void getImage (HttpServletResponse response, @RequestParam String fileName) throws IOException {
-            response.setContentType("image/jpg");
-            File file = new File("D:\\Hospital\\" + fileName);
-            InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
-            ServletOutputStream servletOutputStream = response.getOutputStream();
-            IOUtils.copy(inputStream, servletOutputStream);
+    @RequestMapping("/deleteDoctor")
+    public ModelAndView deleteDoctorByEmail(@RequestParam String email, ModelAndView modelAndView) {
 
-            response.flushBuffer();
+        boolean deleted = doctorService.deleteDoctorByEmail(email);
+        if (deleted) {
+            modelAndView.addObject("success", "Doctor deleted successfully");
+            List<DoctorRegistrationDTO> doctorRegistrationDTOS = doctorService.getAllDoctors();
+            modelAndView.addObject("doctors", doctorRegistrationDTOS);
+            modelAndView.setViewName("Doctors");
+        } else {
+            modelAndView.addObject("error", "Failed to delete doctor");
         }
+        return modelAndView;
 
     }
+
+    @GetMapping("/download")
+    public void getImage(HttpServletResponse response, @RequestParam String fileName) throws IOException {
+        response.setContentType("image/jpg");
+        File file = new File("D:\\Hospital\\" + fileName);
+        InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
+        ServletOutputStream servletOutputStream = response.getOutputStream();
+        IOUtils.copy(inputStream, servletOutputStream);
+
+        response.flushBuffer();
+    }
+
+}

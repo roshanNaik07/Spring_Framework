@@ -29,4 +29,16 @@ public class DoctorServiceImpl implements DoctorService{
         }
         return Collections.emptyList();
     }
+
+    @Override
+    public boolean updateDoctorDetails(DoctorRegistrationDTO doctorRegistrationDTO) {
+        DoctorRegisterEntity doctorRegisterEntity = new DoctorRegisterEntity();
+        BeanUtils.copyProperties(doctorRegistrationDTO,doctorRegisterEntity);
+        return doctorRepository.updateDoctorDetails(doctorRegisterEntity);
+    }
+
+    @Override
+    public boolean deleteDoctorByEmail(String email) {
+        return doctorRepository.deleteDoctorByEmail(email);
+    }
 }

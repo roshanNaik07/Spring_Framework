@@ -30,6 +30,9 @@
 
 <h1 class="text-center mb-4" style="font-family: Poppins;">Doctors List</h1>
 
+<h3 class="display-6 text-center mt-2 text-success" class="Message">${success}</h3>
+<h3 class="display-6 text-center mt-2 text-danger" class="Message">${error}</h3>
+
 <div class="container">
     <table class="table table-bordered table-hover">
         <thead class="table-success">
@@ -56,7 +59,7 @@
                 <td>${doctor.experience}</td>
                 <td>${doctor.phoneNumber}</td>
                 <td>
-                    <img src="download?fileName=${doctor.imageName}" width="135" height="100" >
+                    <img src="download?fileName=${doctor.imageName}" width="135" height="100">
                 </td>
                 <td>
                     <form action="openUpdateDoctorPage" method="post" class="d-inline">
@@ -70,10 +73,43 @@
                         <button type="submit" class="btn btn-warning btn-sm">Update</button>
                     </form>
 
-                    <form action="deleteDoctor" method="post" class="d-inline">
+                    <form action="deleteDoctor" method="post" class="d-inline" onsubmit="return false;">
                         <input type="hidden" name="email" value="${doctor.email}">
-                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#deleteModal${doctor.email}">
+                            Delete
+                        </button>
                     </form>
+
+                    <div class="modal fade" id="deleteModal${doctor.email}" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content shadow-lg border-0 rounded-2" style="font-family: Poppins;">
+                                <div class="modal-header bg-success text-white rounded-top-2 justify-content-center">
+                                    <h5 class="modal-title text-center w-100 fs-2">Confirm Delete</h5>
+                                    <button type="button" class="btn-close btn-close-white position-absolute end-0 me-3"
+                                            data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body text-center">
+                                    <p class="fs-5 mb-0">
+                                        Are you sure you want to delete <strong>Dr ${doctor.name}</strong>?
+                                    </p>
+                                </div>
+                                <div class="modal-footer d-flex justify-content-center border-0">
+                                    <button type="button" class="btn btn-secondary px-4 rounded-2"
+                                            data-bs-dismiss="modal">
+                                        Cancel
+                                    </button>
+                                    <form action="deleteDoctor" method="post" class="d-inline">
+                                        <input type="hidden" name="email" value="${doctor.email}">
+                                        <button type="submit" class="btn btn-danger px-4 rounded-2 shadow-sm">
+                                            Yes, Delete
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </td>
             </tr>
         </c:forEach>
@@ -81,5 +117,13 @@
     </table>
 </div>
 
-</body>
-</html>
+<script>
+    setTimeout(function () {
+      const msg = document.getElementById("Message");
+      if (msg) {
+        msg.style.display = "none";
+      }
+    }, 10000)
+</script>
+  </body>
+  </html>

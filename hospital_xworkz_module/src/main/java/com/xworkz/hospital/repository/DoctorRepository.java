@@ -10,4 +10,7 @@ public interface DoctorRepository {
 
     List<DoctorRegisterEntity> getAllDoctors();
 
+    boolean updateDoctorDetails(DoctorRegisterEntity doctorRegisterEntity);
+
+    boolean deleteDoctorByEmail(String email);
 }

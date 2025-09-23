@@ -29,7 +29,7 @@
 </nav>
 
 <form class="container my-5 border border-success-subtle shadow-lg p-3 mb-5 py-5 px-4 rounded border-3"
-      action="registerDoctor" method="post" enctype="multipart/form-data">
+      action="updateDoctorDetails" method="post" enctype="multipart/form-data">
 
     <div class="container d-flex justify-content-center" style="font-family: popins">
         <h2>Update doctor details</h2>
@@ -61,14 +61,13 @@
             <label class="form-label" style="font-family: popins">Specialization</label>
             <select class="form-select" aria-label="Default select example"
                     name="specialization" style="font-family:popins" required>
-                <option selected disabled>Select specialization</option>
+                <option value="" disabled hidden>Select specialization</option>
                 <c:forEach var="spec" items="${specializations}">
-                    <option value="${spec}" ${selectedSpecialization == spec ? "selected" : ""}>
+                    <option value="${spec}" ${values.specialization == spec ? "selected" : ""}>
                     ${spec}
                     </option>
                 </c:forEach>
             </select>
-            <span id="specializationError" style="color: red; font-size: 14px;"></span>
         </div>
 
         <div class="col-md-6 mb-3">

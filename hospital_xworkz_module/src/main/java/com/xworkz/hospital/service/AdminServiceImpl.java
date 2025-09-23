@@ -45,6 +45,7 @@ public class AdminServiceImpl implements AdminService {
             int number = 100000 + random.nextInt(900000);
             otp = String.valueOf(number);
             otpEmail(email, "Login OTP", "otp is : ", otp);
+            System.out.println("The OTP is: " + otp);
             return true;
         }
         return false;

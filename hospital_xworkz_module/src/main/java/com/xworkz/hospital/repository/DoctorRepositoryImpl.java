@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
-import java.util.ArrayList;
+import javax.persistence.Query;
 import java.util.Collections;
 import java.util.List;
 
@@ -41,5 +41,64 @@ public class DoctorRepositoryImpl implements DoctorRepository {
         }
 
         return Collections.emptyList();
+    }
+
+    @Override
+    public boolean updateDoctorDetails(DoctorRegisterEntity doctorRegisterEntity) {
+        EntityManager entityManager = null;
+        EntityTransaction entityTransaction = null;
+        DoctorRegisterEntity fetchedDoctorEntity = null;
+        try {
+            entityManager = entityManagerFactory.createEntityManager();
+            entityTransaction = entityManager.getTransaction();
+            entityTransaction.begin();
+            Query query = entityManager.createNamedQuery("getDoctorEntityByEmail");
+            query.setParameter("email", doctorRegisterEntity.getEmail());
+
+            fetchedDoctorEntity = (DoctorRegisterEntity) query.getSingleResult();
+
+            fetchedDoctorEntity.setName(doctorRegisterEntity.getName());
+            fetchedDoctorEntity.setPhoneNumber(doctorRegisterEntity.getPhoneNumber());
+            fetchedDoctorEntity.setSpecialization(doctorRegisterEntity.getSpecialization());
+            fetchedDoctorEntity.setExperience(doctorRegisterEntity.getExperience());
+            fetchedDoctorEntity.setQualification(doctorRegisterEntity.getQualification());
+            fetchedDoctorEntity.setImageName(doctorRegisterEntity.getImageName());
+
+            entityManager.merge(fetchedDoctorEntity);
+            entityTransaction.commit();
+            return true;
+        }catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            entityManager.close();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean deleteDoctorByEmail(String email) {
+        EntityManager entityManager = null;
+        EntityTransaction entityTransaction = null;
+        DoctorRegisterEntity fetchedDoctorEntity = null;
+        try {
+            entityManager = entityManagerFactory.createEntityManager();
+            entityTransaction = entityManager.getTransaction();
+            entityTransaction.begin();
+            Query query = entityManager.createNamedQuery("getDoctorEntityByEmail");
+            query.setParameter("email", email);
+
+            fetchedDoctorEntity = (DoctorRegisterEntity) query.getSingleResult();
+
+            if (fetchedDoctorEntity != null) {
+                entityManager.remove(fetchedDoctorEntity);
+                entityTransaction.commit();
+                return true;
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            entityManager.close();
+        }
+        return false;
     }
 }
