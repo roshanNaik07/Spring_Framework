@@ -1,6 +1,5 @@
 package com.xworkz.hospital.controller;
 
-import com.xworkz.hospital.constant.Specialization;
 import com.xworkz.hospital.dto.DoctorRegistrationDTO;
 import com.xworkz.hospital.dto.SlotTimeDTO;
 import com.xworkz.hospital.service.AdminService;
@@ -19,10 +18,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 @Controller
 @RequestMapping("/")
@@ -66,21 +62,23 @@ public class AdminController {
     }
 
     @RequestMapping("/openDoctorRegisterPage")
-    public ModelAndView openDoctorRegistrationPage(ModelAndView modelAndView){
-
+    public ModelAndView openDoctorRegistrationPage(ModelAndView modelAndView) {
+        List<String> specializations = adminService.getAllSpecializations();
+        modelAndView.addObject("specializations", specializations);
         modelAndView.setViewName("RegisterDoctor");
         return modelAndView;
     }
 
     @RequestMapping("/openSlot")
-    public ModelAndView openSlots(ModelAndView modelAndView){
+    public ModelAndView openSlots(ModelAndView modelAndView) {
+        List<String> specializations = adminService.getAllSpecializations();
+        modelAndView.addObject("specializations", specializations);
         modelAndView.setViewName("Slots");
         return modelAndView;
     }
 
     @PostMapping("/registerDoctor")
-    public ModelAndView saveDoctorsData(@RequestParam("image") MultipartFile multipartFile, @Valid DoctorRegistrationDTO doctorRegistrationDTO, BindingResult bindingResult, ModelAndView modelAndView) throws IOException {
-        System.out.println("Entered saveDoctorsData");
+    public ModelAndView registerDoctor(@RequestParam("image") MultipartFile multipartFile, @Valid DoctorRegistrationDTO doctorRegistrationDTO, BindingResult bindingResult, ModelAndView modelAndView) throws IOException {
 
         byte[] bytes = multipartFile.getBytes();
         Path path = Paths.get("D:\\Hospital\\" + doctorRegistrationDTO.getName() + System.currentTimeMillis() + ".jpg");
@@ -88,14 +86,21 @@ public class AdminController {
         String imageName = path.getFileName().toString();
         doctorRegistrationDTO.setImageName(imageName);
 
+        List<String> specializations = adminService.getAllSpecializations();
         if (bindingResult.hasErrors()) {
             List<ObjectError> errors = bindingResult.getAllErrors();
             for (ObjectError error : errors) {
                 System.out.println(error.getDefaultMessage());
                 modelAndView.addObject("error", error.getDefaultMessage());
+                modelAndView.addObject("specializations", specializations);
                 modelAndView.addObject("values", doctorRegistrationDTO);
                 modelAndView.setViewName("RegisterDoctor");
             }
+        } else if (multipartFile.isEmpty()) {
+            modelAndView.addObject("error","Please upload the image");
+            modelAndView.addObject("specializations", specializations);
+            modelAndView.addObject("values", doctorRegistrationDTO);
+            modelAndView.setViewName("RegisterDoctor");
         } else {
             System.out.println(doctorRegistrationDTO.toString());
             adminService.registerDoctor(doctorRegistrationDTO);
@@ -105,37 +110,107 @@ public class AdminController {
     }
 
     @PostMapping("/saveSlot")
-    public ModelAndView saveSlotTimings(@Valid SlotTimeDTO slotTimeDTO,BindingResult bindingResult, ModelAndView modelAndView){
-
-        if (bindingResult.hasErrors()){
+    public ModelAndView saveSlotTimings(@Valid SlotTimeDTO slotTimeDTO, BindingResult bindingResult, ModelAndView modelAndView) {
+        if (bindingResult.hasErrors()) {
             List<ObjectError> errors = bindingResult.getAllErrors();
-            for (ObjectError error : errors){
+            List<String> specializations = adminService.getAllSpecializations();
+            for (ObjectError error : errors) {
                 System.out.println(error.getDefaultMessage());
-                modelAndView.addObject("error",error.getDefaultMessage());
+                modelAndView.addObject("specializations", specializations);
+                modelAndView.addObject("error", error.getDefaultMessage());
                 modelAndView.setViewName("SetSlot");
             }
         }
-        LocalTime startTime=LocalTime.parse(slotTimeDTO.getSlotStartTime());
-        LocalTime endTime=LocalTime.parse(slotTimeDTO.getSlotEndTime());
+        LocalTime startTime = LocalTime.parse(slotTimeDTO.getSlotStartTime());
+        LocalTime endTime = LocalTime.parse(slotTimeDTO.getSlotEndTime());
 
-        DateTimeFormatter formatter=DateTimeFormatter.ofPattern("hh:mm a");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a");
         slotTimeDTO.setSlotStartTime(startTime.format(formatter));
         slotTimeDTO.setSlotEndTime(endTime.format(formatter));
-
         adminService.saveSlotTime(slotTimeDTO);
+        List<String> specializations = adminService.getAllSpecializations();
+        modelAndView.addObject("specializations", specializations);
+        modelAndView.addObject("success", "Slot timings saved successfully");
         modelAndView.setViewName("Slots");
         return modelAndView;
     }
 
     @GetMapping("/getBySpecialization")
-    public ModelAndView showDoctorSlotForm(@RequestParam String specialization ,ModelAndView modelAndView){
-        System.out.println("Entered showDoctorSlotForm method "+specialization);
+    public ModelAndView showDoctorSlotForm(@RequestParam String specialization, ModelAndView modelAndView) {
+        List<String> specializations = adminService.getAllSpecializations();
+        modelAndView.addObject("specializations", specializations);
+        List<DoctorRegistrationDTO> doctorRegistrationDTOList = adminService.getDoctorDtoBySpecialization(specialization);
+        List<String> slotTimings = adminService.getAllSlotsBySpecialization(specialization);
+        if (doctorRegistrationDTOList.isEmpty()) {
+            modelAndView.addObject("openDoctorSlotForm", "");
+            modelAndView.addObject("error", "Slots already allocated");
 
-        Map<String, String> values = new HashMap<>();
-        values.put("specialization", specialization);
+        } else {
+            modelAndView.addObject("specialization", specialization);
+            modelAndView.addObject("slotTimings", slotTimings);
+            modelAndView.addObject("openDoctorSlotForm", "found Doctor's");
+            modelAndView.addObject("doctorRegistrationDTOList", doctorRegistrationDTOList);
+        }
 
-        modelAndView.addObject("values", specialization);
         modelAndView.setViewName("Slots");
+        return modelAndView;
+    }
+
+    @PostMapping("/setSpecialization")
+    public ModelAndView addSpecialization(@RequestParam("specialization") String specialization, ModelAndView modelAndView) {
+        System.out.println("Adding specialization: " + specialization);
+
+        if (specialization == null || specialization.trim().isEmpty()) {
+            modelAndView.addObject("error", "Specialization cannot be empty");
+            modelAndView.setViewName("Specialization");
+            return modelAndView;
+        }
+
+        boolean isAdded = adminService.addSpecialization(specialization);
+
+        if (isAdded) {
+            modelAndView.addObject("success", "Specialization added successfully");
+        } else {
+            modelAndView.addObject("error", "Failed to add specialization");
+        }
+
+        modelAndView.setViewName("Specialization");
+        return modelAndView;
+    }
+
+    @RequestMapping("/openSetSlotForm")
+    public ModelAndView openSetSlotPage(ModelAndView modelAndView) {
+        List<String> specializations = adminService.getAllSpecializations();
+        modelAndView.addObject("specializations", specializations);
+        modelAndView.setViewName("SetSlot");
+        return modelAndView;
+    }
+
+    @RequestMapping("/redirectToSlot")
+    public ModelAndView redirectToSlot(ModelAndView modelAndView) {
+        List<String> specializations = adminService.getAllSpecializations();
+        modelAndView.addObject("specializations", specializations);
+        modelAndView.setViewName("Slots");
+        return modelAndView;
+    }
+
+    @PostMapping("/saveDoctorSlots")
+    public ModelAndView saveDoctorSlots(@RequestParam String email, String slotTimings, ModelAndView modelAndView) {
+
+        if (email == null || email.trim().isEmpty() || slotTimings == null || slotTimings.trim().isEmpty()) {
+            modelAndView.addObject("error", "Email and Slot Timings cannot be empty");
+            modelAndView.setViewName("Slots");
+            return modelAndView;
+        }
+
+        boolean result = adminService.saveDoctorSlots(email, slotTimings);
+        if (!result) {
+            modelAndView.addObject("error", "Failed to allocate slots to doctor");
+            modelAndView.setViewName("Slots");
+            return modelAndView;
+        }
+        modelAndView.addObject("Success", "Slots allocated to doctor successfully");
+        modelAndView.setViewName("Admin");
         return modelAndView;
     }
 

@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "slots_info")
 @Data
+@NamedQuery(name = "getAllSlotsBySpecialization", query = "SELECT s FROM SlotTimeEntity s WHERE s.specialization = :specialization")
 public class SlotTimeEntity {
 
     @Id
@@ -19,4 +20,7 @@ public class SlotTimeEntity {
 
     @Column(name = "slot_end_time")
     private String slotEndTime;
+
+    @Column(name = "specialization")
+    private String specialization;
 }

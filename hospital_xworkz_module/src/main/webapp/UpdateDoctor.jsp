@@ -32,7 +32,7 @@
       action="registerDoctor" method="post" enctype="multipart/form-data">
 
     <div class="container d-flex justify-content-center" style="font-family: popins">
-        <h2>Enter doctor details</h2>
+        <h2>Update doctor details</h2>
     </div>
 
     <div style="color:red">${error}</div>
@@ -49,7 +49,7 @@
         <div class="col-md-6 mb-3">
             <label class="form-label" style="font-family:popins">Email</label>
             <input type="email" class="form-control" name="email" id="email" oninput="validateEmail()" maxlength="30"
-                   value=${values.email} >
+                   value=${values.email} readonly>
             <div id="emailError" class="form-text text-danger"></div>
         </div>
 

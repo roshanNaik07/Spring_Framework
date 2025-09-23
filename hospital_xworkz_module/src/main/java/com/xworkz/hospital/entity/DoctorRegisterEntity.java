@@ -12,6 +12,10 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "doctor_details")
+
+@NamedQuery(name = "getAllDoctors", query = "select e from DoctorRegisterEntity e")
+@NamedQuery(name = "getDoctorEntitySpecialization",query = "select e from DoctorRegisterEntity e where e.specialization =: specialization and e.slotTimings is null")
+@NamedQuery(name = "updateDoctorSlots", query = "update DoctorRegisterEntity e set e.slotTimings =: slotTimings where e.email =: email")
 public class DoctorRegisterEntity {
 
     @Id
@@ -38,5 +42,8 @@ public class DoctorRegisterEntity {
 
     @Column(name = "image_name")
     private String imageName;
+
+    @Column(name = "slot_timing")
+    private String slotTimings;
 
 }

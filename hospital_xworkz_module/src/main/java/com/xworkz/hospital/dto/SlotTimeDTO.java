@@ -17,4 +17,6 @@ public class SlotTimeDTO {
     @NotNull(message = "Please select the slot end time")
     private String slotEndTime;
 
+    @NotNull(message = "Please select the specialization")
+    private String specialization;
 }

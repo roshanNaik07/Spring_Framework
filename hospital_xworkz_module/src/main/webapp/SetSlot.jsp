@@ -8,7 +8,6 @@
           integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <%@ page isELIgnored="false" %>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-    <%@ page import="com.xworkz.hospital.constant.Specialization" %>
 </head>
 <body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
@@ -23,6 +22,7 @@
             MedCare
         </a>
         <form class="d-flex">
+            <a href="redirectToSlot" class="btn btn-success me-5">Doctor slots</a>
             <a href="index.jsp" class="btn btn-success me-5">Log out</a>
         </form>
     </div>
@@ -33,9 +33,22 @@
       class="container my-5 border border-success-subtle shadow-lg p-4 rounded border-3"
       style="max-width: 600px;">
 
-    <h3 class="text-center mb-4" style="font-family: Poppins;">Set Slot</h3>
+    <h3 class="text-center mb-4" style="font-family: Poppins;">Set Slots for specialization</h3>
 
     <div class="form-text text-danger">${error}</div>
+
+    <div class="mb-3">
+        <label class="form-label" style="font-family: popins">Specialization</label>
+        <select class="form-select" aria-label="Default select example"
+                name="specialization" style="font-family:popins" required>
+            <option selected disabled>Select specialization</option>
+            <c:forEach var="spec" items="${specializations}">
+                <option value="${spec}" ${selectedSpecialization == spec ? "selected" : ""}>
+                ${spec}
+                </option>
+            </c:forEach>
+        </select>
+    </div>
 
     <div class="mb-3">
         <label class="form-label" style="font-family: Poppins;">Start Time</label>

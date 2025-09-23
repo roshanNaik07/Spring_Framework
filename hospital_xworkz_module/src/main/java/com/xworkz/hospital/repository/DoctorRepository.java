@@ -1,0 +1,13 @@
+package com.xworkz.hospital.repository;
+
+import com.xworkz.hospital.entity.DoctorRegisterEntity;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface DoctorRepository {
+
+    List<DoctorRegisterEntity> getAllDoctors();
+
+}

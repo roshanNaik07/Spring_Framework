@@ -4,7 +4,9 @@ import com.xworkz.hospital.dto.DoctorRegistrationDTO;
 import com.xworkz.hospital.dto.SlotTimeDTO;
 import com.xworkz.hospital.entity.DoctorRegisterEntity;
 import com.xworkz.hospital.entity.SlotTimeEntity;
+import com.xworkz.hospital.entity.SpecializationEntity;
 import com.xworkz.hospital.repository.AdminRepository;
+import jdk.nashorn.internal.runtime.Specialization;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,8 +17,11 @@ import javax.mail.Transport;
 import javax.mail.Session;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.util.Collections;
+import java.util.List;
 import java.util.Properties;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -71,15 +76,70 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public boolean saveSlotTime(SlotTimeDTO slotTimeDTO) {
-        System.out.println("In service"+slotTimeDTO);
+        System.out.println("In service" + slotTimeDTO);
         SlotTimeEntity slotTimeEntity = new SlotTimeEntity();
-        BeanUtils.copyProperties(slotTimeDTO,slotTimeEntity);
+        BeanUtils.copyProperties(slotTimeDTO, slotTimeEntity);
         return adminRepository.saveSlotTime(slotTimeEntity);
     }
 
     @Override
-    public boolean getDoctorBySpecialization(String specialization) {
-        return false;
+    public List<DoctorRegistrationDTO> getDoctorDtoBySpecialization(String specialization) {
+        List<DoctorRegisterEntity> doctorRegisterEntities = adminRepository.getDoctorEntityBySpecialization(specialization);
+        List<DoctorRegistrationDTO> doctorRegistrationDTOS = doctorRegisterEntities.stream().map(entity ->
+                {
+                    DoctorRegistrationDTO dto = new DoctorRegistrationDTO();
+                    BeanUtils.copyProperties(entity, dto);
+                    return dto;
+                }
+        ).collect(Collectors.toList());
+
+        return doctorRegistrationDTOS;
+    }
+
+    @Override
+    public List<String> getAllSlotsBySpecialization(String specialization) {
+        List<SlotTimeEntity> slotTimeEntities = adminRepository.getAllSlotsBySpecialization(specialization);
+
+        List<SlotTimeDTO> slotTimeDTOS = slotTimeEntities.stream().map(entity ->
+                {
+                    SlotTimeDTO dto = new SlotTimeDTO();
+                    BeanUtils.copyProperties(entity, dto);
+                    return dto;
+                }
+        ).collect(Collectors.toList());
+
+        return slotTimeDTOS.stream()
+                .map(dto -> dto.getSlotStartTime() + " - " + dto.getSlotEndTime())
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean addSpecialization(String specialization) {
+
+        if (specialization == null || specialization.trim().isEmpty()) {
+            System.out.println("Specialization is invalid");
+            return false;
+        }
+        try {
+            SpecializationEntity specializationEntity = new SpecializationEntity();
+            specializationEntity.setSpecialization(specialization.trim());
+            adminRepository.addSpecialization(specializationEntity);
+            System.out.println("Specialization added successfully");
+            return true;
+        } catch (Exception e) {
+            System.out.println("Error while adding specialization: " + e.getMessage());
+            return false;
+        }
+    }
+
+    @Override
+    public List<String> getAllSpecializations() {
+        return adminRepository.getAllSpecializations();
+    }
+
+    @Override
+    public boolean saveDoctorSlots(String email, String slots) {
+        return adminRepository.saveDoctorSlots(email,slots);
     }
 
     private void otpEmail(String email, String sub, String body, String otp) {
@@ -119,6 +179,7 @@ public class AdminServiceImpl implements AdminService {
         }
     }
 
+    //@Async
     private void doctorRegistrationMail(String email, String doctorName) {
         final String username = "roshannaik202055@gmail.com";
         final String password = "gnol ugqf btgk zmir";

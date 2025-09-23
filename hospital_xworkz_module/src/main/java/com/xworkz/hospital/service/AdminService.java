@@ -2,6 +2,7 @@ package com.xworkz.hospital.service;
 
 import com.xworkz.hospital.dto.DoctorRegistrationDTO;
 import com.xworkz.hospital.dto.SlotTimeDTO;
+import java.util.List;
 
 public interface AdminService {
 
@@ -15,5 +16,13 @@ public interface AdminService {
 
     boolean saveSlotTime(SlotTimeDTO slotTimeDTO);
 
-    boolean getDoctorBySpecialization(String specialization);
+    List<DoctorRegistrationDTO> getDoctorDtoBySpecialization(String specialization);
+
+    List<String> getAllSlotsBySpecialization(String Specialization);
+
+    boolean addSpecialization(String specialization);
+
+    List<String> getAllSpecializations();
+
+    boolean saveDoctorSlots(String email,String slots);
 }
