@@ -177,7 +177,6 @@ public class AuthenticationController {
         InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
         ServletOutputStream servletOutputStream = response.getOutputStream();
         IOUtils.copy(inputStream,servletOutputStream);
-
         response.flushBuffer();
     }
 
