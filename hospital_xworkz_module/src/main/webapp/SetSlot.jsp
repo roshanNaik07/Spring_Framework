@@ -23,7 +23,7 @@
         </a>
         <form class="d-flex">
             <a href="redirectToSlot" class="btn btn-success me-5">Doctor slots</a>
-            <a href="index.jsp" class="btn btn-success me-5">Log out</a>
+            <a href="logOut" class="btn btn-success me-5">Log out</a>
         </form>
     </div>
 </nav>

@@ -1,6 +1,8 @@
 package com.xworkz.hospital.repository;
 
 import com.xworkz.hospital.entity.DoctorRegisterEntity;
+import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -10,7 +12,8 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 import java.util.Collections;
 import java.util.List;
-
+@ToString
+@Slf4j
 @Repository
 public class DoctorRepositoryImpl implements DoctorRepository {
 
@@ -29,6 +32,7 @@ public class DoctorRepositoryImpl implements DoctorRepository {
             entityTransaction = entityManager.getTransaction();
             entityTransaction.begin();
             doctorRegisterEntities = entityManager.createNamedQuery("getAllDoctors").getResultList();
+            log.info("In repo "+doctorRegisterEntities.toString());
             entityTransaction.commit();
             if (doctorRegisterEntities != null && !doctorRegisterEntities.isEmpty()){
                 return doctorRegisterEntities;
@@ -47,24 +51,12 @@ public class DoctorRepositoryImpl implements DoctorRepository {
     public boolean updateDoctorDetails(DoctorRegisterEntity doctorRegisterEntity) {
         EntityManager entityManager = null;
         EntityTransaction entityTransaction = null;
-        DoctorRegisterEntity fetchedDoctorEntity = null;
+
         try {
             entityManager = entityManagerFactory.createEntityManager();
             entityTransaction = entityManager.getTransaction();
             entityTransaction.begin();
-            Query query = entityManager.createNamedQuery("getDoctorEntityByEmail");
-            query.setParameter("email", doctorRegisterEntity.getEmail());
-
-            fetchedDoctorEntity = (DoctorRegisterEntity) query.getSingleResult();
-
-            fetchedDoctorEntity.setName(doctorRegisterEntity.getName());
-            fetchedDoctorEntity.setPhoneNumber(doctorRegisterEntity.getPhoneNumber());
-            fetchedDoctorEntity.setSpecialization(doctorRegisterEntity.getSpecialization());
-            fetchedDoctorEntity.setExperience(doctorRegisterEntity.getExperience());
-            fetchedDoctorEntity.setQualification(doctorRegisterEntity.getQualification());
-            fetchedDoctorEntity.setImageName(doctorRegisterEntity.getImageName());
-
-            entityManager.merge(fetchedDoctorEntity);
+            entityManager.merge(doctorRegisterEntity);
             entityTransaction.commit();
             return true;
         }catch (Exception e) {
@@ -101,4 +93,30 @@ public class DoctorRepositoryImpl implements DoctorRepository {
         }
         return false;
     }
+
+    @Override
+    public DoctorRegisterEntity getDoctorByEmail(String email) {
+        EntityManager entityManager = null;
+        EntityTransaction entityTransaction = null;
+        DoctorRegisterEntity fetchedDoctorEntity = null;
+        try {
+            entityManager = entityManagerFactory.createEntityManager();
+            entityTransaction = entityManager.getTransaction();
+            entityTransaction.begin();
+            Query query = entityManager.createNamedQuery("getDoctorEntityByEmail");
+            query.setParameter("email", email);
+
+            fetchedDoctorEntity = (DoctorRegisterEntity) query.getSingleResult();
+            entityTransaction.commit();
+            if (fetchedDoctorEntity != null) {
+                return fetchedDoctorEntity;
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            entityManager.close();
+        }
+        return null;
+    }
+
 }

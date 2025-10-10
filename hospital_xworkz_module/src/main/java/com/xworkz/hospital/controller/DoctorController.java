@@ -3,6 +3,7 @@ package com.xworkz.hospital.controller;
 import com.xworkz.hospital.dto.DoctorRegistrationDTO;
 import com.xworkz.hospital.service.AdminService;
 import com.xworkz.hospital.service.DoctorService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,13 +20,11 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 @Controller
 @RequestMapping("/")
+@Slf4j
 public class DoctorController {
 
     @Autowired
@@ -35,7 +34,7 @@ public class DoctorController {
     AdminService adminService;
 
     public DoctorController() {
-        System.out.println("No arg const of DoctorController");
+        log.info("No arg const of DoctorController");
     }
 
     @GetMapping("/getAllDotors")
@@ -58,17 +57,11 @@ public class DoctorController {
     @PostMapping("/updateDoctorDetails")
     public ModelAndView updateDoctorDetails(@RequestParam("image") MultipartFile multipartFile, @Valid DoctorRegistrationDTO doctorRegistrationDTO, BindingResult bindingResult, ModelAndView modelAndView) throws IOException {
 
-        byte[] bytes = multipartFile.getBytes();
-        Path path = Paths.get("D:\\Hospital\\" + doctorRegistrationDTO.getName() + System.currentTimeMillis() + ".jpg");
-        Files.write(path, bytes);
-        String imageName = path.getFileName().toString();
-        doctorRegistrationDTO.setImageName(imageName);
-
         List<String> specializations = adminService.getAllSpecializations();
         if (bindingResult.hasErrors()) {
             List<ObjectError> errors = bindingResult.getAllErrors();
             for (ObjectError error : errors) {
-                System.out.println(error.getDefaultMessage());
+                log.info(error.getDefaultMessage());
                 modelAndView.addObject("error", error.getDefaultMessage());
                 modelAndView.addObject("specializations", specializations);
                 modelAndView.addObject("values", doctorRegistrationDTO);
@@ -80,10 +73,11 @@ public class DoctorController {
             modelAndView.addObject("values", doctorRegistrationDTO);
             modelAndView.setViewName("UpdateDoctor");
         } else {
-            boolean saved = doctorService.updateDoctorDetails(doctorRegistrationDTO);
+            boolean saved = doctorService.updateDoctorDetails(doctorRegistrationDTO,multipartFile);
             if (saved) {
-                modelAndView.addObject("success", "Doctor details updated successfully");
-                modelAndView.setViewName("Admin");
+                List<DoctorRegistrationDTO> doctorRegistrationDTOS = doctorService.getAllDoctors();
+                modelAndView.addObject("doctors", doctorRegistrationDTOS);
+                modelAndView.setViewName("Doctors");
             } else {
                 modelAndView.addObject("error", "Failed to update doctor details");
                 modelAndView.addObject("specializations", specializations);

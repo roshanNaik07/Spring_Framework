@@ -23,7 +23,7 @@
         </a>
         <form class="d-flex">
             <a href="Admin.jsp" class="btn btn-success me-5">Dashboard</a>
-            <a href="index.jsp" class="btn btn-success me-5">Log out</a>
+            <a href="logOut" class="btn btn-success me-5">Log out</a>
         </form>
     </div>
 </nav>
@@ -34,7 +34,9 @@
     <div class="container d-flex justify-content-center" style="font-family: popins">
         <h2>Update doctor details</h2>
     </div>
-
+    <div>
+        <img src="download?fileName=${values.imageName}" width="135" height="100">
+    </div>
     <div style="color:red">${error}</div>
     <div style="color:green">${success}</div>
 

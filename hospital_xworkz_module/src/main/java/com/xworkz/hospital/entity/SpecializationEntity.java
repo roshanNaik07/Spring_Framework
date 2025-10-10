@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Table(name = "specializations")
 @Data
 @NamedQuery(name = "getAllSpecializations", query = "SELECT s.specialization FROM SpecializationEntity s")
-public class SpecializationEntity {
+public class SpecializationEntity extends AuditEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

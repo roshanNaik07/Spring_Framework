@@ -3,21 +3,21 @@ package com.xworkz.hospital.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
-
 @Entity
 @Table(name = "doctor_details")
 
 @NamedQuery(name = "getAllDoctors", query = "select e from DoctorRegisterEntity e")
 @NamedQuery(name = "getDoctorEntityByEmail", query = "select e from DoctorRegisterEntity e where e.email =: email")
-@NamedQuery(name = "getDoctorEntitySpecialization",query = "select e from DoctorRegisterEntity e where e.specialization =: specialization and e.slotTimings is null")
-@NamedQuery(name = "updateDoctorSlots", query = "update DoctorRegisterEntity e set e.slotTimings =: slotTimings where e.email =: email")
-public class DoctorRegisterEntity {
+@NamedQuery(name = "getDoctorEntitySpecialization",query = "select e from DoctorRegisterEntity e where e.specialization =: specialization")
+public class DoctorRegisterEntity extends AuditEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +26,7 @@ public class DoctorRegisterEntity {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "email")
+    @Column(name = "email",unique = true)
     private String email;
 
     @Column(name = "specialization")
@@ -41,10 +41,10 @@ public class DoctorRegisterEntity {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @Column(name = "image_name")
-    private String imageName;
+    @OneToOne(mappedBy = "doctor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private DoctorImageInfoEntity doctorImageInfo;
 
-    @Column(name = "slot_timing")
-    private String slotTimings;
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<DoctorTimeSlotEntity> slots = new ArrayList<>();
 
 }

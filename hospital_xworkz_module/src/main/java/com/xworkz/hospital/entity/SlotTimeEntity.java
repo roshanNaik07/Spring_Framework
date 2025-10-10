@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 @Table(name = "slots_info")
 @Data
 @NamedQuery(name = "getAllSlotsBySpecialization", query = "SELECT s FROM SlotTimeEntity s WHERE s.specialization = :specialization")
-public class SlotTimeEntity {
+public class SlotTimeEntity extends AuditEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

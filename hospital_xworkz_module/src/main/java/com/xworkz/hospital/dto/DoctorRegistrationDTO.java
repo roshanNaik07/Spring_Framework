@@ -14,12 +14,17 @@ import javax.validation.constraints.*;
 
 public class DoctorRegistrationDTO {
 
+    private int id;
+
     @NotNull(message = "Name can not be empty")
     @Size(min = 3, max = 30, message = "name should be between 3 to 30 characters")
     private String name;
 
-    @NotNull(message = "email cannot be empty")
-    @Pattern(regexp = "^[A-Za-z0-9._%+-]+@gmail\\.com$", message = "Enter a valid email ending with @gmail.com.")
+    @NotNull(message = "Email cannot be empty")
+    @Pattern(
+            regexp = "^[A-Za-z0-9](\\.?[A-Za-z0-9_-])*@[A-Za-z0-9-]+(\\.[A-Za-z]{2,})+$",
+            message = "Enter a valid email"
+    )
     private String email;
 
     @NotNull(message = "Please select specialization")

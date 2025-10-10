@@ -23,7 +23,7 @@
         </a>
         <form class="d-flex">
             <a href="Admin.jsp" class="btn btn-success me-5">Dashboard</a>
-            <a href="index.jsp" class="btn btn-success me-5">Log out</a>
+            <a href="logOut" class="btn btn-success me-5">Log out</a>
         </form>
     </div>
 </nav>
@@ -86,7 +86,7 @@
                             <div class="modal-content shadow-lg border-0 rounded-2" style="font-family: Poppins;">
                                 <div class="modal-header bg-success text-white rounded-top-2 justify-content-center">
                                     <h5 class="modal-title text-center w-100 fs-2">Confirm Delete</h5>
-                                    <button type="button" class="btn-close btn-close-white position-absolute end-0 me-3"
+                                    <button type="button" class="btn-close btn-close-white position-absolute end-0 me-4"
                                             data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body text-center">

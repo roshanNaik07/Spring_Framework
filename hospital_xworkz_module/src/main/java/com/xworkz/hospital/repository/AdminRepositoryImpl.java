@@ -1,21 +1,21 @@
 package com.xworkz.hospital.repository;
 
-import com.xworkz.hospital.dto.SlotTimeDTO;
 import com.xworkz.hospital.entity.DoctorRegisterEntity;
+import com.xworkz.hospital.entity.DoctorTimeSlotEntity;
 import com.xworkz.hospital.entity.SlotTimeEntity;
 import com.xworkz.hospital.entity.SpecializationEntity;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 @Repository
+@Slf4j
 public class AdminRepositoryImpl implements AdminRepository {
 
     @Autowired
@@ -23,9 +23,6 @@ public class AdminRepositoryImpl implements AdminRepository {
 
     @Override
     public String sendOTP(String email) {
-
-        System.out.println("Running sendOTP in AuthenticationRepositoryImpl");
-        System.out.println(email);
 
         EntityManager entityManager = null;
         EntityTransaction entityTransaction = null;
@@ -36,7 +33,7 @@ public class AdminRepositoryImpl implements AdminRepository {
             entityTransaction.begin();
             Query query = entityManager.createNamedQuery("getAdminEmail");
             query.setParameter("email", email);
-            System.out.println("Query executed");
+            log.info("Query executed");
             adminEmail = (String) query.getSingleResult();
             if (adminEmail.isEmpty()) {
                 return null;
@@ -58,9 +55,7 @@ public class AdminRepositoryImpl implements AdminRepository {
 
     @Override
     public boolean checkEmail(String email) {
-        System.out.println("Running checkEmail in AuthenticationRepositoryImpl");
-        System.out.println(email);
-
+        log.info("Running checkEmail in repo "+email);
         EntityManager entityManager = null;
         EntityTransaction entityTransaction = null;
         String adminEmail;
@@ -70,7 +65,7 @@ public class AdminRepositoryImpl implements AdminRepository {
             entityTransaction.begin();
             Query query = entityManager.createNamedQuery("getAdminEmail");
             query.setParameter("email", email);
-            System.out.println("Query executed");
+            log.info("Query executed");
             adminEmail = (String) query.getSingleResult();
             if (adminEmail.isEmpty()) {
                 return false;
@@ -94,7 +89,7 @@ public class AdminRepositoryImpl implements AdminRepository {
     @Override
     public boolean registerDoctor(DoctorRegisterEntity doctorRegisterEntity) {
 
-        System.out.println("In repo" + doctorRegisterEntity);
+        log.info("In repo" + doctorRegisterEntity);
         EntityManager entityManager = null;
         EntityTransaction entityTransaction = null;
 
@@ -125,7 +120,7 @@ public class AdminRepositoryImpl implements AdminRepository {
     @Override
     public boolean saveSlotTime(SlotTimeEntity slotTimeEntity) {
 
-        System.out.println("Running saveSlotTime " + slotTimeEntity);
+        log.info("Running saveSlotTime " + slotTimeEntity);
         EntityManager entityManager = null;
         EntityTransaction entityTransaction = null;
 
@@ -157,7 +152,7 @@ public class AdminRepositoryImpl implements AdminRepository {
     public List<DoctorRegisterEntity> getDoctorEntityBySpecialization(String specialization) {
         EntityManager entityManager = null;
         EntityTransaction entityTransaction = null;
-        List<DoctorRegisterEntity> doctorRegisterEntities= null;
+        List<DoctorRegisterEntity> doctorRegisterEntities = null;
         try {
 
             entityManager = entityManagerFactory.createEntityManager();
@@ -199,7 +194,7 @@ public class AdminRepositoryImpl implements AdminRepository {
             entityManager.persist(specializationEntity);
 
             transaction.commit();
-            System.out.println("Specialization saved successfully");
+            log.info("Specialization saved successfully");
         } catch (Exception e) {
             if (transaction != null && transaction.isActive()) {
                 transaction.rollback();
@@ -214,33 +209,33 @@ public class AdminRepositoryImpl implements AdminRepository {
 
     @Override
     public List<String> getAllSpecializations() {
-            EntityManager entityManager = null;
-            EntityTransaction entityTransaction = null;
-            List<String> specializationList ;
-            try {
+        EntityManager entityManager = null;
+        EntityTransaction entityTransaction = null;
+        List<String> specializationList;
+        try {
 
-                entityManager = entityManagerFactory.createEntityManager();
-                entityTransaction = entityManager.getTransaction();
-                entityTransaction.begin();
+            entityManager = entityManagerFactory.createEntityManager();
+            entityTransaction = entityManager.getTransaction();
+            entityTransaction.begin();
 
-                Query query = entityManager.createNamedQuery("getAllSpecializations");
-                specializationList = query.getResultList();
-                if (specializationList.isEmpty()) {
-                    return Collections.emptyList();
-                }
-                entityTransaction.commit();
-                return specializationList;
-
-            } catch (Exception e) {
-
-                if (entityTransaction.isActive()) {
-                    entityTransaction.rollback();
-                }
-                e.printStackTrace();
-
-            } finally {
-                entityManager.close();
+            Query query = entityManager.createNamedQuery("getAllSpecializations");
+            specializationList = query.getResultList();
+            if (specializationList.isEmpty()) {
+                return Collections.emptyList();
             }
+            entityTransaction.commit();
+            return specializationList;
+
+        } catch (Exception e) {
+
+            if (entityTransaction.isActive()) {
+                entityTransaction.rollback();
+            }
+            e.printStackTrace();
+
+        } finally {
+            entityManager.close();
+        }
         return Collections.emptyList();
     }
 
@@ -264,7 +259,7 @@ public class AdminRepositoryImpl implements AdminRepository {
             entityTransaction.commit();
 
             for (SlotTimeEntity entity : slotTimeEntities) {
-                System.out.println(entity);
+                log.info(String.valueOf(entity));
             }
 
             return slotTimeEntities;
@@ -293,19 +288,23 @@ public class AdminRepositoryImpl implements AdminRepository {
             entityTransaction = entityManager.getTransaction();
             entityTransaction.begin();
 
-            Query query = entityManager.createNamedQuery("updateDoctorSlots");
-            query.setParameter("slotTimings", slots);
-            query.setParameter("email", email);
-            int updatedCount = query.executeUpdate();
-            if (updatedCount > 0) {
-                System.out.println("Doctor slots updated successfully for email: " + email);
-                entityTransaction.commit();
-                return true;
-            } else {
-                System.out.println("No doctor found with email: " + email);
-                entityTransaction.rollback();
+            DoctorRegisterEntity doctorRegisterEntity = entityManager
+                    .createNamedQuery("getDoctorEntityByEmail", DoctorRegisterEntity.class)
+                    .setParameter("email", email)
+                    .getSingleResult();
+
+            if (doctorRegisterEntity == null) {
                 return false;
             }
+
+            DoctorTimeSlotEntity doctorTimeSlotEntity = new DoctorTimeSlotEntity();
+            doctorTimeSlotEntity.setSlotTimings(slots);
+            doctorTimeSlotEntity.setDoctor(doctorRegisterEntity);
+
+            entityManager.persist(doctorTimeSlotEntity);
+
+            entityTransaction.commit();
+            return true;
 
         } catch (Exception e) {
 
@@ -320,4 +319,40 @@ public class AdminRepositoryImpl implements AdminRepository {
         }
         return false;
     }
+
+    @Override
+    public List<DoctorTimeSlotEntity> getDoctorTimeSlotEntitiesById(int id) {
+        log.info("In repo getDoctorSlotsById " + id);
+        EntityManager entityManager = null;
+        EntityTransaction entityTransaction = null;
+        List<DoctorTimeSlotEntity> doctorTimeSlotEntities;
+        try {
+            entityManager = entityManagerFactory.createEntityManager();
+            entityTransaction = entityManager.getTransaction();
+            entityTransaction.begin();
+
+            Query query = entityManager.createNamedQuery("getDoctorSlotEntitiesById");
+            query.setParameter("id",id);
+            doctorTimeSlotEntities = query.getResultList();
+            if (doctorTimeSlotEntities.isEmpty()) {
+                return Collections.emptyList();
+            }
+            log.info("Doctor slots found: " + doctorTimeSlotEntities);
+            entityTransaction.commit();
+            return doctorTimeSlotEntities;
+
+        } catch (Exception e) {
+
+            if (entityTransaction.isActive()) {
+                entityTransaction.rollback();
+            }
+            e.printStackTrace();
+
+        } finally {
+            entityManager.close();
+        }
+        return Collections.emptyList();
+    }
+
+
 }

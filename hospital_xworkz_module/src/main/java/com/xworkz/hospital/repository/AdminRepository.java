@@ -2,6 +2,7 @@ package com.xworkz.hospital.repository;
 
 import com.xworkz.hospital.dto.SlotTimeDTO;
 import com.xworkz.hospital.entity.DoctorRegisterEntity;
+import com.xworkz.hospital.entity.DoctorTimeSlotEntity;
 import com.xworkz.hospital.entity.SlotTimeEntity;
 import com.xworkz.hospital.entity.SpecializationEntity;
 
@@ -26,4 +27,6 @@ public interface AdminRepository {
     List<SlotTimeEntity> getAllSlotsBySpecialization(String Specialization);
 
     boolean saveDoctorSlots(String email,String slots);
+
+    List<DoctorTimeSlotEntity> getDoctorTimeSlotEntitiesById(int id);
 }

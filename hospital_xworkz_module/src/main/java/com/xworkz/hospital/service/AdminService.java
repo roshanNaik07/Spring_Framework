@@ -1,7 +1,11 @@
 package com.xworkz.hospital.service;
 
 import com.xworkz.hospital.dto.DoctorRegistrationDTO;
+import com.xworkz.hospital.dto.DoctorTimeSlotDTO;
 import com.xworkz.hospital.dto.SlotTimeDTO;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 import java.util.List;
 
 public interface AdminService {
@@ -12,7 +16,7 @@ public interface AdminService {
 
     boolean checkEmail(String email);
 
-    boolean registerDoctor(DoctorRegistrationDTO doctorRegistrationDTO);
+    boolean registerDoctor(DoctorRegistrationDTO doctorRegistrationDTO, MultipartFile multipartFile) throws IOException;
 
     boolean saveSlotTime(SlotTimeDTO slotTimeDTO);
 
@@ -25,4 +29,6 @@ public interface AdminService {
     List<String> getAllSpecializations();
 
     boolean saveDoctorSlots(String email,String slots);
+
+    List<DoctorTimeSlotDTO> getDoctorTimeSlotDtoById(int id);
 }

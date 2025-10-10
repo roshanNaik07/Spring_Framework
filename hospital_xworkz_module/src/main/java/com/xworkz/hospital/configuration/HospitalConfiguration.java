@@ -1,5 +1,6 @@
 package com.xworkz.hospital.configuration;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -13,14 +14,16 @@ import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.sql.DataSource;
+import java.util.Properties;
 
 @Configuration
 @ComponentScan(basePackages = "com.xworkz.hospital")
 @EnableWebMvc
+@Slf4j
 public class HospitalConfiguration implements WebMvcConfigurer {
 
     public HospitalConfiguration() {
-        System.out.println("No arg const of HospitalConfiguration");
+        log.info("No arg const of HospitalConfiguration");
     }
 
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configure) {
@@ -32,17 +35,24 @@ public class HospitalConfiguration implements WebMvcConfigurer {
     }
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean localContainerEntityManagerFactoryBean(){
+    public LocalContainerEntityManagerFactoryBean localContainerEntityManagerFactoryBean() {
 
         LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
         factoryBean.setDataSource(dataSource());
         factoryBean.setPackagesToScan("com.xworkz.hospital.entity");
         factoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 
+        Properties jpaProperties = new Properties();
+        jpaProperties.setProperty("hibernate.hbm2ddl.auto", "update");
+        jpaProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
+        jpaProperties.setProperty("hibernate.show_sql", "true");
+        jpaProperties.setProperty("hibernate.format_sql", "true");
+        factoryBean.setJpaProperties(jpaProperties);
+
         return factoryBean;
     }
 
-    public DataSource dataSource(){
+    public DataSource dataSource() {
 
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
@@ -60,6 +70,6 @@ public class HospitalConfiguration implements WebMvcConfigurer {
         commonsMultipartResolver.setMaxUploadSize(1048576);
         commonsMultipartResolver.setMaxInMemorySize(1048576);
         return commonsMultipartResolver;
-
     }
+
 }

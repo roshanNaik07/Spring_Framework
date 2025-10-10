@@ -1,5 +1,6 @@
 package com.xworkz.hospital.repository;
 
+import com.xworkz.hospital.entity.DoctorImageInfoEntity;
 import com.xworkz.hospital.entity.DoctorRegisterEntity;
 import org.springframework.stereotype.Repository;
 
@@ -13,4 +14,6 @@ public interface DoctorRepository {
     boolean updateDoctorDetails(DoctorRegisterEntity doctorRegisterEntity);
 
     boolean deleteDoctorByEmail(String email);
+
+    DoctorRegisterEntity getDoctorByEmail(String email);
 }

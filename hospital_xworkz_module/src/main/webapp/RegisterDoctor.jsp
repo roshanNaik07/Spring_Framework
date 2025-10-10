@@ -23,7 +23,7 @@
         </a>
         <form class="d-flex">
             <a href="Admin.jsp" class="btn btn-success me-5">Dashboard</a>
-            <a href="index.jsp" class="btn btn-success me-5">Log out</a>
+            <a href="logOut" class="btn btn-success me-5">Log out</a>
         </form>
     </div>
 </nav>
@@ -49,7 +49,7 @@
         <div class="col-md-6 mb-3">
             <label class="form-label" style="font-family:popins">Email</label>
             <input type="email" class="form-control" name="email" id="email" oninput="validateEmail()" maxlength="30"
-                   value=${values.email} >
+                   value="${values.email}" >
             <div id="emailError" class="form-text text-danger"></div>
         </div>
 
@@ -59,8 +59,8 @@
 
         <div class="col-md-6 mb-3">
             <label class="form-label" style="font-family: popins">Specialization</label>
-            <select class="form-select" aria-label="Default select example"
-                    name="specialization" style="font-family:popins" required>
+            <select class="form-select" aria-label="Default select example" id="specialization"
+                    name="specialization" oninput="validateSpecialization()" style="font-family:popins" required>
                 <option selected disabled>Select specialization</option>
                 <c:forEach var="spec" items="${specializations}">
                     <option value="${spec}" ${selectedSpecialization == spec ? "selected" : ""}>
@@ -87,7 +87,7 @@
         <div class="col-md-6 mb-3">
             <label class="form-label" style="font-family:popins">Years of Experience</label>
             <input type="text" class="form-control" name="experience" id="experience" oninput="validateExperience()"
-                   maxlength="2" value=${values.experience}>
+                   maxlength="2" value="${values.experience}" required>
             <div id="experienceError" class="form-text text-danger"></div>
         </div>
 

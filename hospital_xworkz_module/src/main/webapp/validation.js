@@ -26,9 +26,9 @@ function validateEmail(){
     let emailInput = document.getElementById("email").value;
     let emailError = document.getElementById("emailError");
 
-    let regex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+   let regex = /^[A-Za-z0-9](\.?[A-Za-z0-9_-])*@[A-Za-z0-9-]+(\.[A-Za-z]{2,})+$/;
     if(!regex.test(emailInput)){
-        emailError.textContent = "Enter a valid email ending with @gmail.com.";
+        emailError.textContent = "Enter a valid email";
     }else{
         emailError.textContent = "";
     }
@@ -43,6 +43,7 @@ function validateExperience(){
     if(experienceInput.value == 0 ){
         experienceError.textContent = "Experience cannot be '0' ";
     }else if(experienceInput.value > 40){
+        experienceInput.value = "";
         experienceError.textContent = "Experience cannot be greater than 40";
     }else{
         experienceError.textContent = "";
@@ -73,3 +74,44 @@ function qualificationValidation() {
         qualificationError.textContent = "";
     }
 }
+
+function validateAge(){
+     let ageInput = document.getElementById("age");
+     let ageError = document.getElementById("ageError");
+
+     ageInput.value = ageInput.value.replace( /[^0-9]/g, '');
+
+     if(ageInput.value == 0 ){
+         ageError.textContent = "age cannot be '0' ";
+     }else if(ageInput.value > 120){
+         ageInput.value = "";
+         ageError.textContent = "age cannot be greater than 120";
+     }else{
+         ageError.textContent = "";
+     }
+}
+
+function validateAddress(){
+    let addressInput = document.getElementById("addressId");
+    let addressError = document.getElementById("addressErrorId");
+
+    if(addressInput.value.length < 10 || addressInput.value.length > 200) {
+        addressError.textContent = "Address should be between 10-200 characters";
+    }else{
+        addressError.textContent = "";
+    }
+}
+
+function validateSymptoms(){
+    let symptomsInput = document.getElementById("symptomsId");
+    let symptomsError = document.getElementById("symptomsErrorId");
+
+    if(symptomsInput.value.length < 10 || symptomsInput.value.length > 400) {
+        symptomsError.textContent = "Symptoms should be between 10-400 characters";
+    }else{
+        symptomsError.textContent = "";
+    }
+}
+
+
+

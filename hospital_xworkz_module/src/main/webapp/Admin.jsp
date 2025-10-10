@@ -35,7 +35,9 @@
         </a>
 
         <div class="ms-auto d-flex">
-            <a href="getAllDotors" class="btn btn-success me-5">Doctors</a>
+            <a href="getAllPatients" class="btn btn-success me-3">Patients</a>
+
+            <a href="getAllDotors" class="btn btn-success me-3">Doctors</a>
 
             <div class="dropdown ms-auto">
                 <button class="btn btn-success dropdown-toggle px-5" type="button" id="dropdownMenuButton"
@@ -43,19 +45,21 @@
                     &#9776; Menu
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end px-2" aria-labelledby="dropdownMenuButton">
-                    <li><a class="dropdown-item custom-success my-2 w-100" href="Specialization.jsp">Set
-                        Specialization</a></li>
                     <li><a class="dropdown-item custom-success my-2 w-100" href="openDoctorRegisterPage">Register
                         Doctor</a></li>
+                    <li><a class="dropdown-item custom-success my-2 w-100" href="openPatientRegisterPage">Register
+                        Patient</a></li>
                     <li><a class="dropdown-item custom-success my-2 w-100" href="openSlot">Slots</a></li>
-                    <li><a class="dropdown-item custom-success w-100" href="index.jsp">Log out</a></li>
+                    <li><a class="dropdown-item custom-success my-2 w-100" href="Specialization.jsp">Set
+                        Specialization</a></li>
+                    <li><a class="dropdown-item custom-success w-100" href="logOut">Log out</a></li>
                 </ul>
             </div>
         </div>
     </div>
 </nav>
 
- <h3 class="display-6 text-center mt-5 text-success">${success}</h3>
-
+<h3 class="display-6 text-center mt-5 text-success">${success}</h3>
+<h3 class="display-6 text-center mt-5 text-danger">${error}</h3>
 </body>
 </html>

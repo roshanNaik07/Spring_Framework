@@ -24,12 +24,13 @@
         <form class="d-flex">
             <a href="openSetSlotForm" class="btn btn-success me-5">Set Slot</a>
             <a href="Admin.jsp" class="btn btn-success me-5">Dashboard</a>
-            <a href="index.jsp" class="btn btn-success me-5">Log out</a>
+            <a href="logOut" class="btn btn-success me-5">Log out</a>
         </form>
     </div>
 </nav>
 
 <h1 class="text-center mb-4" style="font-family: Poppins;">Set Doctor's Slots</h1>
+<div class="text-center form-text text-danger mb-1">${error}</div>
 <div class="text-center form-text text-success mb-1">${success}</div>
 <form action="getBySpecialization" method="get"
       class="container  border border-success-subtle shadow-lg p-4 rounded border-3"
@@ -66,11 +67,13 @@
         <div class="row">
             <div class="col-md-6 mb-3">
                 <b><label class="form-label px-2" style="font-family:popins">Doctor Name</label></b>
-                <select class="form-select" aria-label="Default select example" id="doctorNameWithEmail"
-                        name="email" style="font-family:popins" required onchange="getEmail()">
+                <select class="form-select" id="doctorNameSelect"
+                        name="doctorName" style="font-family:popins" required onchange="setDoctorEmail()">
                     <option disabled selected value="">Select Doctor</option>
                     <c:forEach var="doctor" items="${doctorRegistrationDTOList}">
-                        <option value="${doctor.email}">${doctor.name}</option>
+                        <option value="${doctor.name}" data-email="${doctor.email}">
+                            ${doctor.name}
+                        </option>
                     </c:forEach>
                 </select>
             </div>
@@ -92,6 +95,7 @@
         <div class="row">
             <div class="col-md-6 mb-3">
                 <b><label class="form-label px-2" style="font-family:popins">Doctor Email</label></b>
+                <input type="hidden" id="doctorEmailHidden" name="email">
                 <input type="text" class="form-control bg-secondary-subtle" id="doctorEmailInput" readonly
                        style="font-family:popins">
             </div>
@@ -100,7 +104,6 @@
                 <b><label class="form-label px-2" style="font-family:popins">Specialization</label></b>
                 <input type="text" class="form-control bg-secondary-subtle" name="specialization"
                        value="${specialization}" readonly style="font-family:popins">
-
             </div>
         </div>
 
@@ -112,10 +115,14 @@
 </c:if>
 
 <SCRIPT>
-    function getEmail(){
-        let doctorSelect = document.getElementById("doctorNameWithEmail");
-        let selectedEmail = doctorSelect.value;
-        document.getElementById("doctorEmailInput").value = selectedEmail;
+    function setDoctorEmail(){
+        let select = document.getElementById("doctorNameSelect");
+        let selectedOption = select.options[select.selectedIndex];
+        let email = selectedOption.getAttribute("data-email");
+
+        document.getElementById("doctorEmailHidden").value = email;
+
+        document.getElementById("doctorEmailInput").value = email;
     }
 </SCRIPT>
 

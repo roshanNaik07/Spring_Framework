@@ -1,15 +1,15 @@
 package com.xworkz.hospital.service;
 
 import com.xworkz.hospital.dto.DoctorRegistrationDTO;
+import com.xworkz.hospital.dto.DoctorTimeSlotDTO;
 import com.xworkz.hospital.dto.SlotTimeDTO;
-import com.xworkz.hospital.entity.DoctorRegisterEntity;
-import com.xworkz.hospital.entity.SlotTimeEntity;
-import com.xworkz.hospital.entity.SpecializationEntity;
+import com.xworkz.hospital.entity.*;
 import com.xworkz.hospital.repository.AdminRepository;
-import jdk.nashorn.internal.runtime.Specialization;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.Message;
 import javax.mail.PasswordAuthentication;
@@ -17,6 +17,10 @@ import javax.mail.Transport;
 import javax.mail.Session;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
@@ -24,6 +28,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class AdminServiceImpl implements AdminService {
 
     @Autowired
@@ -34,18 +39,18 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public boolean sendOTP(String email) {
 
-        System.out.println("Running sendOTP in adminServiceImpl");
+        log.info("In service email is: " + email);
 
         String adminEmail = adminRepository.sendOTP(email);
         if (adminEmail == null) {
             return false;
         } else if (adminEmail.equals(email)) {
-            System.out.println("Email found");
+            log.info("Email found");
             Random random = new Random();
             int number = 100000 + random.nextInt(900000);
             otp = String.valueOf(number);
             otpEmail(email, "Login OTP", "otp is : ", otp);
-            System.out.println("The OTP is: " + otp);
+            log.info("The OTP is: " + otp);
             return true;
         }
         return false;
@@ -66,18 +71,31 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public boolean registerDoctor(DoctorRegistrationDTO doctorRegistrationDTO) {
+    public boolean registerDoctor(DoctorRegistrationDTO doctorRegistrationDTO , MultipartFile multipartFile) throws IOException {
+
+        byte[] bytes = multipartFile.getBytes();
+        Path path = Paths.get("D:\\Hospital\\" + doctorRegistrationDTO.getName() + System.currentTimeMillis() + ".jpg");
+        Files.write(path, bytes);
 
         DoctorRegisterEntity doctorRegisterEntity = new DoctorRegisterEntity();
         BeanUtils.copyProperties(doctorRegistrationDTO, doctorRegisterEntity);
-        doctorRegisterEntity.setName(doctorRegistrationDTO.getName());
+
+        DoctorImageInfoEntity image = new DoctorImageInfoEntity();
+        image.setImageName(path.getFileName().toString());
+        image.setOriginalImageName(multipartFile.getOriginalFilename());
+        image.setImageSize(multipartFile.getSize());
+        image.setImagePath(path.toString());
+
+        image.setDoctor(doctorRegisterEntity);
+        doctorRegisterEntity.setDoctorImageInfo(image);
+
         doctorRegistrationMail(doctorRegisterEntity.getEmail(), doctorRegisterEntity.getName());
         return adminRepository.registerDoctor(doctorRegisterEntity);
     }
 
     @Override
     public boolean saveSlotTime(SlotTimeDTO slotTimeDTO) {
-        System.out.println("In service" + slotTimeDTO);
+        log.info("In service" + slotTimeDTO);
         SlotTimeEntity slotTimeEntity = new SlotTimeEntity();
         BeanUtils.copyProperties(slotTimeDTO, slotTimeEntity);
         return adminRepository.saveSlotTime(slotTimeEntity);
@@ -118,17 +136,17 @@ public class AdminServiceImpl implements AdminService {
     public boolean addSpecialization(String specialization) {
 
         if (specialization == null || specialization.trim().isEmpty()) {
-            System.out.println("Specialization is invalid");
+            log.info("Specialization is invalid");
             return false;
         }
         try {
             SpecializationEntity specializationEntity = new SpecializationEntity();
             specializationEntity.setSpecialization(specialization.trim());
             adminRepository.addSpecialization(specializationEntity);
-            System.out.println("Specialization added successfully");
+            log.info("Specialization added successfully");
             return true;
         } catch (Exception e) {
-            System.out.println("Error while adding specialization: " + e.getMessage());
+            log.info("Error while adding specialization: " + e.getMessage());
             return false;
         }
     }
@@ -142,6 +160,23 @@ public class AdminServiceImpl implements AdminService {
     public boolean saveDoctorSlots(String email, String slots) {
         return adminRepository.saveDoctorSlots(email,slots);
     }
+
+    @Override
+    public List<DoctorTimeSlotDTO> getDoctorTimeSlotDtoById(int id) {
+        log.info("Running getDoctorTimeSlotDtoById in service"+id);
+        List<DoctorTimeSlotEntity> doctorTimeSlotEntities = adminRepository.getDoctorTimeSlotEntitiesById(id);
+        List<DoctorTimeSlotDTO> doctorTimeSlotDTOS = doctorTimeSlotEntities.stream().map(entity -> {
+            DoctorTimeSlotDTO dto = new DoctorTimeSlotDTO();
+            BeanUtils.copyProperties(entity,dto);
+            return dto;
+        }).collect(Collectors.toList());
+        if(!doctorTimeSlotDTOS.isEmpty())
+            return doctorTimeSlotDTOS;
+
+        log.info("In service"+doctorTimeSlotDTOS);
+        return Collections.emptyList();
+    }
+
 
     private void otpEmail(String email, String sub, String body, String otp) {
         final String username = "roshannaik202055@gmail.com";
@@ -173,7 +208,7 @@ public class AdminServiceImpl implements AdminService {
 
             Transport.send(message);
 
-            System.out.println("Done");
+            log.info("Done");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -218,7 +253,7 @@ public class AdminServiceImpl implements AdminService {
 
             Transport.send(message);
 
-            System.out.println("Registration mail sent");
+            log.info("Registration mail sent");
 
         } catch (Exception e) {
             e.printStackTrace();
