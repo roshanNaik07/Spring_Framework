@@ -33,6 +33,7 @@ public class PatientRestController {
         List<DoctorTimeSlotDTO> doctorSlots = adminService.getDoctorTimeSlotDtoById(doctorId);
         log.info("Running fetchTimeSlotsByDoctorId..."+doctorSlots);
         return (doctorSlots != null)? doctorSlots : Collections.emptyList();
+
     }
 
 }

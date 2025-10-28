@@ -10,14 +10,15 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
+@ToString(exclude = {"patients"})
 @Entity
 @Table(name = "doctor_details")
 
 @NamedQuery(name = "getAllDoctors", query = "select e from DoctorRegisterEntity e")
 @NamedQuery(name = "getDoctorEntityByEmail", query = "select e from DoctorRegisterEntity e where e.email =: email")
-@NamedQuery(name = "getDoctorEntitySpecialization",query = "select e from DoctorRegisterEntity e where e.specialization =: specialization")
-public class DoctorRegisterEntity extends AuditEntity{
+@NamedQuery(name = "getDoctorEntitySpecialization", query = "select e from DoctorRegisterEntity e where e.specialization =: specialization")
+@NamedQuery(name = "getDoctorById", query = "select e from DoctorRegisterEntity e where e.id =: id")
+public class DoctorRegisterEntity extends AuditEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +27,7 @@ public class DoctorRegisterEntity extends AuditEntity{
     @Column(name = "name")
     private String name;
 
-    @Column(name = "email",unique = true)
+    @Column(name = "email", unique = true)
     private String email;
 
     @Column(name = "specialization")
@@ -41,10 +42,13 @@ public class DoctorRegisterEntity extends AuditEntity{
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @OneToOne(mappedBy = "doctor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "doctor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private DoctorImageInfoEntity doctorImageInfo;
 
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<DoctorTimeSlotEntity> slots = new ArrayList<>();
+
+    @OneToMany(mappedBy = "doctor", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    private List<PatientRegisterEntity> patients = new ArrayList<>();
 
 }

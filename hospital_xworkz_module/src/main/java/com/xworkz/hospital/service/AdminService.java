@@ -3,6 +3,7 @@ package com.xworkz.hospital.service;
 import com.xworkz.hospital.dto.DoctorRegistrationDTO;
 import com.xworkz.hospital.dto.DoctorTimeSlotDTO;
 import com.xworkz.hospital.dto.SlotTimeDTO;
+import com.xworkz.hospital.entity.DoctorTimeSlotEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -31,4 +32,6 @@ public interface AdminService {
     boolean saveDoctorSlots(String email,String slots);
 
     List<DoctorTimeSlotDTO> getDoctorTimeSlotDtoById(int id);
+
+    DoctorTimeSlotEntity getDoctorTimeSlotEntityById(int id);
 }

@@ -354,5 +354,41 @@ public class AdminRepositoryImpl implements AdminRepository {
         return Collections.emptyList();
     }
 
+    @Override
+    public DoctorTimeSlotEntity getDoctorTimeSlotEntityById(int id) {
+
+        EntityManager entityManager= null;
+        EntityTransaction entityTransaction = null;
+        DoctorTimeSlotEntity doctorTimeSlotEntity = null;
+        try {
+
+            entityManager = entityManagerFactory.createEntityManager();
+            entityTransaction = entityManager.getTransaction();
+            entityTransaction.begin();
+
+            Query query = entityManager.createNamedQuery("getEntityBYId");
+            query.setParameter("id",id);
+            doctorTimeSlotEntity = (DoctorTimeSlotEntity) query.getSingleResult();
+            entityTransaction.commit();
+
+            if (doctorTimeSlotEntity!=null){
+                return doctorTimeSlotEntity;
+            }else {
+                return null;
+            }
+
+        }catch (Exception e){
+
+            if (entityTransaction.isActive()){
+                entityTransaction.rollback();
+            }
+            entityTransaction.rollback();
+
+        }finally {
+            entityManager.close();
+        }
+
+        return null;
+    }
 
 }

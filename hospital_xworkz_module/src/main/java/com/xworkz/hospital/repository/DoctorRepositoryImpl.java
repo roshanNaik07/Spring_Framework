@@ -119,4 +119,30 @@ public class DoctorRepositoryImpl implements DoctorRepository {
         return null;
     }
 
+    @Override
+    public DoctorRegisterEntity getDoctorById(int id) {
+        EntityManager entityManager = null;
+        EntityTransaction entityTransaction = null;
+        DoctorRegisterEntity doctorRegisterEntity = null;
+        try {
+            entityManager = entityManagerFactory.createEntityManager();
+            entityTransaction = entityManager.getTransaction();
+            entityTransaction.begin();
+            Query query = entityManager.createNamedQuery("getDoctorById");
+            query.setParameter("id",id);
+            doctorRegisterEntity = (DoctorRegisterEntity) query.getSingleResult();
+            entityTransaction.commit();
+            return doctorRegisterEntity;
+
+        }catch (Exception e){
+            if (entityTransaction.isActive()){
+                entityTransaction.rollback();
+            }
+            e.printStackTrace();
+        }finally {
+            entityManager.close();
+        }
+        return null;
+    }
+
 }

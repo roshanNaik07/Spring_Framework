@@ -16,4 +16,8 @@ public interface DoctorRepository {
     boolean deleteDoctorByEmail(String email);
 
     DoctorRegisterEntity getDoctorByEmail(String email);
+
+    DoctorRegisterEntity getDoctorById(int id);
+
+
 }

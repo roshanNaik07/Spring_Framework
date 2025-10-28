@@ -177,6 +177,17 @@ public class AdminServiceImpl implements AdminService {
         return Collections.emptyList();
     }
 
+    @Override
+    public DoctorTimeSlotEntity getDoctorTimeSlotEntityById(int id) {
+
+        DoctorTimeSlotEntity doctorTimeSlotEntity = adminRepository.getDoctorTimeSlotEntityById(id);
+        if (doctorTimeSlotEntity!=null){
+            return doctorTimeSlotEntity;
+        }
+
+        return null;
+    }
+
 
     private void otpEmail(String email, String sub, String body, String otp) {
         final String username = "roshannaik202055@gmail.com";

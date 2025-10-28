@@ -1,5 +1,6 @@
 package com.xworkz.hospital.repository;
 
+import com.xworkz.hospital.entity.PatientRegisterEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -40,5 +41,33 @@ public class PatientRepositoryImpl implements PatientRepository {
             }
         }
         return Collections.emptyList();
+    }
+
+    @Override
+    public boolean registerPatient(PatientRegisterEntity patientRegisterEntity) {
+
+        EntityManager entityManager = null;
+        EntityTransaction entityTransaction = null;
+
+        try {
+            entityManager = entityManagerFactory.createEntityManager();
+            entityTransaction = entityManager.getTransaction();
+            entityTransaction.begin();
+
+            entityManager.persist(patientRegisterEntity);
+
+            entityTransaction.commit();
+            return true;
+
+        }catch (Exception e){
+            if (entityTransaction.isActive()){
+                entityTransaction.rollback();
+            }
+            e.printStackTrace();
+        }finally {
+            entityManager.close();
+        }
+
+        return false;
     }
 }

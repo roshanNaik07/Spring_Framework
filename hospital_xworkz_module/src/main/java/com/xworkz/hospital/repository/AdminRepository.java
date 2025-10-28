@@ -29,4 +29,7 @@ public interface AdminRepository {
     boolean saveDoctorSlots(String email,String slots);
 
     List<DoctorTimeSlotEntity> getDoctorTimeSlotEntitiesById(int id);
+
+    DoctorTimeSlotEntity getDoctorTimeSlotEntityById(int id);
+
 }

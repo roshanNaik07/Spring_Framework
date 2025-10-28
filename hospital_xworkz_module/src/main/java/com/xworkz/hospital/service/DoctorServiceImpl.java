@@ -70,4 +70,15 @@ public class DoctorServiceImpl implements DoctorService {
     public boolean deleteDoctorByEmail(String email) {
         return doctorRepository.deleteDoctorByEmail(email);
     }
+
+    @Override
+    public DoctorRegisterEntity getDoctorById(int id) {
+        DoctorRegisterEntity entity = doctorRepository.getDoctorById(id);
+        if (entity!=null){
+            return entity;
+        }else {
+            log.info("could not found Doctor for this Id : " + id);
+        }
+        return null;
+    }
 }
