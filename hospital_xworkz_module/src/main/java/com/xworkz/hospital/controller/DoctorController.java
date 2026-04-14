@@ -3,6 +3,7 @@ package com.xworkz.hospital.controller;
 import com.xworkz.hospital.dto.DoctorRegistrationDTO;
 import com.xworkz.hospital.service.AdminService;
 import com.xworkz.hospital.service.DoctorService;
+import com.xworkz.hospital.service.SpecializationService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,11 +34,56 @@ public class DoctorController {
     @Autowired
     AdminService adminService;
 
+    @Autowired
+    SpecializationService specializationService;
+
     public DoctorController() {
         log.info("No arg const of DoctorController");
     }
 
-    @GetMapping("/getAllDotors")
+    @RequestMapping("/doctorRegistration")
+    public ModelAndView openDoctorRegistrationPage(ModelAndView modelAndView) {
+        log.info("Opening doctor registration page");
+        List<String> specializations = specializationService.getAllSpecializations();
+        modelAndView.addObject("specializations", specializations);
+        modelAndView.setViewName("RegisterDoctor");
+        return modelAndView;
+    }
+
+    @PostMapping("/registerDoctor")
+    public ModelAndView registerDoctor(@RequestParam("image") MultipartFile multipartFile, @Valid DoctorRegistrationDTO doctorRegistrationDTO, BindingResult bindingResult, ModelAndView modelAndView) throws IOException {
+
+        List<String> specializations = specializationService.getAllSpecializations();
+        if (bindingResult.hasErrors()) {
+            List<ObjectError> errors = bindingResult.getAllErrors();
+            for (ObjectError error : errors) {
+                log.info(error.getDefaultMessage());
+                modelAndView.addObject("error", error.getDefaultMessage());
+                modelAndView.addObject("specializations", specializations);
+                modelAndView.addObject("values", doctorRegistrationDTO);
+                modelAndView.setViewName("RegisterDoctor");
+            }
+        } else if (multipartFile.isEmpty()) {
+            modelAndView.addObject("error", "Please upload the image");
+            modelAndView.addObject("specializations", specializations);
+            modelAndView.addObject("values", doctorRegistrationDTO);
+            modelAndView.setViewName("RegisterDoctor");
+        } else {
+            boolean registered = doctorService.registerDoctor(doctorRegistrationDTO, multipartFile);
+            if (registered) {
+                modelAndView.addObject("success", "Doctor registered successfully");
+                modelAndView.setViewName("Admin");
+            } else {
+                modelAndView.addObject("error", "Failed to register doctor");
+                modelAndView.addObject("specializations", specializations);
+                modelAndView.addObject("values", doctorRegistrationDTO);
+                modelAndView.setViewName("RegisterDoctor");
+            }
+        }
+        return modelAndView;
+    }
+
+    @GetMapping("/doctors")
     public ModelAndView getAllDoctors(ModelAndView modelAndView) {
         List<DoctorRegistrationDTO> doctorRegistrationDTOS = doctorService.getAllDoctors();
         modelAndView.addObject("doctors", doctorRegistrationDTOS);
@@ -45,19 +91,19 @@ public class DoctorController {
         return modelAndView;
     }
 
-    @PostMapping("/openUpdateDoctorPage")
+    @PostMapping("/updateDoctor")
     public ModelAndView openUpdateDoctorPage(@Valid DoctorRegistrationDTO doctorRegistrationDTO, BindingResult bindingResult, ModelAndView modelAndView) {
-        List<String> specializations = adminService.getAllSpecializations();
+        List<String> specializations = specializationService.getAllSpecializations();
         modelAndView.addObject("values", doctorRegistrationDTO);
         modelAndView.addObject("specializations", specializations);
         modelAndView.setViewName("UpdateDoctor");
         return modelAndView;
     }
 
-    @PostMapping("/updateDoctorDetails")
+    @PostMapping("/doctorUpdated")
     public ModelAndView updateDoctorDetails(@RequestParam("image") MultipartFile multipartFile, @Valid DoctorRegistrationDTO doctorRegistrationDTO, BindingResult bindingResult, ModelAndView modelAndView) throws IOException {
 
-        List<String> specializations = adminService.getAllSpecializations();
+        List<String> specializations = specializationService.getAllSpecializations();
         if (bindingResult.hasErrors()) {
             List<ObjectError> errors = bindingResult.getAllErrors();
             for (ObjectError error : errors) {

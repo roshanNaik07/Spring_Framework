@@ -9,6 +9,8 @@ import java.util.List;
 @Repository
 public interface DoctorRepository {
 
+    boolean registerDoctor(DoctorRegisterEntity doctorRegisterEntity);
+
     List<DoctorRegisterEntity> getAllDoctors();
 
     boolean updateDoctorDetails(DoctorRegisterEntity doctorRegisterEntity);

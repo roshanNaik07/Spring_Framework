@@ -48,4 +48,5 @@ public class PatientRegistrationDTO {
     private int slotsTimingId;
 
     private String RegisterId;
+
 }

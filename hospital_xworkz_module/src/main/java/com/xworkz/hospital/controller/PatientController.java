@@ -3,6 +3,7 @@ package com.xworkz.hospital.controller;
 import com.xworkz.hospital.dto.PatientRegistrationDTO;
 import com.xworkz.hospital.service.AdminService;
 import com.xworkz.hospital.service.PatientService;
+import com.xworkz.hospital.service.SpecializationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,11 +27,14 @@ public class PatientController {
     @Autowired
     AdminService adminService;
 
-    @RequestMapping("/openPatientRegisterPage")
+    @Autowired
+    SpecializationService specializationService;
+
+    @RequestMapping("/PatientRegistration")
     public ModelAndView openPatientRegisterForm(ModelAndView modelAndView) {
         log.info("Running openPatientRegisterForm in PatientController");
         List<String> bloodGroups = patientService.getAllBloodGroups();
-        List<String> specializations = adminService.getAllSpecializations();
+        List<String> specializations = specializationService.getAllSpecializations();
         if (bloodGroups != null && !bloodGroups.isEmpty() && specializations != null && !specializations.isEmpty()) {
             modelAndView.addObject("bloodGroups", bloodGroups);
             modelAndView.addObject("specializations", specializations);
@@ -48,7 +52,7 @@ public class PatientController {
         if (bindingResult.hasErrors()){
             log.info("Validation errors in patientAppointment: " + bindingResult.getAllErrors());
             List<String> bloodGroups = patientService.getAllBloodGroups();
-            List<String> specializations = adminService.getAllSpecializations();
+            List<String> specializations = specializationService.getAllSpecializations();
             if (bloodGroups != null && !bloodGroups.isEmpty() && specializations != null && !specializations.isEmpty()) {
                 modelAndView.addObject("bloodGroups", bloodGroups);
                 modelAndView.addObject("specializations", specializations);

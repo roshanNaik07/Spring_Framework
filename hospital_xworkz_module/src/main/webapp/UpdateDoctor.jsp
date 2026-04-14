@@ -14,22 +14,41 @@
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
 
-<nav class="navbar bg-body-tertiary px-5 py-4 shadow p-3 mb-5" style="color">
+<nav class="navbar bg-body-tertiary px-5 py-4 shadow p-3 mb-5">
     <div class="container-fluid">
-        <a class="navbar-brand fs-3 fw-bold ms-5" href="index.jsp">
+        <a class="navbar-brand fs-3 fw-bold ms-5" href="admin">
             <img src="images/HospitalLogo.png" alt="Logo" width="50" height="50"
                  class="d-inline-block align-text-top me-2">
             MedCare
         </a>
-        <form class="d-flex">
-            <a href="Admin.jsp" class="btn btn-success me-5">Dashboard</a>
-            <a href="logOut" class="btn btn-success me-5">Log out</a>
-        </form>
+
+        <div class="ms-auto d-flex">
+            <a href="patients" class="btn btn-success me-3">Patients</a>
+
+            <a href="doctors" class="btn btn-success me-3">Doctors</a>
+
+            <div class="dropdown ms-auto">
+                <button class="btn btn-success dropdown-toggle px-5" type="button" id="dropdownMenuButton"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                    &#9776; Menu
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end px-2" aria-labelledby="dropdownMenuButton">
+                    <li><a class="dropdown-item custom-success my-2 w-100" href="doctorRegistration">Register
+                        Doctor</a></li>
+                    <li><a class="dropdown-item custom-success my-2 w-100" href="PatientRegistration">Register
+                        Patient</a></li>
+                    <li><a class="dropdown-item custom-success my-2 w-100" href="slots">Slots</a></li>
+                    <li><a class="dropdown-item custom-success my-2 w-100" href="specialization">Set
+                        Specialization</a></li>
+                    <li><a class="dropdown-item custom-success w-100" href="logOut">Log out</a></li>
+                </ul>
+            </div>
+        </div>
     </div>
 </nav>
 
 <form class="container my-5 border border-success-subtle shadow-lg p-3 mb-5 py-5 px-4 rounded border-3"
-      action="updateDoctorDetails" method="post" enctype="multipart/form-data">
+      action="doctorUpdated" method="post" enctype="multipart/form-data">
 
     <div class="container d-flex justify-content-center" style="font-family: popins">
         <h2>Update doctor details</h2>

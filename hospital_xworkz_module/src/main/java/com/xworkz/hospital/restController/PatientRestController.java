@@ -3,6 +3,7 @@ package com.xworkz.hospital.restController;
 import com.xworkz.hospital.dto.DoctorRegistrationDTO;
 import com.xworkz.hospital.dto.DoctorTimeSlotDTO;
 import com.xworkz.hospital.service.AdminService;
+import com.xworkz.hospital.service.SlotService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,12 +20,15 @@ import java.util.List;
 public class PatientRestController {
 
     @Autowired
+    SlotService slotService;
+
+    @Autowired
     AdminService adminService;
 
     @GetMapping(value = "fetchDoctorNameBySpecialization/{specialization}",produces = "application/json")
     public List<DoctorRegistrationDTO> fetchDoctorNameBySpecialization(@PathVariable String specialization) {
         log.info("Running fetchDoctorNameBySpecialization...");
-        List<DoctorRegistrationDTO> doctorRegistrationDTOS = adminService.getDoctorDtoBySpecialization(specialization);
+        List<DoctorRegistrationDTO> doctorRegistrationDTOS = slotService.getDoctorDtoBySpecialization(specialization);
         return (doctorRegistrationDTOS != null) ? doctorRegistrationDTOS : Collections.emptyList();
     }
 
@@ -33,7 +37,6 @@ public class PatientRestController {
         List<DoctorTimeSlotDTO> doctorSlots = adminService.getDoctorTimeSlotDtoById(doctorId);
         log.info("Running fetchTimeSlotsByDoctorId..."+doctorSlots);
         return (doctorSlots != null)? doctorSlots : Collections.emptyList();
-
     }
 
 }

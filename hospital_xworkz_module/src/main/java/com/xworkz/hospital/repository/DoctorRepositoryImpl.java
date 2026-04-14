@@ -12,6 +12,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 import java.util.Collections;
 import java.util.List;
+
 @ToString
 @Slf4j
 @Repository
@@ -19,6 +20,37 @@ public class DoctorRepositoryImpl implements DoctorRepository {
 
     @Autowired
     EntityManagerFactory entityManagerFactory;
+
+    @Override
+    public boolean registerDoctor(DoctorRegisterEntity doctorRegisterEntity) {
+
+        log.info("In repo" + doctorRegisterEntity);
+        EntityManager entityManager = null;
+        EntityTransaction entityTransaction = null;
+
+        try {
+
+            entityManager = entityManagerFactory.createEntityManager();
+            entityTransaction = entityManager.getTransaction();
+            entityTransaction.begin();
+
+            entityManager.persist(doctorRegisterEntity);
+
+            entityTransaction.commit();
+            return true;
+        } catch (Exception e) {
+
+            if (entityTransaction.isActive()) {
+                entityTransaction.rollback();
+            }
+            e.printStackTrace();
+
+        } finally {
+            entityManager.close();
+        }
+
+        return false;
+    }
 
     @Override
     public List<DoctorRegisterEntity> getAllDoctors() {
@@ -32,15 +64,15 @@ public class DoctorRepositoryImpl implements DoctorRepository {
             entityTransaction = entityManager.getTransaction();
             entityTransaction.begin();
             doctorRegisterEntities = entityManager.createNamedQuery("getAllDoctors").getResultList();
-            log.info("In repo "+doctorRegisterEntities.toString());
+            log.info("In repo " + doctorRegisterEntities.toString());
             entityTransaction.commit();
-            if (doctorRegisterEntities != null && !doctorRegisterEntities.isEmpty()){
+            if (doctorRegisterEntities != null && !doctorRegisterEntities.isEmpty()) {
                 return doctorRegisterEntities;
             }
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             entityManager.close();
         }
 
@@ -59,9 +91,9 @@ public class DoctorRepositoryImpl implements DoctorRepository {
             entityManager.merge(doctorRegisterEntity);
             entityTransaction.commit();
             return true;
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             entityManager.close();
         }
         return false;
@@ -86,9 +118,9 @@ public class DoctorRepositoryImpl implements DoctorRepository {
                 entityTransaction.commit();
                 return true;
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             entityManager.close();
         }
         return false;
@@ -111,9 +143,9 @@ public class DoctorRepositoryImpl implements DoctorRepository {
             if (fetchedDoctorEntity != null) {
                 return fetchedDoctorEntity;
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             entityManager.close();
         }
         return null;
@@ -129,17 +161,17 @@ public class DoctorRepositoryImpl implements DoctorRepository {
             entityTransaction = entityManager.getTransaction();
             entityTransaction.begin();
             Query query = entityManager.createNamedQuery("getDoctorById");
-            query.setParameter("id",id);
+            query.setParameter("id", id);
             doctorRegisterEntity = (DoctorRegisterEntity) query.getSingleResult();
             entityTransaction.commit();
             return doctorRegisterEntity;
 
-        }catch (Exception e){
-            if (entityTransaction.isActive()){
+        } catch (Exception e) {
+            if (entityTransaction.isActive()) {
                 entityTransaction.rollback();
             }
             e.printStackTrace();
-        }finally {
+        } finally {
             entityManager.close();
         }
         return null;

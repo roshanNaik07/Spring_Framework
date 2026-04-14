@@ -14,20 +14,6 @@ public interface AdminRepository {
 
     boolean checkEmail(String email);
 
-    boolean registerDoctor(DoctorRegisterEntity doctorRegisterEntity);
-
-    boolean saveSlotTime(SlotTimeEntity slotTimeEntity);
-
-    List<DoctorRegisterEntity> getDoctorEntityBySpecialization(String specialization);
-
-    void addSpecialization(SpecializationEntity specializationEntity);
-
-    List<String> getAllSpecializations();
-
-    List<SlotTimeEntity> getAllSlotsBySpecialization(String Specialization);
-
-    boolean saveDoctorSlots(String email,String slots);
-
     List<DoctorTimeSlotEntity> getDoctorTimeSlotEntitiesById(int id);
 
     DoctorTimeSlotEntity getDoctorTimeSlotEntityById(int id);

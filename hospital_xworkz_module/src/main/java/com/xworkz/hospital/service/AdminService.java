@@ -17,20 +17,6 @@ public interface AdminService {
 
     boolean checkEmail(String email);
 
-    boolean registerDoctor(DoctorRegistrationDTO doctorRegistrationDTO, MultipartFile multipartFile) throws IOException;
-
-    boolean saveSlotTime(SlotTimeDTO slotTimeDTO);
-
-    List<DoctorRegistrationDTO> getDoctorDtoBySpecialization(String specialization);
-
-    List<String> getAllSlotsBySpecialization(String Specialization);
-
-    boolean addSpecialization(String specialization);
-
-    List<String> getAllSpecializations();
-
-    boolean saveDoctorSlots(String email,String slots);
-
     List<DoctorTimeSlotDTO> getDoctorTimeSlotDtoById(int id);
 
     DoctorTimeSlotEntity getDoctorTimeSlotEntityById(int id);

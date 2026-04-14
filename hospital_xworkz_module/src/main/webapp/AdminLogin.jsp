@@ -7,8 +7,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <%@ page isELIgnored="false" %>
-    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
@@ -47,31 +49,35 @@
 
     function checkEmail(){
 
-        console.log("hitting checkEmail()");
+            let email = document.getElementById("emailId").value;
+            let errorBox = document.getElementById("errorBox");
 
-        let email = document.getElementById("emailId").value;
-        let emailError = document.getElementById("emailError");
+            errorBox.innerHTML = "";
 
-        const xhttp = new XMLHttpRequest();
-        xhttp.open("GET","http://localhost:8080/hospital_xworkz_module/checkEmail/" + email);
-        xhttp.send();
+            if(!email || email.trim() === ""){
+                errorBox.innerHTML = "Email cannot be empty";
+                return;
+            }
 
-        xhttp.onload=function(){
-        emailError.innerHTML = this.responseText;
+            const xhttp = new XMLHttpRequest();
+            xhttp.open("GET","http://localhost:8080/hospital_xworkz_module/checkEmail/" + encodeURIComponent(email));
+            xhttp.send();
+
+            xhttp.onload = function(){
+                errorBox.innerHTML = this.responseText;
+            }
         }
-
-    }
 
 </script>
 
 <nav class="navbar bg-body-tertiary px-5 py-4 shadow p-3 mb-5">
     <div class="container-fluid">
-        <a class="navbar-brand fs-3 fw-bold ms-5" href="index.jsp">
+        <a class="navbar-brand fs-3 fw-bold ms-5" href="index">
             <img src="images/HospitalLogo.png" alt="Logo" width="50" height="50"
                  class="d-inline-block align-text-top me-2">
             MedCare
         </a>
-        <a href="index.jsp" class="btn btn-success me-5">Home</a>
+        <a href="index" class="btn btn-success me-5">Home</a>
     </div>
 </nav>
 
@@ -84,19 +90,31 @@
             <div class="d-flex justify-content-center">
                 <h2 style="font-family:popins">Log in</h2>
             </div>
-            <div class="form-text text-danger">${error}</div>
-            <div class="my-3">
+            <div class="my-1">
+
                 <label class="form-label" style="font-family:popins">Enter Email</label>
                 <c:if test="${not empty email}">
                     <input type="text" name="email" value="${email}" readonly required class="form-control">
                 </c:if>
 
                 <c:if test="${empty email}">
-                    <input type="text" name="email" placeholder="Enter email" id="emailId" required class="form-control" onchange="checkEmail()">
-                    <div class="form-text text-danger py-2" id="emailError"></div>
+                    <div class="position-relative">
+                        <input type="text" name="email" placeholder="Enter email"
+                               id="emailId"
+                               required
+                               class="form-control pe-5"
+                               onchange="checkEmail()">
+
+                        <span id="validIcon"
+                              class="position-absolute top-50 end-0 translate-middle-y me-3 d-none">
+                                <i class="fa-solid fa-check"></i>
+                        </span>
+                    </div>
                 </c:if>
 
             </div>
+
+            <div class="form-text text-danger py-2" id="errorBox">${error}</div>
 
             <div class="d-flex justify-content-center">
                 <c:if test="${empty showotpField}">

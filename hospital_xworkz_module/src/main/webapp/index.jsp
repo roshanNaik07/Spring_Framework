@@ -15,14 +15,16 @@
 
 <nav class="navbar bg-body-tertiary px-5 py-4 shadow p-3 mb-5">
     <div class="container-fluid">
-        <a class="navbar-brand fs-3 fw-bold ms-5" href="index.jsp">
+        <a class="navbar-brand fs-3 fw-bold ms-5" href="index">
             <img src="images/HospitalLogo.png" alt="Logo" width="50" height="50"
                  class="d-inline-block align-text-top me-2">
             MedCare
         </a>
-        <form class="d-flex">
-            <a href="AdminLogin.jsp" class="btn btn-success me-5">Admin Login</a>
-        </form>
+        <div class="d-flex">
+            <a href="AdminLogin" class="btn btn-success me-5">Admin Login</a>
+            <a href="UserLogin" class="btn btn-success ">User Login</a>
+        </div>
+
     </div>
 </nav>
 <div class="container">

@@ -1,4 +1,4 @@
-<!doctype html>
+    <!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -28,16 +28,16 @@
 
 <nav class="navbar bg-body-tertiary px-5 py-4 shadow p-3 mb-5">
     <div class="container-fluid">
-        <a class="navbar-brand fs-3 fw-bold ms-5" href="index.jsp">
+        <a class="navbar-brand fs-3 fw-bold ms-5" href="admin">
             <img src="images/HospitalLogo.png" alt="Logo" width="50" height="50"
                  class="d-inline-block align-text-top me-2">
             MedCare
         </a>
 
         <div class="ms-auto d-flex">
-            <a href="getAllPatients" class="btn btn-success me-3">Patients</a>
+            <a href="patients" class="btn btn-success me-3">Patients</a>
 
-            <a href="getAllDotors" class="btn btn-success me-3">Doctors</a>
+            <a href="doctors" class="btn btn-success me-3">Doctors</a>
 
             <div class="dropdown ms-auto">
                 <button class="btn btn-success dropdown-toggle px-5" type="button" id="dropdownMenuButton"
@@ -45,12 +45,12 @@
                     &#9776; Menu
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end px-2" aria-labelledby="dropdownMenuButton">
-                    <li><a class="dropdown-item custom-success my-2 w-100" href="openDoctorRegisterPage">Register
+                    <li><a class="dropdown-item custom-success my-2 w-100" href="doctorRegistration">Register
                         Doctor</a></li>
-                    <li><a class="dropdown-item custom-success my-2 w-100" href="openPatientRegisterPage">Register
+                    <li><a class="dropdown-item custom-success my-2 w-100" href="PatientRegistration">Register
                         Patient</a></li>
                     <li><a class="dropdown-item custom-success my-2 w-100" href="openSlot">Slots</a></li>
-                    <li><a class="dropdown-item custom-success my-2 w-100" href="Specialization.jsp">Set
+                    <li><a class="dropdown-item custom-success my-2 w-100" href="openSetSpecializationPage">Set
                         Specialization</a></li>
                     <li><a class="dropdown-item custom-success w-100" href="logOut">Log out</a></li>
                 </ul>

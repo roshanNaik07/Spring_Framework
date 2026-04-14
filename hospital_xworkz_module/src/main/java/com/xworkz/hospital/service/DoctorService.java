@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface DoctorService {
 
+    boolean registerDoctor(DoctorRegistrationDTO doctorRegistrationDTO, MultipartFile multipartFile) throws IOException;
+
     List<DoctorRegistrationDTO> getAllDoctors();
 
     boolean updateDoctorDetails(DoctorRegistrationDTO doctorRegistrationDTO, MultipartFile multipartFile) throws IOException;
