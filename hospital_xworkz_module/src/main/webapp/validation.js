@@ -113,5 +113,55 @@ function validateSymptoms(){
     }
 }
 
+function checkEmailExists(){
+
+    console.log("checkEmailExists called..")
+
+    let email = document.getElementById("email").value;
+    let errorMsg = document.getElementById("emailError");
+
+    let regex = /^[A-Za-z0-9](\.?[A-Za-z0-9_-])*@[A-Za-z0-9-]+(\.[A-Za-z]{2,})+$/;
+
+        // 🚨 FIRST check validity
+        if(!regex.test(email)){
+        errorMsg.innerHTML = "Enter valid email";
+            return; // ❌ stop API call
+        }
 
 
+    axios.get("http://localhost:8080/hospital_xworkz_module/checkEmail",{
+        params: {
+            email: email
+        }
+    })
+    .then(function(response){
+            console.log("Response:", response.data);
+
+            if(response.data === "exists"){
+                errorMsg.innerHTML = "Email already exists";
+            } else {
+                errorMsg.innerHTML = "";
+            }
+        })
+        .catch(function(error){
+            console.log("Error:", error);
+        });
+}
+
+function validateForm() {
+    let emailInput = document.getElementById("email");
+    let emailError = document.getElementById("emailError").innerHTML;
+
+    if (emailError === "Email already exists") {
+        alert("Email entered already exits , try agian");
+
+        emailInput.value = "";
+
+        document.getElementById("emailError").innerHTML = "";
+
+        emailInput.focus();
+
+        return false;
+    }
+    return true;
+}

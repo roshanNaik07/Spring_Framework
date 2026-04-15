@@ -112,6 +112,17 @@ public class DoctorServiceImpl implements DoctorService {
         return null;
     }
 
+    @Override
+    public DoctorRegistrationDTO getDoctorByEmail(String email) {
+        DoctorRegisterEntity entity = doctorRepository.getDoctorByEmail(email);
+        if (entity != null) {
+            DoctorRegistrationDTO dto = new DoctorRegistrationDTO();
+            BeanUtils.copyProperties(entity, dto);
+            return dto;
+        }
+        return null;
+    }
+
     private void doctorRegistrationMail(String email, String doctorName) {
         final String username = "roshannaik202055@gmail.com";
         final String password = "gnol ugqf btgk zmir";

@@ -18,4 +18,6 @@ public interface DoctorService {
     boolean deleteDoctorByEmail(String email);
 
     DoctorRegisterEntity getDoctorById(int id);
+
+    DoctorRegistrationDTO getDoctorByEmail(String email);
 }

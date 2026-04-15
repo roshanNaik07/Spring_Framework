@@ -8,7 +8,7 @@
           integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <%@ page isELIgnored="false" %>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <style>
         .custom-success {
             background-color: #28a745 !important;
@@ -63,7 +63,7 @@
 </nav>
 
 <form class="container my-5 border border-success-subtle shadow-lg p-3 mb-5 py-5 px-4 rounded border-3"
-      action="registerDoctor" method="post" enctype="multipart/form-data">
+      action="registerDoctor" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
 
     <div class="container d-flex justify-content-center" style="font-family: popins">
         <h2>Enter doctor details</h2>
@@ -82,8 +82,8 @@
 
         <div class="col-md-6 mb-3">
             <label class="form-label" style="font-family:popins">Email</label>
-            <input type="email" class="form-control" name="email" id="email" oninput="validateEmail()" maxlength="30"
-                   value="${values.email}" >
+            <input type="email" class="form-control" name="email" id="email" oninput="checkEmailExists();" maxlength="30"
+                   value="${values.email}" c:oninput="">
             <div id="emailError" class="form-text text-danger"></div>
         </div>
 
@@ -97,7 +97,8 @@
                     name="specialization" oninput="validateSpecialization()" style="font-family:popins" required>
                 <option selected disabled>Select specialization</option>
                 <c:forEach var="spec" items="${specializations}">
-                    <option value="${spec}" ${selectedSpecialization == spec ? "selected" : ""}>
+                    <option value="${spec}" ${selectedSpecialization== spec ?
+                    "selected" : ""}>
                     ${spec}
                     </option>
                 </c:forEach>

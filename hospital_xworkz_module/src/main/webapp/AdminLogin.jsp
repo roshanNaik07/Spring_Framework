@@ -51,11 +51,18 @@
 
             let email = document.getElementById("emailId").value;
             let errorBox = document.getElementById("errorBox");
+            let icon = document.getElementById("iconId");
+            let input = document.getElementById("emailId");
 
             errorBox.innerHTML = "";
 
+            input.classList.remove("is-valid", "is-invalid");
+
             if(!email || email.trim() === ""){
                 errorBox.innerHTML = "Email cannot be empty";
+                icon.classList.add("d-none");
+                input.classList.add("is-invalid");
+                input.style.borderColor = "red";
                 return;
             }
 
@@ -64,7 +71,19 @@
             xhttp.send();
 
             xhttp.onload = function(){
-                errorBox.innerHTML = this.responseText;
+               let response = this.responseText.trim();
+
+               if(response === ""){
+                    icon.classList.remove("d-none");
+                    input.classList.add("is-valid");
+                    input.style.borderColor = "green";
+               }else{
+                    errorBox.innerHTML = response;
+                    icon.classList.add("d-none");
+                    input.classList.add("is-invalid");
+                    input.style.borderColor = "red";
+               }
+
             }
         }
 
@@ -77,7 +96,7 @@
                  class="d-inline-block align-text-top me-2">
             MedCare
         </a>
-        <a href="index" class="btn btn-success me-5">Home</a>
+        <a href="index" class="btn btn-success me-5"><i class="fa-solid fa-house me-2"></i>Home</a>
     </div>
 </nav>
 
@@ -88,9 +107,13 @@
               class="border border-success-subtle shadow-lg p-3 mb-5 py-5 px-4 rounded border-3">
 
             <div class="d-flex justify-content-center">
-                <h2 style="font-family:popins">Log in</h2>
+                <div class="text-center">
+                    <i class="fa-solid fa-user-lock" style="color:#0ea5e9; font-size:50px;"></i>
+                    <h2 style="font-family:popins">Admin Login</h2>
+                </div>
             </div>
-            <div class="my-1">
+
+            <div class="my-3">
 
                 <label class="form-label" style="font-family:popins">Enter Email</label>
                 <c:if test="${not empty email}">
@@ -98,17 +121,16 @@
                 </c:if>
 
                 <c:if test="${empty email}">
-                    <div class="position-relative">
+                    <div class="position-relative ">
                         <input type="text" name="email" placeholder="Enter email"
                                id="emailId"
                                required
-                               class="form-control pe-5"
-                               onchange="checkEmail()">
+                               class="form-control pe-5;"
+                               onchange="checkEmail()" style="border-color:white">
 
-                        <span id="validIcon"
+                        <span id="iconId"
                               class="position-absolute top-50 end-0 translate-middle-y me-3 d-none">
-                                <i class="fa-solid fa-check"></i>
-                        </span>
+                            </span>
                     </div>
                 </c:if>
 
