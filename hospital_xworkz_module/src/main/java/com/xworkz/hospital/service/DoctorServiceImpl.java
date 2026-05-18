@@ -33,7 +33,7 @@ public class DoctorServiceImpl implements DoctorService {
     DoctorRepository doctorRepository;
 
     @Override
-    public boolean registerDoctor(DoctorRegistrationDTO doctorRegistrationDTO , MultipartFile multipartFile) throws IOException {
+    public boolean registerDoctor(DoctorRegistrationDTO doctorRegistrationDTO, MultipartFile multipartFile) throws IOException {
 
         byte[] bytes = multipartFile.getBytes();
         Path path = Paths.get("D:\\Hospital\\" + doctorRegistrationDTO.getName() + System.currentTimeMillis() + ".jpg");
@@ -56,8 +56,8 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public List<DoctorRegistrationDTO> getAllDoctors() {
-        List<DoctorRegisterEntity> doctorRegisterEntities = doctorRepository.getAllDoctors();
+    public List<DoctorRegistrationDTO> getAllLatestDoctors() {
+        List<DoctorRegisterEntity> doctorRegisterEntities = doctorRepository.getAllLatestDoctors();
         if (doctorRegisterEntities != null && !doctorRegisterEntities.isEmpty()) {
             return doctorRegisterEntities.stream().map(entity -> {
                 DoctorRegistrationDTO dto = new DoctorRegistrationDTO();
@@ -104,9 +104,9 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public DoctorRegisterEntity getDoctorById(int id) {
         DoctorRegisterEntity entity = doctorRepository.getDoctorById(id);
-        if (entity!=null){
+        if (entity != null) {
             return entity;
-        }else {
+        } else {
             log.info("could not found Doctor for this Id : " + id);
         }
         return null;
@@ -119,6 +119,17 @@ public class DoctorServiceImpl implements DoctorService {
             DoctorRegistrationDTO dto = new DoctorRegistrationDTO();
             BeanUtils.copyProperties(entity, dto);
             return dto;
+        }
+        return null;
+    }
+
+    @Override
+    public DoctorRegistrationDTO getDoctorByPhoneNumber(String phoneNumber) {
+        DoctorRegisterEntity entity = doctorRepository.getDoctorByPhoneNumber(phoneNumber);
+        if (entity!=null){
+            DoctorRegistrationDTO doctorRegistrationDTO = new DoctorRegistrationDTO();
+            BeanUtils.copyProperties(entity, doctorRegistrationDTO);
+            return doctorRegistrationDTO;
         }
         return null;
     }

@@ -64,7 +64,7 @@
 
 <h1 class="text-center mb-4" style="font-family: Poppins;">Doctors List</h1>
 
-<h3 class="display-6 text-center mt-2 text-success" class="Message">${success}</h3>
+<h3 class="display-6 text-center mt-3 text-success" class="Message">${success}</h3>
 <h3 class="display-6 text-center mt-2 text-danger" class="Message">${error}</h3>
 
 <div class="container">

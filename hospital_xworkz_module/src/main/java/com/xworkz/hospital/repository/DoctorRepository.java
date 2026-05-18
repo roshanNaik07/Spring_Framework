@@ -11,7 +11,7 @@ public interface DoctorRepository {
 
     boolean registerDoctor(DoctorRegisterEntity doctorRegisterEntity);
 
-    List<DoctorRegisterEntity> getAllDoctors();
+    List<DoctorRegisterEntity> getAllLatestDoctors();
 
     boolean updateDoctorDetails(DoctorRegisterEntity doctorRegisterEntity);
 
@@ -21,4 +21,5 @@ public interface DoctorRepository {
 
     DoctorRegisterEntity getDoctorById(int id);
 
+    DoctorRegisterEntity getDoctorByPhoneNumber(String phoneNumber);
 }

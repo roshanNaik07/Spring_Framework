@@ -11,7 +11,7 @@ public interface DoctorService {
 
     boolean registerDoctor(DoctorRegistrationDTO doctorRegistrationDTO, MultipartFile multipartFile) throws IOException;
 
-    List<DoctorRegistrationDTO> getAllDoctors();
+    List<DoctorRegistrationDTO> getAllLatestDoctors();
 
     boolean updateDoctorDetails(DoctorRegistrationDTO doctorRegistrationDTO, MultipartFile multipartFile) throws IOException;
 
@@ -20,4 +20,6 @@ public interface DoctorService {
     DoctorRegisterEntity getDoctorById(int id);
 
     DoctorRegistrationDTO getDoctorByEmail(String email);
+
+    DoctorRegistrationDTO getDoctorByPhoneNumber(String phoneNumber);
 }

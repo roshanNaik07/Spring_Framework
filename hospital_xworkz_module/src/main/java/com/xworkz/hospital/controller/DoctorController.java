@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -51,7 +52,7 @@ public class DoctorController {
     }
 
     @PostMapping("/registerDoctor")
-    public ModelAndView registerDoctor(@RequestParam("image") MultipartFile multipartFile, @Valid DoctorRegistrationDTO doctorRegistrationDTO, BindingResult bindingResult, ModelAndView modelAndView) throws IOException {
+    public ModelAndView registerDoctor(@RequestParam("image") MultipartFile multipartFile, @Valid DoctorRegistrationDTO doctorRegistrationDTO, BindingResult bindingResult, ModelAndView modelAndView, RedirectAttributes redirectAttributes) throws IOException {
 
         List<String> specializations = specializationService.getAllSpecializations();
         if (bindingResult.hasErrors()) {
@@ -71,8 +72,8 @@ public class DoctorController {
         } else {
             boolean registered = doctorService.registerDoctor(doctorRegistrationDTO, multipartFile);
             if (registered) {
-                modelAndView.addObject("success", "Doctor registered successfully");
-                modelAndView.setViewName("Admin");
+                redirectAttributes.addFlashAttribute("success", "Doctor registered successfully");
+                modelAndView.setViewName("redirect:/doctors");
             } else {
                 modelAndView.addObject("error", "Failed to register doctor");
                 modelAndView.addObject("specializations", specializations);
@@ -84,8 +85,8 @@ public class DoctorController {
     }
 
     @GetMapping("/doctors")
-    public ModelAndView getAllDoctors(ModelAndView modelAndView) {
-        List<DoctorRegistrationDTO> doctorRegistrationDTOS = doctorService.getAllDoctors();
+    public ModelAndView getAllLatestDoctors(ModelAndView modelAndView) {
+        List<DoctorRegistrationDTO> doctorRegistrationDTOS = doctorService.getAllLatestDoctors();
         modelAndView.addObject("doctors", doctorRegistrationDTOS);
         modelAndView.setViewName("Doctors");
         return modelAndView;
@@ -119,9 +120,9 @@ public class DoctorController {
             modelAndView.addObject("values", doctorRegistrationDTO);
             modelAndView.setViewName("UpdateDoctor");
         } else {
-            boolean saved = doctorService.updateDoctorDetails(doctorRegistrationDTO,multipartFile);
+            boolean saved = doctorService.updateDoctorDetails(doctorRegistrationDTO, multipartFile);
             if (saved) {
-                List<DoctorRegistrationDTO> doctorRegistrationDTOS = doctorService.getAllDoctors();
+                List<DoctorRegistrationDTO> doctorRegistrationDTOS = doctorService.getAllLatestDoctors();
                 modelAndView.addObject("doctors", doctorRegistrationDTOS);
                 modelAndView.setViewName("Doctors");
             } else {
@@ -140,7 +141,7 @@ public class DoctorController {
         boolean deleted = doctorService.deleteDoctorByEmail(email);
         if (deleted) {
             modelAndView.addObject("success", "Doctor deleted successfully");
-            List<DoctorRegistrationDTO> doctorRegistrationDTOS = doctorService.getAllDoctors();
+            List<DoctorRegistrationDTO> doctorRegistrationDTOS = doctorService.getAllLatestDoctors();
             modelAndView.addObject("doctors", doctorRegistrationDTOS);
             modelAndView.setViewName("Doctors");
         } else {

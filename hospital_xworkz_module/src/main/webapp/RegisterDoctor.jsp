@@ -22,6 +22,24 @@
         }
     </style>
 
+    <script>
+        window.onload = function () {
+
+            let email = document.getElementById("email").value;
+            let phone = document.getElementById("PhoneNumberId").value;
+
+            if (email !== "") {
+                checkEmailExists();
+            }
+
+            if (phone.length === 10) {
+                checkExistingDoctorPhoneNumber();
+            }
+
+            toggleSubmitButton();
+        };
+    </script>
+
 </head>
 <body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
@@ -82,7 +100,8 @@
 
         <div class="col-md-6 mb-3">
             <label class="form-label" style="font-family:popins">Email</label>
-            <input type="email" class="form-control" name="email" id="email" oninput="checkEmailExists();" maxlength="30"
+            <input type="email" class="form-control" name="email" id="email" oninput="checkEmailExists();"
+                   maxlength="30"
                    value="${values.email}" c:oninput="">
             <div id="emailError" class="form-text text-danger"></div>
         </div>
@@ -131,7 +150,8 @@
             <div class="position-relative">
                 <input type="text" class="form-control pe-5"
                        name="phoneNumber" id="PhoneNumberId"
-                       oninput="validatePhoneNumber()" maxlength="10" value="${values.phoneNumber}" required>
+                       oninput="checkExistingDoctorPhoneNumber();" maxlength="10" value="${values.phoneNumber}"
+                       required>
             </div>
             <div id="phoneNumberErrorId" class="form-text text-danger"></div>
         </div>
@@ -144,7 +164,9 @@
     </div>
 
     <div class="d-flex justify-content-center">
-        <button type="submit" class="btn btn-success ">Submit</button>
+        <button type="submit" class="btn btn-success" id="submitBntId" disabled style="opacity:0.5,cursur:not allowed">
+            Submit
+        </button>
     </div>
 
 </form>

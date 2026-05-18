@@ -27,7 +27,7 @@ public class SpecializationController {
         return "Specialization";
     }
 
-    @PostMapping("/specializationUpdated")
+    @PostMapping("/specializationUpdate")
     public ModelAndView addSpecialization(@RequestParam("specialization") String specialization, ModelAndView modelAndView) {
         log.info("Adding specialization: " + specialization);
 
@@ -48,4 +48,5 @@ public class SpecializationController {
         modelAndView.setViewName("Specialization");
         return modelAndView;
     }
+
 }

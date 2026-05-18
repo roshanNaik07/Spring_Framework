@@ -21,10 +21,8 @@ public class DoctorRestController {
         log.info("Running No argument constructor of DoctorRestController");
     }
 
-    @GetMapping("/checkEmail")
+    @GetMapping("/checkExistingDoctorEmail")
     public String checkEmailExists(@RequestParam String email) {
-
-        log.info("Running checkEmailExists method in DoctorRestController : " + email);
 
         DoctorRegistrationDTO dto = doctorService.getDoctorByEmail(email);
 
@@ -32,6 +30,17 @@ public class DoctorRestController {
             return "exists";
         }
         return "not_exists";
+    }
+
+    @GetMapping("/checkExistingPhoneNumber")
+    public String checkPhoneNumberExists(@RequestParam String phoneNumber) {
+        log.info(phoneNumber);
+        DoctorRegistrationDTO doctorRegistrationDTO = doctorService.getDoctorByPhoneNumber(phoneNumber);
+        System.out.println(doctorRegistrationDTO);
+        if (doctorRegistrationDTO != null){
+            return "Invalid";
+        }
+        return "valid";
     }
 
 }

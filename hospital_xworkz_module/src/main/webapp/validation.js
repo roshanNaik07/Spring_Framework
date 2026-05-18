@@ -51,7 +51,6 @@ function validateExperience(){
 }
 
 function validatePhoneNumber(){
-    console.log("Entered PhoneNo")
     let phoneNumberInput = document.getElementById("PhoneNumberId");
     let phoneNumberError = document.getElementById("phoneNumberErrorId");
 
@@ -122,26 +121,24 @@ function checkEmailExists(){
 
     let regex = /^[A-Za-z0-9](\.?[A-Za-z0-9_-])*@[A-Za-z0-9-]+(\.[A-Za-z]{2,})+$/;
 
-        // 🚨 FIRST check validity
         if(!regex.test(email)){
         errorMsg.innerHTML = "Enter valid email";
-            return; // ❌ stop API call
+            return;
         }
 
 
-    axios.get("http://localhost:8080/hospital_xworkz_module/checkEmail",{
+    axios.get("http://localhost:8080/hospital_xworkz_module/checkExistingDoctorEmail",{
         params: {
             email: email
         }
     })
     .then(function(response){
-            console.log("Response:", response.data);
-
             if(response.data === "exists"){
                 errorMsg.innerHTML = "Email already exists";
             } else {
                 errorMsg.innerHTML = "";
             }
+            toggleSubmitButton()
         })
         .catch(function(error){
             console.log("Error:", error);
@@ -151,9 +148,11 @@ function checkEmailExists(){
 function validateForm() {
     let emailInput = document.getElementById("email");
     let emailError = document.getElementById("emailError").innerHTML;
+    let phoneNumberInput = document.getElementById("PhoneNumberId");
+    let phoneNumberError = document.getElementById("phoneNumberErrorId").innerHTML;
 
     if (emailError === "Email already exists") {
-        alert("Email entered already exits , try agian");
+        alert("Email entered already exist , try agian");
 
         emailInput.value = "";
 
@@ -163,5 +162,70 @@ function validateForm() {
 
         return false;
     }
+
+    if(phoneNumberError == "PhoneNumber already exist"){
+        console.log("PhoneNumber exist error")
+        alert("Phone Number entered already exist,try again");
+        phoneNumberInput.value  = "";
+        phoneNumberInput.focus();
+        return false;
+    }
+
     return true;
+}
+
+function checkExistingDoctorPhoneNumber(){
+
+    console.log("hitting checkExistingDoctorPhoneNumber()");
+
+    let phoneNumberInput = document.getElementById("PhoneNumberId");
+    let phoneNumberError = document.getElementById("phoneNumberErrorId");
+
+    phoneNumberInput.value = phoneNumberInput.value.replace( /[^0-9]/g,'');
+     if(phoneNumberInput.value.length != 10){
+        phoneNumberError.textContent = "Phone Number should contain 10 digits";
+     }else
+        phoneNumberError.textContent = "";
+
+    axios.get("http://localhost:8080/hospital_xworkz_module/checkExistingPhoneNumber",{
+        params:{
+            phoneNumber:phoneNumberInput.value
+        }
+    })
+    .then(function(response){
+        console.log(response.data);
+        if(response.data == "Invalid"){
+            phoneNumberError.innerHTML ="PhoneNumber already exist";
+
+        }else{
+        console.log("valid")
+        }
+        toggleSubmitButton()
+    })
+    .catch(function(error){
+        console.log("error : ",error);
+    })
+
+}
+
+function toggleSubmitButton() {
+    console.log("Entered toggleSubmitButton")
+    let emailError = document.getElementById("emailError").innerHTML;
+    let phoneError = document.getElementById("phoneNumberErrorId").innerHTML;
+
+    let emailValue = document.getElementById("email").value;
+    let phoneValue = document.getElementById("PhoneNumberId").value;
+
+    let submitBtn = document.getElementById("submitBntId");
+
+    if (
+        emailError === "" &&
+        phoneError === "" &&
+        emailValue !== "" &&
+        phoneValue.length === 10
+    ) {
+        submitBtn.disabled = false;
+    } else {
+        submitBtn.disabled = true;
+    }
 }

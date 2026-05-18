@@ -14,10 +14,12 @@ import java.util.List;
 @Entity
 @Table(name = "doctor_details")
 
-@NamedQuery(name = "getAllDoctors", query = "select e from DoctorRegisterEntity e")
+@NamedQuery(name = "getAllLatestDoctors", query = "select e from DoctorRegisterEntity e order by e.id desc")
 @NamedQuery(name = "getDoctorEntityByEmail", query = "select e from DoctorRegisterEntity e where e.email =: email")
 @NamedQuery(name = "getDoctorEntitySpecialization", query = "select e from DoctorRegisterEntity e where e.specialization =: specialization")
 @NamedQuery(name = "getDoctorById", query = "select e from DoctorRegisterEntity e where e.id =: id")
+@NamedQuery(name = "getDoctorByPhoneNumber", query = "select e from DoctorRegisterEntity e where e.phoneNumber =: phoneNumber")
+
 public class DoctorRegisterEntity extends AuditEntity {
 
     @Id

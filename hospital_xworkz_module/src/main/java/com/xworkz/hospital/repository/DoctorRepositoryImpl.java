@@ -53,7 +53,7 @@ public class DoctorRepositoryImpl implements DoctorRepository {
     }
 
     @Override
-    public List<DoctorRegisterEntity> getAllDoctors() {
+    public List<DoctorRegisterEntity> getAllLatestDoctors() {
 
         EntityManager entityManager = null;
         EntityTransaction entityTransaction = null;
@@ -63,7 +63,7 @@ public class DoctorRepositoryImpl implements DoctorRepository {
             entityManager = entityManagerFactory.createEntityManager();
             entityTransaction = entityManager.getTransaction();
             entityTransaction.begin();
-            doctorRegisterEntities = entityManager.createNamedQuery("getAllDoctors").getResultList();
+            doctorRegisterEntities = entityManager.createNamedQuery("getAllLatestDoctors").getResultList();
             log.info("In repo " + doctorRegisterEntities.toString());
             entityTransaction.commit();
             if (doctorRegisterEntities != null && !doctorRegisterEntities.isEmpty()) {
@@ -174,6 +174,34 @@ public class DoctorRepositoryImpl implements DoctorRepository {
         } finally {
             entityManager.close();
         }
+        return null;
+    }
+
+    @Override
+    public DoctorRegisterEntity getDoctorByPhoneNumber(String phoneNumber) {
+        EntityManager entityManager = null;
+        EntityTransaction entityTransaction = null;
+        DoctorRegisterEntity doctorRegisterEntity = null;
+        try {
+
+            entityManager = entityManagerFactory.createEntityManager();
+            entityTransaction = entityManager.getTransaction();
+            entityTransaction.begin();
+            Query query = entityManager.createNamedQuery("getDoctorByPhoneNumber");
+            query.setParameter("phoneNumber", phoneNumber);
+            doctorRegisterEntity = (DoctorRegisterEntity) query.getSingleResult();
+            entityTransaction.commit();
+            if (doctorRegisterEntity != null){
+                return doctorRegisterEntity;
+            }
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+            entityManager.close();
+        }
+
         return null;
     }
 
